@@ -1,0 +1,46 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/fundohomecondutor" >
+
+<TableRow>
+	<AbsoluteLayout 
+	    android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+	>
+
+		<ImageButton
+		    android:id="@+id/btRota"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_x="250px"
+		    android:layout_y="180px"
+		    android:src="@drawable/rota" />
+	
+		<ImageButton
+		    android:id="@+id/btPresenca"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_x="60px"
+		    android:layout_y="430px"
+		    android:src="@drawable/presenca" />
+	
+		<ImageButton
+		    android:id="@+id/btNotificar"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_x="250px"
+		    android:layout_y="430px"
+		    android:src="@drawable/notificar" />
+	
+		<ImageButton
+        	android:id="@+id/btCadastro"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_x="60px" 
+			android:layout_y="180px"
+        	android:src="@drawable/add" 
+    	/>
+	</AbsoluteLayout>
+</TableRow>
+</TableLayout>
