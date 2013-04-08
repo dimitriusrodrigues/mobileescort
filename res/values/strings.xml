@@ -12,6 +12,7 @@
     <string name="senha">Senha</string>
     <string name="enviar">Enviar</string>
     <string name="title_activity_home">Home</string>
+    <string name="title_activity_cadastro">Cadastro</string>
     <string name="title_activity_rotas">Rotas</string>
     <string name="anchieta">Anchieta</string>
     <string name="auxiliadora">Auxiliadora</string>
@@ -19,5 +20,29 @@
     <string name="champagnat">Champagnat</string>
     <string name="domfeliciano">Dom Feliciano</string>
     <string name="farroupilha">Farroupilha</string>
+    <string name="title_activity_homecondutor">HomeCondutor</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_notificar">Notificar</string>
+    <string name="title_activity_presenca">Presenca</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_criar_rota">CriarRota</string>
+    <string name="title_activity_add_usuario">AddUsuario</string>
+    <string name="title_activity_lista_usuarios">ListaUsuarios</string>
+    <string name="title_activity_cadastro_usuario">CadastroUsuario</string>
+    <string name="title_activity_register">Registro de Usuário</string>
+    <string name="title_activity_main">Notificações</string>
+    <string name="gcm_registered">From GCM: device successfully registered!</string>
+    <string name="gcm_unregistered">From GCM: device successfully unregistered!</string>
+    <string name="gcm_message">From GCM: you got message!</string>
+    <string name="gcm_error">From GCM: error.</string>
+    <string name="gcm_recoverable_error">From GCM: recoverable error.</string>
+    <string name="gcm_deleted">From GCM: server deleted pending messages!</string>
+    <string name="server_registering">Trying to register device on Demo Server.</string>
+    <string name="server_registered">From Demo Server: successfully added device!</string>
+    <string name="server_unregistered">From Demo Server: successfully removed device!</string>
+    <string name="server_register_error">Could not register device on Demo Server after attempts.</string>
+    <string name="server_unregister_error">Could not unregister device on Demo Server.</string>
+    <string name="cidade">Cidade</string>
+    <string name="salvar">Salvar</string>
 
 </resources>

@@ -7,14 +7,16 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="8" />
+	<uses-permission android:name="android.permission.INTERNET"/>
+	
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/iconeescolar"
+        android:icon="@drawable/escolar"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.mobileescort.mobileescort.Home"
+            android:name="com.mobileescort.mobileescort.Login"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,11 +26,47 @@
         </activity>
         <activity
             android:name="com.mobileescort.mobileescort.Cadastro"
-            android:label="@string/title_activity_home" >
+            android:label="@string/title_activity_cadastro" >
         </activity>
         <activity
-            android:name="com.mobileescort.mobileescort.Rotas"
+            android:name="com.mobileescort.mobileescort.RotasActivity"
             android:label="@string/title_activity_rotas" >
+        </activity>
+        <activity
+            android:name="com.mobileescort.mobileescort.Notificar"
+            android:label="@string/title_activity_notificar" >
+        </activity>
+        <activity
+            android:name="com.mobileescort.mobileescort.PresencaActivity"
+            android:label="@string/title_activity_presenca" >
+        </activity>
+        <activity
+            android:name="com.mobileescort.mobileescort.HomeCondutor"
+            android:label="@string/title_activity_homecondutor" >
+        </activity>
+        <activity
+            android:name="com.mobileescort.mobileescort.CriarRota"
+            android:label="@string/title_activity_criar_rota" >
+        </activity>
+        <activity
+            android:name="com.mobileescort.mobileescort.UsuariosActivity"
+            android:label="@string/title_activity_add_usuario" >
+        </activity>
+        <activity
+            android:name="com.mobileescort.mobileescort.ListaUsuarios"
+            android:label="@string/title_activity_lista_usuarios" >
+        </activity>
+        <activity
+            android:name="com.mobileescort.mobileescort.CadastroUsuario"
+            android:label="@string/title_activity_cadastro_usuario" >
+        </activity>
+        <activity
+            android:name="com.mobileescort.mobileescort.utils.RegisterActivity"
+            android:label="@string/title_activity_register" >
+        </activity>
+        <activity
+            android:name="com.mobileescort.mobileescort.utils.MainActivity"
+            android:label="@string/title_activity_main" >
         </activity>
     </application>
 
