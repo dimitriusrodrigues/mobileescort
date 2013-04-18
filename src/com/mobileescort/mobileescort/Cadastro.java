@@ -13,6 +13,8 @@ import android.widget.EditText;
 
 public class Cadastro extends Activity {
 	
+	//teste
+	
 	Button btEnviar;
 	EditText etNome;
 	EditText etCelular;
