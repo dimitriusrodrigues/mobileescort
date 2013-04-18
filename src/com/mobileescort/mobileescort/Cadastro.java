@@ -14,6 +14,7 @@ import android.widget.EditText;
 public class Cadastro extends Activity {
 	
 	//teste
+	// 18042013 DimitriusRodrigues : Alterado nome dos botões.
 	
 	Button btEnviar;
 	EditText etNome;
