@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
 public class Login extends Activity {
@@ -19,6 +20,7 @@ public class Login extends Activity {
 	Button btLogar;
 	EditText etNome;
 	EditText etPassword;
+	TextView tvNovoCad;
 	// Alert dialog manager
 	AlertDialogManager alert = new AlertDialogManager();
 		
@@ -30,6 +32,17 @@ public class Login extends Activity {
 		btLogar = (Button) findViewById(R.id.btLogar);
 		etNome = (EditText) findViewById(R.id.etNome);
 		etPassword = (EditText) findViewById(R.id.etPassword);
+		tvNovoCad = (TextView) findViewById(R.id.tvNovoCad);
+		
+		tvNovoCad.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent it = new Intent(Login.this,CadastroUsuario.class);
+				startActivity(it);
+				
+			}
+		});
 		
         btLogar.setOnClickListener(new OnClickListener() {
 			
