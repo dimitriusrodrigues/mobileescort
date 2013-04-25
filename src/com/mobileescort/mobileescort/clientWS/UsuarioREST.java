@@ -9,7 +9,7 @@ import com.mobileescort.mobileescort.model.Usuario;
 
 public class UsuarioREST {
 
-    private static final String URL_WS = "http://10.51.6.30:8080/Test/api/";
+    private static final String URL_WS = "http://10.0.0.101:8080/wsMobileEscort/api/";
 
     public Usuario getUsuario(String nome, String password) throws Exception {
 
