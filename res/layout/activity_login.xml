@@ -74,11 +74,21 @@
 
         </LinearLayout>
 
-        <CheckedTextView
-            android:id="@+id/ctRegister"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Novo Usuário ?" />
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tvNovoCad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Novo Motorista"
+                android:textColor="#3366ff" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
