@@ -40,7 +40,7 @@ public class CadastroUsuario extends Activity {
 				//CORRIGIR
 				usuario.setPassword(etCelular.getText().toString());
 				//CORRIGIR
-				usuario.setPerfil("U");
+				usuario.setPerfil("M");
 				
 	             UsuarioREST usuarioREST = new UsuarioREST();
 	             try {
