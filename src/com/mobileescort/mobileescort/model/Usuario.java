@@ -20,6 +20,17 @@ public class Usuario implements Serializable {
 	
 	private String perfil;
 	
+	private String cidade;
+	
+	private String endereco;
+	
+	private Integer latitude;
+	
+	private Integer longitude;
+	
+	
+	
+
 	private static final long serialVersionUID = 1L;
 
 	public Usuario() {
@@ -89,5 +100,37 @@ public class Usuario implements Serializable {
 	 */
 	public void setPerfil(String perfil) {
 		this.perfil = perfil;
+	}
+	
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+
+	public Integer getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Integer latitude) {
+		this.latitude = latitude;
+	}
+
+	public Integer getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Integer longitude) {
+		this.longitude = longitude;
 	}
 }
