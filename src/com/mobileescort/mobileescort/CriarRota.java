@@ -35,13 +35,18 @@ public class CriarRota extends Activity {
 				try {
 					Rota rota = new Rota();			
 					rota.setDescricao(etDescricao.getText().toString());
-					// CORRIGIR
-					rota.setId_motorista(6);
+					// TO DO
+					rota.setId_motorista(5);
 					RotaREST rotaREST = new RotaREST();
-					rotaREST.inserirRota(rota);
+					String resposta = rotaREST.inserirRota(rota);
 					
-					Intent it = new Intent(CriarRota.this,RotasActivity.class);
-					startActivity(it);	
+					if (resposta.equals("OK")) {
+	                	 finish();
+	                 }
+					 else {
+	                	 alert.showAlertDialog(CriarRota.this,
+	 	      					"Insert Failed","Falha ao inserir nova rota", false);
+	                 }
 					
 				} catch (Exception e) {
 	            	 alert.showAlertDialog(CriarRota.this,
