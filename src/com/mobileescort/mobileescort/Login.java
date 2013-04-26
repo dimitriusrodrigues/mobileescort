@@ -3,7 +3,6 @@ package com.mobileescort.mobileescort;
 import com.mobileescort.mobileescort.clientWS.UsuarioREST;
 import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
-import com.mobileescort.mobileescort.utils.MainActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -60,7 +59,7 @@ public class Login extends Activity {
 	                	 alert.showAlertDialog(Login.this,
 	     					"Login Failed",
 	     					"Usuario not found", false);
-	                 } else{
+	                 } else{ 
 	                	 
 	                	 Intent it = new Intent(Login.this,HomeCondutor.class);
 	     				startActivity(it);
@@ -80,3 +79,4 @@ public class Login extends Activity {
 	}
 
 }
+        
