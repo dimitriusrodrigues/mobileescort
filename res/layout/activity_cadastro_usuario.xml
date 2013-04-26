@@ -28,7 +28,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:ems="10"
-            android:text="@string/nome" >
+            android:hint="@string/nome" >
 
             <requestFocus />
         </EditText>
@@ -42,7 +42,7 @@
             android:layout_marginRight="20dp"
             android:ems="10"
             android:inputType="number"
-            android:text="@string/celular" />
+            android:hint="@string/celular" />
 
         <Button
             android:id="@+id/btSalvar"

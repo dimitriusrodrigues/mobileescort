@@ -18,7 +18,7 @@
         android:layout_marginTop="55dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/nome" />
+        android:hint="@string/nome" />
 
     <EditText
         android:id="@+id/etCelular"
@@ -26,35 +26,28 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="phone"
-        android:text="@string/celular" />
-
-    <EditText
-        android:id="@+id/etLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="@string/login" />
+        android:hint="@string/celular" />
 
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="@string/senha" />
+        android:hint="@string/senha" />
 
     <EditText
         android:id="@+id/etEndereco"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="@string/endereco" />
+        android:hint="@string/endereco" />
 
     <EditText
         android:id="@+id/etCidade"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="@string/cidade" >
+        android:hint="@string/cidade" >
 
         <requestFocus />
     </EditText>
@@ -65,7 +58,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:text="@string/email" />
+        android:hint="@string/email" />
 
     <Button
         android:id="@+id/btEnviar"
