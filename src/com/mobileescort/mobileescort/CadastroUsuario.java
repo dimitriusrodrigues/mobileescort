@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import com.mobileescort.mobileescort.clientWS.UsuarioREST;
 import com.mobileescort.mobileescort.model.Usuario;
+import com.mobileescort.mobileescort.utils.AlertDialogManager;
 
 public class CadastroUsuario extends Activity {
 
@@ -16,6 +17,8 @@ public class CadastroUsuario extends Activity {
 	EditText etNome;
 	EditText etCelular;
 	
+	// Alert dialog manager
+	AlertDialogManager alert = new AlertDialogManager();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +29,7 @@ public class CadastroUsuario extends Activity {
 		btSalvar = (Button) findViewById(R.id.btSalvar);
 		
 		etNome = (EditText) findViewById(R.id.etNome);
-		etCelular = (EditText) findViewById(R.id.etPassword);
+		etCelular = (EditText) findViewById(R.id.etCelular);
         
 		btSalvar.setOnClickListener(new OnClickListener() {
 			
@@ -45,11 +48,19 @@ public class CadastroUsuario extends Activity {
 	             UsuarioREST usuarioREST = new UsuarioREST();
 	             try {
 	                 String resposta = usuarioREST.inserirUsuario(usuario);
-	                 
+	                 if (resposta.equals("OK")) {
+	                	 finish();
+	                 }
+	                 else {
+	                	 alert.showAlertDialog(CadastroUsuario.this,
+	 	      					"Insert Failed","Falha ao inserir novo usuário", false);
+	                 }
 	             } catch (Exception e) {
-	                 e.printStackTrace();
-
-	             }
+	     			// TODO Auto-generated catch block
+	     			alert.showAlertDialog(CadastroUsuario.this,
+	      					"Insert Failed",
+	      					e.getMessage(), false);
+	     		}
 
 			}
 		});
