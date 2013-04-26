@@ -28,6 +28,7 @@
     <string name="title_activity_criar_rota">CriarRota</string>
     <string name="title_activity_add_usuario">AddUsuario</string>
     <string name="title_activity_lista_usuarios">ListaUsuarios</string>
+    <string name="title_activity_google_maps">Mapas</string>
     <string name="title_activity_cadastro_usuario">CadastroUsuario</string>
     <string name="title_activity_register">Registro de Usuário</string>
     <string name="title_activity_main">Notificações</string>
