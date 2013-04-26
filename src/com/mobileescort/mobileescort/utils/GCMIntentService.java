@@ -11,7 +11,6 @@ import android.util.Log;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.mobileescort.mobileescort.R;
 
-import static com.mobileescort.mobileescort.utils.CommonUtilities.SERVER_URL;
 import static com.mobileescort.mobileescort.utils.CommonUtilities.SENDER_ID;
 import static com.mobileescort.mobileescort.utils.CommonUtilities.displayMessage;
 
