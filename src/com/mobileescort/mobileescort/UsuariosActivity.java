@@ -3,12 +3,12 @@ package com.mobileescort.mobileescort;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -60,6 +60,7 @@ public class UsuariosActivity extends Activity {
             
     dialog.setNegativeButton("Não", new DialogInterface.OnClickListener(){
     	
+		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			
 			Toast.makeText(getBaseContext(), "Rota não inicianda!", Toast.LENGTH_SHORT).show();	
@@ -68,13 +69,14 @@ public class UsuariosActivity extends Activity {
 	
     dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener(){
     	
+		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			
 			Toast.makeText(getBaseContext(), "Iniciando Rota", Toast.LENGTH_SHORT).show();
 		
 			btIniciarRota = (Button) findViewById(R.id.btIniciarRota);
 		    
-			Intent it = new Intent(UsuariosActivity.this,CadastroUsuario.class);
+			Intent it = new Intent(UsuariosActivity.this,GoogleMapsActivity.class);
 			startActivity(it);
 		}
     });
