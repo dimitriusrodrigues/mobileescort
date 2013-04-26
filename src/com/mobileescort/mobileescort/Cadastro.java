@@ -21,6 +21,11 @@ public class Cadastro extends Activity {
 	EditText etCelular;
 	EditText etEmail;
 	EditText etPassword;
+	EditText etEndereco;
+	EditText etCidade;
+	
+	String registro, perfil;
+	int latitude, longitude;
 	
     final UsuarioREST usuarioREST = new UsuarioREST();
     Usuario usuario = new Usuario();
@@ -37,6 +42,8 @@ public class Cadastro extends Activity {
         etCelular = (EditText) findViewById(R.id.etCelular);
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
+        etEndereco = (EditText) findViewById(R.id.etEndereco);
+        etCidade= (EditText) findViewById(R.id.etCidade);
         
         //CORRIGIR
         try {
@@ -44,10 +51,17 @@ public class Cadastro extends Activity {
 			if (usuario != null) {
 				etNome.setText(usuario.getNome());
 				etCelular.setText(usuario.getCelular());
-				etEmail.setText(usuario.getEmail());
 				etPassword.setText(usuario.getPassword());
-				
+				if(usuario.getEmail() != null){
+					etEmail.setText(usuario.getEmail());
 				}
+				if(usuario.getEndereco() != null){
+					etEndereco.setText(usuario.getEndereco());
+				}
+				if(usuario.getCidade() != null){
+					etCidade.setText(usuario.getCidade());
+				}
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			alert.showAlertDialog(Cadastro.this,
@@ -63,18 +77,33 @@ public class Cadastro extends Activity {
 
 				usuario.setNome(etNome.getText().toString());
 				usuario.setCelular(etCelular.getText().toString());
-				//CORRIGIR
-				usuario.setPassword(etCelular.getText().toString());
-				usuario.setPerfil("M");
-				//CORRIGIR
-				usuario.setRegistro("REGISTRO");
+				usuario.setPassword(etPassword.getText().toString());
+				usuario.setCidade(etCidade.getText().toString());
+				usuario.setEndereco(etEndereco.getText().toString());
+				usuario.setEmail(etEmail.getText().toString());
+				perfil= new String("M");
+				usuario.setPerfil(perfil);
+				registro= getRegistro();
+				usuario.setRegistro(registro);
 				try {
 					String resposta = usuarioREST.inserirUsuario(usuario);
+					if (resposta.equals("OK")) {
+	                	 finish();
+	                 }
+					 else {
+	                	 alert.showAlertDialog(Cadastro.this,
+	 	      					"Insert Failed","Falha ao inserir novo usuário", false);
+	                 }
 	            } catch (Exception e) {
 	            	alert.showAlertDialog(Cadastro.this,
 	     					"Insert Failed",
 	     					e.getMessage(), false);
 	            }
+			}
+
+			private String getRegistro() {
+				// TODO Auto-generated method stub
+				return null;
 			}	
 		});
     }
