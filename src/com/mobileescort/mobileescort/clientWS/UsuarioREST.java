@@ -50,7 +50,7 @@ public class UsuarioREST {
      String UsuarioJSON = gson.toJson(Usuario);
      String[] resposta = new WebServiceClient().post(URL_WS + "usuarios", UsuarioJSON);
      if (resposta[0].equals("200")) {
-         return resposta[1];
+         return "OK";
      } else {
          throw new Exception(resposta[1]);
      }

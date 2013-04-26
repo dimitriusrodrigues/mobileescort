@@ -49,7 +49,7 @@ public class RotaREST {
      String RotaJSON = gson.toJson(Rota);
      String[] resposta = new WebServiceClient().post(URL_WS + "rotas", RotaJSON);
      if (resposta[0].equals("200")) {
-         return resposta[1];
+         return "OK";
      } else {
          throw new Exception(resposta[1]);
      }
