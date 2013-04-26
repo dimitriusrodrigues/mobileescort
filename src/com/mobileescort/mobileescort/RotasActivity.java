@@ -39,6 +39,7 @@ public class RotasActivity extends Activity{
 		}
 	};
 	
+	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lista_rotas);
@@ -67,8 +68,8 @@ public class RotasActivity extends Activity{
 		RotaREST rotaRest = new RotaREST();
 		
 		try{
-			// CORRIGIR
-			listRotasWS = rotaRest.getListaRota(6);
+			// TO DO
+			listRotasWS = rotaRest.getListaRota(5);
 			
 			for (int i = 0; i < listRotasWS.size(); i++) {
 				 			 
@@ -81,7 +82,7 @@ public class RotasActivity extends Activity{
 		 } catch (Exception e) {
         	 alert.showAlertDialog(RotasActivity.this,
      					"List Rotas Failed",
-     					e.getMessage(), false);;
+     					e.getMessage(), false);
 		}
 		
 		//adapter
@@ -89,5 +90,10 @@ public class RotasActivity extends Activity{
 		lvRotas.setAdapter(adapter);
 		
 		lvRotas.setOnItemClickListener(onItemClickListener);
+	}
+	
+	protected void onStart() {
+		super.onStart();
+		adapterBase();
 	}
 }
