@@ -6,10 +6,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.mobileescort.mobileescort.model.Rota;
+import com.mobileescort.mobileescort.utils.SessionManager;
 
 public class RotaREST {
 
-    private static final String URL_WS = "http://10.0.0.101:8080/wsMobileEscort/api/";
+    private static final String URL_WS = SessionManager.URL_WS;
 
     public Rota getRota(Integer id) throws Exception {
 
