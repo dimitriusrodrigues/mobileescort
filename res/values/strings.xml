@@ -45,5 +45,12 @@
     <string name="server_unregister_error">Could not unregister device on Demo Server.</string>
     <string name="cidade">Cidade</string>
     <string name="salvar">Salvar</string>
+    <string name="novo_motorista">Novo Motorista</string>
+    <string name="logout">Logout</string>
+    <string name="trocar_senha">Trocar Senha</string>
+    <string name="entrar">Entrar</string>
+    <string name="nome_rota">Nome da Rota</string>
+    <string name="criar">Criar</string>
+    <string name="motorista">Motorista</string>
 
 </resources>
