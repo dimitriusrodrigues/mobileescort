@@ -1,5 +1,9 @@
 package com.mobileescort.mobileescort;
 
+import java.util.HashMap;
+
+import com.mobileescort.mobileescort.utils.DatabaseHandler;
+import com.mobileescort.mobileescort.utils.SessionManager;
 import com.mobileescort.mobileescort.clientWS.UsuarioREST;
 import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
@@ -20,18 +24,40 @@ public class Login extends Activity {
 	EditText etNome;
 	EditText etPassword;
 	TextView tvNovoCad;
+	TextView tvLogout;
+	
 	// Alert dialog manager
 	AlertDialogManager alert = new AlertDialogManager();
+	
+	// Session Manager Class
+	SessionManager session;
+
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		
-		btLogar = (Button) findViewById(R.id.btLogar);
+		// Session class instance
+        session = new SessionManager(getApplicationContext());
+        
 		etNome = (EditText) findViewById(R.id.etNome);
 		etPassword = (EditText) findViewById(R.id.etPassword);
+		
+		if (session.checkLogin()) {
+	        // get user data from session
+	        HashMap<String, String> user = session.getUserDetails();
+	        String name = user.get(SessionManager.KEY_NAME);
+	        String password = user.get(SessionManager.KEY_PASSWORD);
+
+			etNome.setText(name);
+			etPassword.setText(password);
+		}
+		
+		btLogar = (Button) findViewById(R.id.btLogar);		
 		tvNovoCad = (TextView) findViewById(R.id.tvNovoCad);
+        tvLogout = (TextView) findViewById(R.id.tvLogout);
+
 		
 		tvNovoCad.setOnClickListener(new OnClickListener() {
 			
@@ -40,6 +66,23 @@ public class Login extends Activity {
 				Intent it = new Intent(Login.this,CadastroUsuario.class);
 				startActivity(it);
 				
+			}
+		});
+		
+		/**
+         * Logout button click event
+         * */
+        tvLogout.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// Clear the session data
+				// This will clear all session data and 
+				// redirect user to LoginActivity
+				session.logoutUser();
+				etNome.setText(session.KEY_NAME);
+				etPassword.setText(session.KEY_PASSWORD);
+
 			}
 		});
 		
@@ -59,10 +102,15 @@ public class Login extends Activity {
 	                	 alert.showAlertDialog(Login.this,
 	     					"Login Failed",
 	     					"Usuario not found", false);
-	                 } else{ 
+	                 } else{
+	                	 
+	                	 session.createLoginSession(usuario.getNome(), usuario.getPassword(), usuario.getId_usuario());
+	                	 
+	                	 DatabaseHandler dbh = new DatabaseHandler(Login.this);
+	                	 dbh.addUser(usuario);
 	                	 
 	                	 Intent it = new Intent(Login.this,HomeCondutor.class);
-	     				startActivity(it);
+	     				 startActivity(it);
 	                	 
 	                 }
 	                	 

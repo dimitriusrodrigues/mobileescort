@@ -6,6 +6,7 @@ import java.util.List;
 import com.mobileescort.mobileescort.clientWS.RotaREST;
 import com.mobileescort.mobileescort.model.Rota;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
+import com.mobileescort.mobileescort.utils.SessionManager;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,6 +25,9 @@ public class RotasActivity extends Activity{
 	
 	// Alert dialog manager
 	AlertDialogManager alert = new AlertDialogManager();
+	
+	// Session Manager Class
+	SessionManager session;	
 	
 	OnItemClickListener onItemClickListener = new OnItemClickListener(){
 	
@@ -68,8 +72,16 @@ public class RotasActivity extends Activity{
 		RotaREST rotaRest = new RotaREST();
 		
 		try{
-			// TO DO
-			listRotasWS = rotaRest.getListaRota(5);
+
+			// Session class instance
+	        session = new SessionManager(getApplicationContext());
+	        if (!session.checkLogin()) {
+	        	alert.showAlertDialog(RotasActivity.this,
+	      					"List Failed","Id do Motorista não encontrado..", false);
+	        	finish();
+	        }
+
+			listRotasWS = rotaRest.getListaRota(session.getIdMotorista());
 			
 			for (int i = 0; i < listRotasWS.size(); i++) {
 				 			 
