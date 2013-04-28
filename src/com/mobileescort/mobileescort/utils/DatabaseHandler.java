@@ -2,6 +2,8 @@ package com.mobileescort.mobileescort.utils;
 
 import java.util.HashMap;
 
+import com.mobileescort.mobileescort.model.Usuario;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -22,10 +24,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// Login Table Columns names
 	private static final String KEY_ID = "id_usuario";
+	private static final String KEY_REGISTRO = "registro";
 	private static final String KEY_NAME = "nome";
 	private static final String KEY_EMAIL = "email";
 	private static final String KEY_CELULAR = "celular";
-	private static final String KEY_REGISTRO = "registro";
+	private static final String KEY_PASSWORD = "password";
+	private static final String KEY_PERFIL = "perfil";
+	private static final String KEY_CIDADE = "cidade";
+	private static final String KEY_ENDERECO = "endereco";
+	private static final String KEY_LATITUDE = "latitude";
+	private static final String KEY_LONGITUDE = "longitude";
+	
 
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -35,13 +44,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_LOGIN + "("
-				+ KEY_ID + " INTEGER PRIMARY KEY," 
+				+ KEY_ID + " INTEGER PRIMARY KEY,"
+				+ KEY_REGISTRO + " TEXT,"
 				+ KEY_NAME + " TEXT,"
 				+ KEY_EMAIL + " TEXT UNIQUE,"
 				+ KEY_CELULAR + " TEXT,"
-				+ KEY_REGISTRO + " TEXT" + ")";
+				+ KEY_PASSWORD + " TEXT,"
+				+ KEY_PERFIL + " TEXT,"
+				+ KEY_CIDADE + " TEXT,"
+				+ KEY_ENDERECO + " TEXT,"
+				+ KEY_LATITUDE + " TEXT,"
+				+ KEY_LONGITUDE + " INTEGER" + ")";
 		db.execSQL(CREATE_LOGIN_TABLE);
 	}
+	
 
 	// Upgrading database
 	@Override
@@ -56,19 +72,35 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	/**
 	 * Storing user details in database
 	 * */
-	public void addUser(String name, String email, String celular, String registro) {
+	public void addUser(Usuario usuario) {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(KEY_NAME, name); // Name
-		values.put(KEY_EMAIL, email); // Email
-		values.put(KEY_CELULAR, celular); // Celular
-		values.put(KEY_REGISTRO, registro); // Created At
+		
+		values.put(KEY_ID , usuario.getId_usuario() );
+		values.put(KEY_REGISTRO, usuario.getRegistro());				
+		values.put(KEY_NAME, usuario.getNome());
+		values.put(KEY_EMAIL, usuario.getEmail());
+		values.put(KEY_CELULAR, usuario.getCelular()); 
+		values.put(KEY_PASSWORD, usuario.getPassword());
+		values.put(KEY_PERFIL, usuario.getPerfil());
+		values.put(KEY_CIDADE, usuario.getCidade());
+		values.put(KEY_ENDERECO, usuario.getEndereco());
+		values.put(KEY_LATITUDE, usuario.getLatitude());
+		values.put(KEY_LONGITUDE, usuario.getLongitude());
 
 		// Inserting Row
 		db.insert(TABLE_LOGIN, null, values);
 		db.close(); // Closing database connection
 	}
+	
+	public boolean deleteUser(long id){
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		  int qt = db.delete(TABLE_LOGIN, KEY_ID + "=" + id, null);
+		  return qt > 0;
+	 }
 	
 	/**
 	 * Getting user data from database
@@ -119,5 +151,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.delete(TABLE_LOGIN, null, null);
 		db.close();
 	}
+	
+		 
+	public Usuario getUsuario(long id) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor mCursor = db.query(true, TABLE_LOGIN, null, KEY_ID + "=" + id, null, null, null, null, null);
+		Usuario usuario = new Usuario();
+		
+		if(mCursor != null){
+			mCursor.moveToFirst();
+			usuario.setId_usuario( mCursor.getInt(mCursor.getColumnIndex(KEY_ID)) );
+			usuario.setRegistro(mCursor.getString(mCursor.getColumnIndex(KEY_REGISTRO)));
+			usuario.setNome(mCursor.getString(mCursor.getColumnIndex(KEY_NAME)) );
+			usuario.setEmail(mCursor.getString(mCursor.getColumnIndex(KEY_EMAIL)));
+			usuario.setCelular(mCursor.getString(mCursor.getColumnIndex(KEY_CELULAR)));
+			usuario.setPassword(mCursor.getString(mCursor.getColumnIndex(KEY_PASSWORD)));
+			usuario.setPerfil(mCursor.getString(mCursor.getColumnIndex(KEY_PERFIL)));
+			usuario.setCidade(mCursor.getString(mCursor.getColumnIndex(KEY_CIDADE)));
+			usuario.setEndereco(mCursor.getString(mCursor.getColumnIndex(KEY_ENDERECO)));
+			usuario.setLatitude(mCursor.getInt(mCursor.getColumnIndex(KEY_LATITUDE)));
+			usuario.setLongitude(mCursor.getInt(mCursor.getColumnIndex(KEY_LONGITUDE)));
+		}
+		
+		return usuario;
+		
+	}
+	
+	
 
 }
