@@ -27,9 +27,6 @@ public class Usuario implements Serializable {
 	private Integer latitude;
 	
 	private Integer longitude;
-	
-	
-	
 
 	private static final long serialVersionUID = 1L;
 
