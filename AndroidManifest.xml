@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.mobileescort.mobileescort.Login"
+            android:name="com.mobileescort.mobileescort.GoogleMapsActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -31,11 +31,13 @@
         
         <uses-library android:name="com.google.android.maps" />
         
+        <!-- 
         <activity
             android:name="com.mobileescort.mobileescort.GoogleMapsActivity"
             android:label="@string/title_activity_google_maps" 
             android:screenOrientation="portrait">
         </activity>
+        -->
         
         <activity
             android:name="com.mobileescort.mobileescort.Cadastro"
