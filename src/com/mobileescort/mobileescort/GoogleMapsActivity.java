@@ -20,7 +20,7 @@ public class GoogleMapsActivity extends MapActivity  {
 	TesteOverlay overlays;
 	
 	private LocationListener locationListener = new LocationListener() {
-		
+	
 		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {
 			// TODO Auto-generated method stub
@@ -49,8 +49,8 @@ public class GoogleMapsActivity extends MapActivity  {
 	        int lon2 = (int) (-51.22432905000005 * 1E6);
 			GeoPoint geo2 = new GeoPoint(lat2, lon2);
 			
-			int lat3 = (int) (-30.055941409189153 * 1E6);
-	        int lon3 = (int) (-51.169217499999945 * 1E6);
+			int lat3 = (int) (-30.035395009181585 * 1E6);
+	        int lon3 = (int) (-51.23696619999998 * 1E6);
 			GeoPoint geo3 = new GeoPoint(lat3, lon3);
 	        
 			mapView.getController().animateTo(geo);
@@ -80,10 +80,10 @@ public class GoogleMapsActivity extends MapActivity  {
         mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
         
-        int lat = (int) (-30 * 1E6);
-        int lon = (int) (-51.2 * 1E6);
+//        int lat = (int) (-30 * 1E6);
+//        int lon = (int) (-51.2 * 1E6);
         
-        Log.d("GEO", lat + " - " + lon);
+//        Log.d("GEO", lat + " - " + lon);
         
 //        GeoPoint geo = new GeoPoint(lat, lon);
         
@@ -96,11 +96,11 @@ public class GoogleMapsActivity extends MapActivity  {
         Drawable drawable = this.getResources().getDrawable(R.drawable.ic_launcher);
         overlays = new TesteOverlay(drawable);
         
-        GeoPoint pointOverlay = new GeoPoint(lat, lon);
-        OverlayItem item = new OverlayItem(pointOverlay, "Centro do Universo", "diria o bairrista...");
-        overlays.addOverlay(item);
+//        GeoPoint pointOverlay = new GeoPoint(lat, lon);
+//        OverlayItem item = new OverlayItem(pointOverlay, "Centro do Universo", "diria o bairrista...");
+//        overlays.addOverlay(item);
         
-        mapView.getOverlays().add(overlays);
+//        mapView.getOverlays().add(overlays);
         
         
         // Ligando o GPS
