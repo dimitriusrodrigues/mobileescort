@@ -64,6 +64,9 @@ public class Login extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent it = new Intent(Login.this,CadastroUsuario.class);
+				Bundle params = new Bundle();
+                params.putString("origem", "Login");
+                it.putExtras(params);
 				startActivity(it);
 				
 			}
@@ -104,7 +107,7 @@ public class Login extends Activity {
 	     					"Usuario not found", false);
 	                 } else{
 	                	 
-	                	 session.createLoginSession(usuario.getNome(), usuario.getPassword(), usuario.getId_usuario());
+	                	 session.createLoginSession(usuario);
 	                	 
 	                	 DatabaseHandler dbh = new DatabaseHandler(Login.this);
 	                	 dbh.addUser(usuario);

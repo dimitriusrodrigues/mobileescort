@@ -1,8 +1,11 @@
 package com.mobileescort.mobileescort;
 
+import java.util.HashMap;
+
 import com.mobileescort.mobileescort.clientWS.UsuarioREST;
 import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
+import com.mobileescort.mobileescort.utils.SessionManager;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -12,9 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class Cadastro extends Activity {
-	
-	//teste
-	// 18042013 DimitriusRodrigues : Alterado nome dos botões.
 	
 	Button btEnviar;
 	EditText etNome;
@@ -26,6 +26,9 @@ public class Cadastro extends Activity {
 	
 	String registro, perfil;
 	int latitude, longitude;
+
+	// Session Manager Class
+	SessionManager session;
 	
     final UsuarioREST usuarioREST = new UsuarioREST();
     Usuario usuario = new Usuario();
@@ -45,36 +48,46 @@ public class Cadastro extends Activity {
         etEndereco = (EditText) findViewById(R.id.etEndereco);
         etCidade= (EditText) findViewById(R.id.etCidade);
         
-        //CORRIGIR
-        try {
-			usuario = usuarioREST.getUsuario("Antonio", "84489104");
-			if (usuario != null) {
-				etNome.setText(usuario.getNome());
-				etCelular.setText(usuario.getCelular());
-				etPassword.setText(usuario.getPassword());
-				if(usuario.getEmail() != null){
-					etEmail.setText(usuario.getEmail());
+		// Session class instance
+        session = new SessionManager(getApplicationContext());
+        if (session.checkLogin()) {
+	        try {
+		        // get user data from session
+		        HashMap<String, String> user = session.getUserDetails();
+				usuario = usuarioREST.getUsuario(user.get(SessionManager.KEY_NAME), user.get(SessionManager.KEY_PASSWORD));
+				if (usuario != null) {
+					etNome.setText(usuario.getNome());
+					etCelular.setText(usuario.getCelular());
+					etPassword.setText(usuario.getPassword());
+					if(usuario.getEmail() != null){
+						etEmail.setText(usuario.getEmail());
+					}
+					if(usuario.getEndereco() != null){
+						etEndereco.setText(usuario.getEndereco());
+					}
+					if(usuario.getCidade() != null){
+						etCidade.setText(usuario.getCidade());
+					}
 				}
-				if(usuario.getEndereco() != null){
-					etEndereco.setText(usuario.getEndereco());
-				}
-				if(usuario.getCidade() != null){
-					etCidade.setText(usuario.getCidade());
-				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				alert.showAlertDialog(Cadastro.this,
+	 					"Search Failed",
+	 					e.getMessage(), false);
 			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			alert.showAlertDialog(Cadastro.this,
- 					"Search Failed",
- 					e.getMessage(), false);
+			
+		} else {
+        	alert.showAlertDialog(Cadastro.this,
+   					"Cadastro Failed","Sessão não localizada!", false);
+        	
+        	finish();
 		}
+        
         
         btEnviar.setOnClickListener( new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
 				usuario.setNome(etNome.getText().toString());
 				usuario.setCelular(etCelular.getText().toString());
 				usuario.setPassword(etPassword.getText().toString());

@@ -6,10 +6,10 @@ import android.content.Intent;
 public final class CommonUtilities {
 	
 	// give your server registration url here
-    static final String SERVER_URL = "http://10.0.0.101:8080/Test/api/"; 
+    static final String SERVER_URL = SessionManager.URL_WS; 
 
     // Google project id
-    static final String SENDER_ID = "960215357691"; 
+    static final String SENDER_ID = SessionManager.SENDER_ID; 
 
     /**
      * Tag used on log messages.
