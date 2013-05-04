@@ -27,6 +27,7 @@ public class Cadastro extends Activity {
 	String registro, perfil;
 	int latitude, longitude;
 
+	
 	// Session Manager Class
 	SessionManager session;
 	

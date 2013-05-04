@@ -26,6 +26,7 @@ public class UsuariosActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lista_usuarios);
 		
+		
 		lvUsuarios = (ListView) findViewById(R.id.listView1);
 		
 		adapterBase();

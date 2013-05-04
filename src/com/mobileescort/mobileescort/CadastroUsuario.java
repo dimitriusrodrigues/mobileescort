@@ -19,6 +19,7 @@ public class CadastroUsuario extends Activity {
 	EditText etCelular;
 	String activityOrigem;
 	
+	
 	// Alert dialog manager
 	AlertDialogManager alert = new AlertDialogManager();
 	

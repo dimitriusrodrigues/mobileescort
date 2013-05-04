@@ -26,6 +26,7 @@ public class Login extends Activity {
 	TextView tvNovoCad;
 	TextView tvLogout;
 	
+	
 	// Alert dialog manager
 	AlertDialogManager alert = new AlertDialogManager();
 	

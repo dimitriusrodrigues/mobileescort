@@ -5,6 +5,7 @@ import android.content.Intent;
 
 public final class CommonUtilities {
 	
+	
 	// give your server registration url here
     static final String SERVER_URL = SessionManager.URL_WS; 
 

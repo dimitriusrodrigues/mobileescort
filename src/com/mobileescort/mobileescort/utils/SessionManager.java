@@ -77,6 +77,7 @@ public class SessionManager {
 				
 		// commit changes
 		editor.commit();
+		
 	}	
 	
 	/**
