@@ -9,12 +9,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import android.view.View;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
+	private static final String TAG = "DataBaseHandler";
+	
 	// All Static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 4;
 
 	// Database Name
 	private static final String DATABASE_NAME = "mobileescort";
@@ -53,8 +57,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_PERFIL + " TEXT,"
 				+ KEY_CIDADE + " TEXT,"
 				+ KEY_ENDERECO + " TEXT,"
-				+ KEY_LATITUDE + " TEXT,"
-				+ KEY_LONGITUDE + " INTEGER" + ")";
+				+ KEY_LATITUDE + " DOUBLE,"
+				+ KEY_LONGITUDE + " DOUBLE" + ")";
 		db.execSQL(CREATE_LOGIN_TABLE);
 	}
 	
@@ -89,6 +93,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_LATITUDE, usuario.getLatitude());
 		values.put(KEY_LONGITUDE, usuario.getLongitude());
 
+		
 		// Inserting Row
 		db.insert(TABLE_LOGIN, null, values);
 		db.close(); // Closing database connection
@@ -169,13 +174,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			usuario.setPerfil(mCursor.getString(mCursor.getColumnIndex(KEY_PERFIL)));
 			usuario.setCidade(mCursor.getString(mCursor.getColumnIndex(KEY_CIDADE)));
 			usuario.setEndereco(mCursor.getString(mCursor.getColumnIndex(KEY_ENDERECO)));
-			usuario.setLatitude(mCursor.getInt(mCursor.getColumnIndex(KEY_LATITUDE)));
-			usuario.setLongitude(mCursor.getInt(mCursor.getColumnIndex(KEY_LONGITUDE)));
+			usuario.setLatitude(mCursor.getDouble(mCursor.getColumnIndex(KEY_LATITUDE)));
+			usuario.setLongitude(mCursor.getDouble(mCursor.getColumnIndex(KEY_LONGITUDE)));
 		}
 		
 		return usuario;
 		
 	}
+	
+	public void update(Usuario usuario){
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		
+		values.put(KEY_ID , usuario.getId_usuario() );
+		values.put(KEY_REGISTRO, usuario.getRegistro());				
+		values.put(KEY_NAME, usuario.getNome());
+		values.put(KEY_EMAIL, usuario.getEmail());
+		values.put(KEY_CELULAR, usuario.getCelular()); 
+		values.put(KEY_PASSWORD, usuario.getPassword());
+		values.put(KEY_PERFIL, usuario.getPerfil());
+		values.put(KEY_CIDADE, usuario.getCidade());
+		values.put(KEY_ENDERECO, usuario.getEndereco());
+		values.put(KEY_LATITUDE, usuario.getLatitude());
+		values.put(KEY_LONGITUDE, usuario.getLongitude());
+		
+		String id = String.valueOf(usuario.getId_usuario());
+		long result = db.update(TABLE_LOGIN, values, "id_usuario = ?", new String[]{id});
+		
+		Log.d(TAG, "linhas alteradas: " + result);
+		
+	}
+	
 	
 	
 
