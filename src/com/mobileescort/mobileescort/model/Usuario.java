@@ -24,9 +24,9 @@ public class Usuario implements Serializable {
 	
 	private String endereco;
 	
-	private Integer latitude;
+	private Double latitude;
 	
-	private Integer longitude;
+	private Double longitude;
 
 	private static final long serialVersionUID = 1L;
 
@@ -115,19 +115,19 @@ public class Usuario implements Serializable {
 		this.endereco = endereco;
 	}
 
-	public Integer getLatitude() {
+	public Double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(Integer latitude) {
+	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 
-	public Integer getLongitude() {
+	public Double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(Integer longitude) {
+	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
 }
