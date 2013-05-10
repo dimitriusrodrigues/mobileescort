@@ -3,6 +3,7 @@ package com.mobileescort.mobileescort;
 import com.mobileescort.mobileescort.clientWS.RotaREST;
 import com.mobileescort.mobileescort.model.Rota;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
+import com.mobileescort.mobileescort.utils.DatabaseHandler;
 import com.mobileescort.mobileescort.utils.SessionManager;
 
 import android.os.Bundle;
@@ -47,10 +48,11 @@ public class CriarRota extends Activity {
 					rota.setDescricao(etDescricao.getText().toString());
 					
 			        if (session.checkLogin()) {
-			        	rota.setId_motorista(session.getIdMotorista());
+			        	DatabaseHandler dbh = new DatabaseHandler(CriarRota.this);
+			        	rota.setMotorista(dbh.getUsuario(session.getIdMotorista()));
 			        }else {
 			        	alert.showAlertDialog(CriarRota.this,
-	 	      					"Create Failed","Id do Motorista não encontrado..", false);
+	 	      					"Create Failed","Motorista não encontrado..", false);
 			        	
 			        	finish();
 			        }

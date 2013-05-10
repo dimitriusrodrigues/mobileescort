@@ -1,6 +1,7 @@
 package com.mobileescort.mobileescort;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +17,8 @@ public class CadastroUsuario extends Activity {
 	Button btSalvar;
 	EditText etNome;
 	EditText etCelular;
+	String activityOrigem;
+	
 	
 	// Alert dialog manager
 	AlertDialogManager alert = new AlertDialogManager();
@@ -23,6 +26,11 @@ public class CadastroUsuario extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		Intent intent = getIntent();
+		Bundle params = intent.getExtras();  
+		if(params!=null) { activityOrigem = params.getString("origem"); }
+		
 		setContentView(R.layout.activity_cadastro_usuario);
 
 
@@ -37,26 +45,31 @@ public class CadastroUsuario extends Activity {
 			public void onClick(View v) {
 				/*Intent it = new Intent(CadastroUsuario.this,UsuariosActivity.class);
 				startActivity(it);*/
+				
 				Usuario usuario = new Usuario();
 				usuario.setNome(etNome.getText().toString());
 				usuario.setCelular(etCelular.getText().toString());
-				//CORRIGIR
+				//TODO Ajustar o password
 				usuario.setPassword(etCelular.getText().toString());
-				//CORRIGIR
-				usuario.setPerfil("M");
 				
-	             UsuarioREST usuarioREST = new UsuarioREST();
-	             try {
-	                 String resposta = usuarioREST.inserirUsuario(usuario);
-	                 if (resposta.equals("OK")) {
-	                	 finish();
-	                 }
-	                 else {
-	                	 alert.showAlertDialog(CadastroUsuario.this,
-	 	      					"Insert Failed","Falha ao inserir novo usuário", false);
-	                 }
+				if (activityOrigem.equals("Login")) {
+					usuario.setPerfil("M");
+				} else {
+					usuario.setPerfil("U");
+				}
+				
+				UsuarioREST usuarioREST = new UsuarioREST();
+	            try {
+	                String resposta = usuarioREST.inserirUsuario(usuario);
+	                if (resposta.equals("OK")) {
+	                	finish();
+	                }
+	                else {
+	                	alert.showAlertDialog(CadastroUsuario.this,
+	                			"Insert Failed","Falha ao inserir novo usuário", false);
+	                }
 	             } catch (Exception e) {
-	     			// TODO Auto-generated catch block
+	     			
 	     			alert.showAlertDialog(CadastroUsuario.this,
 	      					"Insert Failed",
 	      					e.getMessage(), false);

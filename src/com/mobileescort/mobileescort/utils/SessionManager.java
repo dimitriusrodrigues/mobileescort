@@ -38,10 +38,19 @@ public class SessionManager {
 	public static final String KEY_PASSWORD = "Celular";
 	
 	// URL 
-	public static final String URL_WS = "http://10.51.6.30:8080/wsMobileEscort/api/";
+	public static final String URL_WS = "http://10.0.0.101:8080/wsMobileEscort/api/";
+	
+	// Sender Id
+	public static final String SENDER_ID = "960215357691";
 	
 	// ID 
 	public static final String KEY_IDMOTORISTA = "IdMotorista";
+	
+	// Perfil do usuario
+	public static final String KEY_PERFIL = "Perfil";
+	
+	static final String DISPLAY_MESSAGE_ACTION =
+            "com.mobileescort.mobileescort.DISPLAY_MESSAGE";
 		
 	// Constructor
 	public SessionManager(Context context){
@@ -53,21 +62,25 @@ public class SessionManager {
 	/**
 	 * Create login session
 	 * */
-	public void createLoginSession(String name, String password, int idMotorista){
+	public void createLoginSession(Usuario usuario){
 		// Storing login value as TRUE
 		editor.putBoolean(IS_LOGIN, true);
 		
 		// Storing name in pref
-		editor.putString(KEY_NAME, name);
+		editor.putString(KEY_NAME, usuario.getNome());
 		
 		// Storing celular/password in pref
-		editor.putString(KEY_PASSWORD, password);
+		editor.putString(KEY_PASSWORD, usuario.getPassword());
 		
 		// Storing idMotorista in pref
-		editor.putInt(KEY_IDMOTORISTA, idMotorista);
+		editor.putInt(KEY_IDMOTORISTA, usuario.getId_usuario());
 		
+		// Storing Perfil in pref
+		editor.putString(KEY_PERFIL, usuario.getPerfil());
+				
 		// commit changes
 		editor.commit();
+		
 	}	
 	
 	/**
@@ -140,6 +153,14 @@ public class SessionManager {
 	// Get Id Motorista
 	public int getIdMotorista(){
 		return pref.getInt(KEY_IDMOTORISTA, 0);
+	}
+	
+	/**
+	 * Quick check for login
+	 * **/
+	// Get Id Motorista
+	public String getPerfil(){
+		return pref.getString(KEY_PERFIL, null);
 	}
 	
 }

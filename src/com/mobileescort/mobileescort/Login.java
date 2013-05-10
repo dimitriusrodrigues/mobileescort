@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.mobileescort.mobileescort.utils.DatabaseHandler;
 import com.mobileescort.mobileescort.utils.SessionManager;
+import com.mobileescort.mobileescort.utils.UserFunctions;
 import com.mobileescort.mobileescort.clientWS.UsuarioREST;
 import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
@@ -26,12 +27,12 @@ public class Login extends Activity {
 	TextView tvNovoCad;
 	TextView tvLogout;
 	
+	
 	// Alert dialog manager
 	AlertDialogManager alert = new AlertDialogManager();
 	
 	// Session Manager Class
 	SessionManager session;
-
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,9 @@ public class Login extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent it = new Intent(Login.this,CadastroUsuario.class);
+				Bundle params = new Bundle();
+                params.putString("origem", "Login");
+                it.putExtras(params);
 				startActivity(it);
 				
 			}
@@ -104,13 +108,18 @@ public class Login extends Activity {
 	     					"Usuario not found", false);
 	                 } else{
 	                	 
-	                	 session.createLoginSession(usuario.getNome(), usuario.getPassword(), usuario.getId_usuario());
-	                	 
+	                	 session.createLoginSession(usuario);
+
 	                	 DatabaseHandler dbh = new DatabaseHandler(Login.this);
 	                	 dbh.addUser(usuario);
-	                	 
-	                	 Intent it = new Intent(Login.this,HomeCondutor.class);
-	     				 startActivity(it);
+	                	 // TODO Trocar por Enun
+	                	 if (session.getPerfil().equals("M")) {
+	                		 Intent it = new Intent(Login.this,HomeCondutor.class);
+		     				 startActivity(it);
+	                	 }else {
+	                		 Intent it = new Intent(Login.this,Home.class);
+		     				 startActivity(it);	 
+	                	 }
 	                	 
 	                 }
 	                	 

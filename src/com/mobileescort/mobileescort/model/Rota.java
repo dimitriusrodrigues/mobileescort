@@ -3,6 +3,7 @@ package com.mobileescort.mobileescort.model;
 import java.io.Serializable;
 import java.lang.Integer;
 import java.lang.String;
+import java.util.List;
 
 public class Rota implements Serializable {
 	   
@@ -10,7 +11,9 @@ public class Rota implements Serializable {
 	
 	private String descricao;
 	
-	private Integer id_motorista;
+	private Usuario motorista;
+
+	private List<Usuario> usuarios;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -30,18 +33,30 @@ public class Rota implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public Integer getId_motorista() {
-		return id_motorista;
+	public Usuario getMotorista() {
+		return motorista;
 	}
 
-	public void setId_motorista(Integer id_motorista) {
-		this.id_motorista = id_motorista;
+	public void setMotorista(Usuario motorista) {
+		this.motorista = motorista;
+	}
+
+	/**
+	 * @return the usuarios
+	 */
+	public List<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	/**
+	 * @param usuarios the usuarios to set
+	 */
+	public void setUsuarios(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
 	}
 
 	public Rota() {
 		super();
 	}
-	
-	
    
 }

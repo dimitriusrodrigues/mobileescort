@@ -26,6 +26,7 @@ public class UsuariosActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lista_usuarios);
 		
+		
 		lvUsuarios = (ListView) findViewById(R.id.listView1);
 		
 		adapterBase();
@@ -37,6 +38,9 @@ public class UsuariosActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent it = new Intent(UsuariosActivity.this,CadastroUsuario.class);
+				Bundle params = new Bundle();
+                params.putString("origem", "UsuariosActivity");
+                it.putExtras(params);
 				startActivity(it);
 			}
 		});
