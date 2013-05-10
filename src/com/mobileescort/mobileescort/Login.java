@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.mobileescort.mobileescort.utils.DatabaseHandler;
 import com.mobileescort.mobileescort.utils.SessionManager;
+import com.mobileescort.mobileescort.utils.UserFunctions;
 import com.mobileescort.mobileescort.clientWS.UsuarioREST;
 import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
@@ -32,7 +33,6 @@ public class Login extends Activity {
 	
 	// Session Manager Class
 	SessionManager session;
-
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,12 +109,17 @@ public class Login extends Activity {
 	                 } else{
 	                	 
 	                	 session.createLoginSession(usuario);
-	                	 
+
 	                	 DatabaseHandler dbh = new DatabaseHandler(Login.this);
 	                	 dbh.addUser(usuario);
-	                	 
-	                	 Intent it = new Intent(Login.this,HomeCondutor.class);
-	     				 startActivity(it);
+	                	 // TODO Trocar por Enun
+	                	 if (session.getPerfil().equals("M")) {
+	                		 Intent it = new Intent(Login.this,HomeCondutor.class);
+		     				 startActivity(it);
+	                	 }else {
+	                		 Intent it = new Intent(Login.this,Home.class);
+		     				 startActivity(it);	 
+	                	 }
 	                	 
 	                 }
 	                	 
