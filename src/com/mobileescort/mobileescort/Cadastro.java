@@ -30,7 +30,7 @@ public class Cadastro extends Activity {
 	EditText etCidade;
 	
 	String registro, perfil;
-	int latitude, longitude;
+	Double latitude, longitude;
 	
 	// Session Manager Class
 	SessionManager session;
@@ -136,14 +136,14 @@ public class Cadastro extends Activity {
 	            }
 			}
 
-			private int getLongitude() {
+			private Double getLongitude() {
 				// TODO Buscar Longitude
-				return 0;
+				return 0.0;
 			}
 
-			private int getLatitude() {
+			private Double getLatitude() {
 				// TODO Buscar Latitude
-				return 0;
+				return 0.0;
 			}
 
 			private String getRegistro() {
