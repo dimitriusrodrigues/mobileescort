@@ -67,13 +67,13 @@
         
         <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyAmXGDVJ6C1v9fa1LY2OfRnSaAkqibSxLM"/>
         
-        <!-- 
+         
         <activity
             android:name="com.mobileescort.mobileescort.GoogleMapsActivity"
             android:label="@string/title_activity_google_maps" 
             android:screenOrientation="portrait">
         </activity>
-        -->
+        
         
         <activity
             android:name="com.mobileescort.mobileescort.Cadastro"
@@ -146,7 +146,7 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <!-- Receives the registration id. -->
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="com.mobileescort.mobileescort.utils" />
+                <category android:name="com.mobileescort.mobileescort" />
             </intent-filter>
         </receiver>
 
@@ -157,7 +157,7 @@
           By default, it must be named .GCMIntentService, unless the
           application uses a custom BroadcastReceiver that redefines its name.
         -->
-        <service android:name="com.mobileescort.mobileescort.utils.GCMIntentService" />
+        <service android:name="com.mobileescort.mobileescort.GCMIntentService" />
     </application>
 
 </manifest>
