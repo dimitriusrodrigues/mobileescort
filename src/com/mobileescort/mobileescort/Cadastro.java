@@ -3,17 +3,15 @@ package com.mobileescort.mobileescort;
 
 import java.util.HashMap;
 
-import com.google.android.gcm.GCMRegistrar;
+
 import com.mobileescort.mobileescort.clientWS.UsuarioREST;
 import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
+import com.mobileescort.mobileescort.GCM;
 import com.mobileescort.mobileescort.utils.SessionManager;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -44,17 +42,6 @@ public class Cadastro extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
-        
-        /*checkNotNull(SessionManager.URL_WS, "SERVER_URL");
-	    checkNotNull(SessionManager.SENDER_ID, "SENDER_ID");
-	    GCMRegistrar.checkDevice(this);
-	    GCMRegistrar.checkManifest(this);
-	    final String regId = GCMRegistrar.getRegistrationId(this);
-	    if (regId.equals("")) {
-	    	// Automatically registers application on startup.
-	    	GCMRegistrar.register(this, "960215357691");
-	    	
-	    } */
         
         btEnviar = (Button) findViewById(R.id.btEnviar);
         etNome = (EditText) findViewById(R.id.etNome);
@@ -147,27 +134,16 @@ public class Cadastro extends Activity {
 			}
 
 			private String getRegistro() {
-				String regId = "";
-				/*checkNotNull(SessionManager.URL_WS, "SERVER_URL");
-			    checkNotNull(SessionManager.SENDER_ID, "SENDER_ID");
-			    GCMRegistrar.checkDevice(getApplicationContext());
-			    GCMRegistrar.checkManifest(getApplicationContext());
-			    regId = GCMRegistrar.getRegistrationId(getApplicationContext());
-			    if (regId.equals("")) {
-			    	// Automatically registers application on startup.
-			    	GCMRegistrar.register(getApplicationContext(), SessionManager.SENDER_ID);
-			    	regId = GCMRegistrar.getRegistrationId(getApplicationContext());
-			    } */
-			    
-			    return regId;
+				if (GCM.isAtivo(getApplicationContext())) {
+					GCM.desativa(getApplicationContext());
+				} 
+				
+				GCM.ativa(getApplicationContext());
+				return "";
+						
 			}	
 		});
 	}
 	
-	private void checkNotNull(Object reference, String name) {
-		if (reference == null) {
-			throw new NullPointerException(
-					getString(R.string.error_config, name));
-		}
-	}
+	
 }

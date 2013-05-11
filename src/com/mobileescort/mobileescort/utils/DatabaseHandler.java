@@ -165,18 +165,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		if(mCursor != null){
 			mCursor.moveToFirst();
-			usuario.setId_usuario( mCursor.getInt(mCursor.getColumnIndex(KEY_ID)) );
-			usuario.setRegistro(mCursor.getString(mCursor.getColumnIndex(KEY_REGISTRO)));
-			usuario.setNome(mCursor.getString(mCursor.getColumnIndex(KEY_NAME)) );
-			usuario.setEmail(mCursor.getString(mCursor.getColumnIndex(KEY_EMAIL)));
-			usuario.setCelular(mCursor.getString(mCursor.getColumnIndex(KEY_CELULAR)));
-			usuario.setPassword(mCursor.getString(mCursor.getColumnIndex(KEY_PASSWORD)));
-			usuario.setPerfil(mCursor.getString(mCursor.getColumnIndex(KEY_PERFIL)));
-			usuario.setCidade(mCursor.getString(mCursor.getColumnIndex(KEY_CIDADE)));
-			usuario.setEndereco(mCursor.getString(mCursor.getColumnIndex(KEY_ENDERECO)));
-			usuario.setLatitude(mCursor.getDouble(mCursor.getColumnIndex(KEY_LATITUDE)));
-			usuario.setLongitude(mCursor.getDouble(mCursor.getColumnIndex(KEY_LONGITUDE)));
+			if(mCursor.getCount() > 0){
+				usuario.setId_usuario( mCursor.getInt(mCursor.getColumnIndex(KEY_ID)) );
+				usuario.setRegistro(mCursor.getString(mCursor.getColumnIndex(KEY_REGISTRO)));
+				usuario.setNome(mCursor.getString(mCursor.getColumnIndex(KEY_NAME)) );
+				usuario.setEmail(mCursor.getString(mCursor.getColumnIndex(KEY_EMAIL)));
+				usuario.setCelular(mCursor.getString(mCursor.getColumnIndex(KEY_CELULAR)));
+				usuario.setPassword(mCursor.getString(mCursor.getColumnIndex(KEY_PASSWORD)));
+				usuario.setPerfil(mCursor.getString(mCursor.getColumnIndex(KEY_PERFIL)));
+				usuario.setCidade(mCursor.getString(mCursor.getColumnIndex(KEY_CIDADE)));
+				usuario.setEndereco(mCursor.getString(mCursor.getColumnIndex(KEY_ENDERECO)));
+				usuario.setLatitude(mCursor.getDouble(mCursor.getColumnIndex(KEY_LATITUDE)));
+				usuario.setLongitude(mCursor.getDouble(mCursor.getColumnIndex(KEY_LONGITUDE)));
+			}	
 		}
+		
+		db.close();
+		mCursor.close();
 		
 		return usuario;
 		

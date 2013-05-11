@@ -2,6 +2,7 @@ package com.mobileescort.mobileescort;
 
 import com.mobileescort.mobileescort.clientWS.RotaREST;
 import com.mobileescort.mobileescort.model.Rota;
+import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
 import com.mobileescort.mobileescort.utils.DatabaseHandler;
 import com.mobileescort.mobileescort.utils.SessionManager;
@@ -49,7 +50,8 @@ public class CriarRota extends Activity {
 					
 			        if (session.checkLogin()) {
 			        	DatabaseHandler dbh = new DatabaseHandler(CriarRota.this);
-			        	rota.setMotorista(dbh.getUsuario(session.getIdMotorista()));
+			        	Usuario motorista = dbh.getUsuario(session.getIdMotorista());
+			        	rota.setMotorista(motorista);
 			        }else {
 			        	alert.showAlertDialog(CriarRota.this,
 	 	      					"Create Failed","Motorista não encontrado..", false);

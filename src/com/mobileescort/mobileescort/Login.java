@@ -111,7 +111,13 @@ public class Login extends Activity {
 	                	 session.createLoginSession(usuario);
 
 	                	 DatabaseHandler dbh = new DatabaseHandler(Login.this);
-	                	 dbh.addUser(usuario);
+	                	 Usuario usuarioTmp = dbh.getUsuario(session.getIdMotorista());
+	                	 if (usuarioTmp.getNome() == null){
+	                		 dbh.addUser(usuario); 
+	                	 } else {
+	                		 dbh.update(usuario);
+	                	 }
+	                	 
 	                	 // TODO Trocar por Enun
 	                	 if (session.getPerfil().equals("M")) {
 	                		 Intent it = new Intent(Login.this,HomeCondutor.class);
