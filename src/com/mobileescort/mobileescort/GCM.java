@@ -21,6 +21,7 @@ public class GCM {
     static final String TAG = "GCM";
     
     
+    
 	/**
 	 * Método responsável por ativar o uso do GCM.
 	 * @param context
@@ -35,10 +36,8 @@ public class GCM {
 		if (regId.equals("")) {
 			GCMRegistrar.register(context, SessionManager.SENDER_ID);
 			Log.i(TAG, "Serviço GCM ativado.");
-			//return regId;
 		} else {
 			Log.i(TAG, "O serviço GCM já está ativo. ID: " + regId);
-			//return regId;
 		}
 		
 	}
@@ -51,7 +50,6 @@ public class GCM {
 	public static void desativa(Context context) {
 		GCMRegistrar.unregister(context);
 		Log.i(TAG, "Serviço GCM desativado.");
-		//return "Desativado";
 	}
 
 	/**
@@ -62,6 +60,10 @@ public class GCM {
 	 */
 	public static boolean isAtivo(Context context) {
 		return GCMRegistrar.isRegistered(context);
+	}
+	
+	public static String getRegistro(Context context) {
+		return GCMRegistrar.getRegistrationId(context);
 	}
 
 }
