@@ -73,8 +73,6 @@
             android:label="@string/title_activity_google_maps" 
             android:screenOrientation="portrait">
         </activity>
-        
-        
         <activity
             android:name="com.mobileescort.mobileescort.Cadastro"
             android:label="@string/title_activity_cadastro" 
@@ -128,6 +126,11 @@
         <activity
             android:name="com.mobileescort.mobileescort.utils.MainActivity"
             android:label="@string/title_activity_main" 
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.mobileescort.mobileescort.Home"
+            android:label="@string/title_activity_home" 
             android:screenOrientation="portrait">
         </activity>
         
