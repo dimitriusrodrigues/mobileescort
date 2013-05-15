@@ -2,9 +2,7 @@ package com.mobileescort.mobileescort.utils;
 
 import java.util.HashMap;
 
-import com.mobileescort.mobileescort.HomeCondutor;
 import com.mobileescort.mobileescort.Login;
-import com.mobileescort.mobileescort.R;
 import com.mobileescort.mobileescort.model.Usuario;
 
 import android.content.Context;
