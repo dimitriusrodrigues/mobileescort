@@ -88,7 +88,6 @@ public class GoogleMapsActivity extends FragmentActivity {
 				      .snippet("Ponto móvel"));
 				    
 				    
-
 				    configuraPosicao(map, latLng4);
 		}
 	};
