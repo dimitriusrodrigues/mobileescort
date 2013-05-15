@@ -1,7 +1,10 @@
 package com.mobileescort.mobileescort;
 
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 
 import com.mobileescort.mobileescort.clientWS.UsuarioREST;
@@ -10,8 +13,13 @@ import com.mobileescort.mobileescort.utils.AlertDialogManager;
 import com.mobileescort.mobileescort.GCM;
 import com.mobileescort.mobileescort.utils.SessionManager;
 
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -19,6 +27,7 @@ import android.widget.EditText;
 
 public class Cadastro extends Activity {
 	
+	private Handler handler;
 	Button btEnviar;
 	EditText etNome;
 	EditText etCelular;
@@ -99,13 +108,13 @@ public class Cadastro extends Activity {
 				usuario.setCidade(etCidade.getText().toString());
 				usuario.setEndereco(etEndereco.getText().toString());
 				usuario.setEmail(etEmail.getText().toString());
+				
+				handler = new Handler();
+				buscarLatLong();
+				
 				registro= getRegistro();
-				latitude = getLatitude();
-				longitude = getLongitude();
 				usuario.setPerfil(perfil);
 				usuario.setRegistro(registro);
-				usuario.setLatitude(latitude);
-				usuario.setLongitude(longitude);
 				
 				try {
 					String resposta = usuarioREST.inserirUsuario(usuario);
@@ -124,15 +133,6 @@ public class Cadastro extends Activity {
 	            }
 			}
 
-			private Double getLongitude() {
-				// TODO Buscar Longitude
-				return 0.0;
-			}
-
-			private Double getLatitude() {
-				// TODO Buscar Latitude
-				return 0.0;
-			}
 
 			private String getRegistro() {
 				if (GCM.isAtivo(getApplicationContext())) {
@@ -147,5 +147,47 @@ public class Cadastro extends Activity {
 		});
 	}
 	
+	public void buscarLatLong() {
+
+        GeocodingTask processo = new GeocodingTask(this);
+
+        processo.execute();
+	}
+	
+	class GeocodingTask extends AsyncTask<String, Void, Void> {
+
+		   Context mContext;
+
+		   public GeocodingTask(Context context) {
+		        super();
+		        mContext = context;
+		   }
+
+		@Override
+		protected Void doInBackground(String... params) {
+			Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
+			 
+	        List<Address> addresses = null;
+
+	        try {
+	           addresses = geocoder.getFromLocationName(etEndereco.getText().toString() + " " + etCidade.getText().toString(), 10);
+
+	        } catch (final IOException e) {}
+	                       
+	        if (addresses != null) {
+
+	           final Address endereco = addresses.get(0);
+	           handler.post(new Runnable() {
+
+	                public void run() {
+	                	usuario.setLatitude(endereco.getLatitude());
+	    				usuario.setLongitude(endereco.getLongitude());
+	                }
+	           }); 
+
+	        }
+	        return null;
+		}
+	}
 	
 }
