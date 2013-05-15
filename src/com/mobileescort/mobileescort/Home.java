@@ -34,7 +34,7 @@ public class Home extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				Intent it = new Intent(Home.this,Rotas.class);
+				Intent it = new Intent(Home.this,RotasActivity.class);
 				startActivity(it);
 			}
 		});
