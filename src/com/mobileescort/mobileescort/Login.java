@@ -87,8 +87,8 @@ public class Login extends Activity {
 				// This will clear all session data and 
 				// redirect user to LoginActivity
 				session.logoutUser();
-				etNome.setText(session.KEY_NAME);
-				etPassword.setText(session.KEY_PASSWORD);
+				etNome.setText(SessionManager.KEY_NAME);
+				etPassword.setText(SessionManager.KEY_PASSWORD);
 
 			}
 		});
