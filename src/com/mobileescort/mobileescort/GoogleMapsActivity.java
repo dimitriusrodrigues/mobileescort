@@ -71,7 +71,14 @@ public class GoogleMapsActivity extends FragmentActivity {
 				        R.drawable.ic_launcher))  
 				      .title("Demétrio Ribeiro 247")  
 				      .snippet("Dimi"));
-				    /*
+				    
+				    DatabaseHandler dbh = new DatabaseHandler(getApplicationContext());
+				    Usuario usuario =  dbh.getUsuario(session.getIdMotorista());
+				    
+				    usuario.setLatitude(location.getLatitude());
+				    usuario.setLongitude(location.getLongitude());
+				    dbh.update(usuario);
+				    
 				    LatLng latLng4 = new LatLng(location.getLatitude(),location.getLongitude());  
 				    map.addMarker(new MarkerOptions()  
 				      .position(latLng4)  
@@ -79,15 +86,10 @@ public class GoogleMapsActivity extends FragmentActivity {
 				        R.drawable.ic_launcher))  
 				      .title("BUS")  
 				      .snippet("Ponto móvel"));
-				    */
-				    DatabaseHandler dbh = new DatabaseHandler(getApplicationContext());
-				    Usuario usuario =  dbh.getUsuario(session.getIdMotorista());
 				    
-				    usuario.setLatitude(-30.035395009181585);
-				    usuario.setLongitude(-51.23696619999998);
-				    dbh.update(usuario);
+				    
 
-				    configuraPosicao(map, latLng3);
+				    configuraPosicao(map, latLng4);
 		}
 	};
 	
