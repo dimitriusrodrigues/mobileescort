@@ -181,7 +181,7 @@ public class RepositorioMobileEscort {
 
 		String where = Rota.KEY_ID + "=?";
 		String[] whereArgs = new String[] { _id };
-		deletarRota(rota.getId_rota());
+		//deletarRota(rota.getId_rota());
 		long count = atualizarRota(values, where, whereArgs);
 
 		return count;
