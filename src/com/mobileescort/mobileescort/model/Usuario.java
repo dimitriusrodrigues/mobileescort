@@ -5,7 +5,21 @@ import java.lang.Integer;
 import java.lang.String;
 
 public class Usuario implements Serializable {
-	   
+
+	public static final String KEY_ID = "id_usuario";
+	public static final String KEY_REGISTRO = "registro";
+	public static final String KEY_NAME = "nome";
+	public static final String KEY_EMAIL = "email";
+	public static final String KEY_CELULAR = "celular";
+	public static final String KEY_PASSWORD = "password";
+	public static final String KEY_PERFIL = "perfil";
+	public static final String KEY_CIDADE = "cidade";
+	public static final String KEY_ENDERECO = "endereco";
+	public static final String KEY_LATITUDE = "latitude";
+	public static final String KEY_LONGITUDE = "longitude";
+
+	public static String[] colunas = new String[] { KEY_ID, KEY_REGISTRO, KEY_NAME, KEY_EMAIL , KEY_CELULAR, KEY_PASSWORD, KEY_PERFIL, KEY_CIDADE, KEY_ENDERECO, KEY_LATITUDE, KEY_LONGITUDE  };
+	
 	private Integer id_usuario;
 	
 	private String registro;

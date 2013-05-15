@@ -7,6 +7,13 @@ import java.util.List;
 
 public class Rota implements Serializable {
 	   
+	public static final String KEY_ID = "id_rota";
+	public static final String KEY_DESCRICAO = "descricao";
+	public static final String KEY_MOTORISTA = "id_usuario";
+	
+	public static String[] colunas = new String[] { KEY_ID, KEY_DESCRICAO, KEY_MOTORISTA };
+	public static String[] colunasRotaUsuario = new String[] { KEY_ID, KEY_MOTORISTA };
+	
 	private Integer id_rota;
 	
 	private String descricao;
