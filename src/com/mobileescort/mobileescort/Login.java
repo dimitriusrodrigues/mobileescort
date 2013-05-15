@@ -2,9 +2,9 @@ package com.mobileescort.mobileescort;
 
 import java.util.HashMap;
 
-import com.mobileescort.mobileescort.utils.DatabaseHandler;
 import com.mobileescort.mobileescort.utils.SessionManager;
-import com.mobileescort.mobileescort.utils.UserFunctions;
+import com.mobileescort.mobileescort.banco.RepositorioMobileEscort;
+import com.mobileescort.mobileescort.banco.RepositorioMobileEscortScript;
 import com.mobileescort.mobileescort.clientWS.UsuarioREST;
 import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
@@ -27,17 +27,20 @@ public class Login extends Activity {
 	TextView tvNovoCad;
 	TextView tvLogout;
 	
+	public static RepositorioMobileEscort repositorio;
 	
 	// Alert dialog manager
 	AlertDialogManager alert = new AlertDialogManager();
 	
 	// Session Manager Class
-	SessionManager session;
+	public static SessionManager session;
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		
+		repositorio = new RepositorioMobileEscortScript(this);
 		
 		// Session class instance
         session = new SessionManager(getApplicationContext());
@@ -109,14 +112,16 @@ public class Login extends Activity {
 	                 } else{
 	                	 
 	                	 session.createLoginSession(usuario);
-
-	                	 DatabaseHandler dbh = new DatabaseHandler(Login.this);
+	                	 
+	                	 // TODO Apagar isto.
+	                	 repositorio.salvarUsuario(usuario);
+	                	 /*DatabaseHandler dbh = new DatabaseHandler(Login.this);
 	                	 Usuario usuarioTmp = dbh.getUsuario(session.getIdMotorista());
 	                	 if (usuarioTmp.getNome() == null){
 	                		 dbh.addUser(usuario); 
 	                	 } else {
 	                		 dbh.update(usuario);
-	                	 }
+	                	 }*/
 	                	 
 	                	 // TODO Trocar por Enun
 	                	 if (session.getPerfil().equals("M")) {
