@@ -87,7 +87,7 @@ public class GoogleMapsActivity extends FragmentActivity {
 				      .title("BUS")  
 				      .snippet("Ponto móvel"));
 				    
-				    
+				 
 				    configuraPosicao(map, latLng4);
 		}
 	};
