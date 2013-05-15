@@ -1,5 +1,8 @@
 package com.mobileescort.mobileescort;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +11,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.mobileescort.mobileescort.clientWS.RotaREST;
 import com.mobileescort.mobileescort.clientWS.UsuarioREST;
+import com.mobileescort.mobileescort.model.Rota;
 import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
 
@@ -18,7 +23,7 @@ public class CadastroUsuario extends Activity {
 	EditText etNome;
 	EditText etCelular;
 	String activityOrigem;
-	
+	int id_rota;
 	
 	// Alert dialog manager
 	AlertDialogManager alert = new AlertDialogManager();
@@ -29,7 +34,10 @@ public class CadastroUsuario extends Activity {
 		
 		Intent intent = getIntent();
 		Bundle params = intent.getExtras();  
-		if(params!=null) { activityOrigem = params.getString("origem"); }
+		if(params!=null) { 
+			activityOrigem = params.getString("origem");
+			id_rota = params.getInt("id_rota");
+		}
 		
 		setContentView(R.layout.activity_cadastro_usuario);
 
@@ -62,12 +70,38 @@ public class CadastroUsuario extends Activity {
 	            try {
 	                String resposta = usuarioREST.inserirUsuario(usuario);
 	                if (resposta.equals("OK")) {
-	                	finish();
+	                	usuario = usuarioREST.getUsuario( usuario.getNome() , usuario.getPassword());
+	                	if (usuario != null) {
+	                		Login.repositorio.salvarUsuario(usuario);
+	        				if (activityOrigem.equals("UsuariosActivity")) {
+		                		Rota rota = Login.repositorio.buscarRota(id_rota);
+		                		List<Usuario> listUsuarios = new ArrayList<Usuario>();
+		                		listUsuarios = rota.getUsuarios();
+		                		listUsuarios.add(usuario);
+		    	                rota.setUsuarios(listUsuarios);
+		    	                RotaREST rotaREST = new RotaREST();
+		    					String res = rotaREST.inserirRota(rota);
+		    					if (res.equals("OK")) {
+		    						Login.repositorio.salvarRota(rota);
+		    	                	finish();
+		    	                 }
+		    					 else {
+		    	                	 alert.showAlertDialog(CadastroUsuario.this,
+		    	 	      					"Insert Failed","Falha ao inserir novo passageiro na rota", false);
+		    	                 }
+	        				}else {
+	        					finish();
+	        				}	
+	                	} 
+	                	else {
+	                		throw new Exception("Erro ao buscar usuário");
+	                	}
 	                }
 	                else {
 	                	alert.showAlertDialog(CadastroUsuario.this,
 	                			"Insert Failed","Falha ao inserir novo usuário", false);
 	                }
+	                
 	             } catch (Exception e) {
 	     			
 	     			alert.showAlertDialog(CadastroUsuario.this,
