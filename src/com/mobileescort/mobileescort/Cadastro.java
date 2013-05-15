@@ -110,7 +110,8 @@ public class Cadastro extends Activity {
 				try {
 					String resposta = usuarioREST.inserirUsuario(usuario);
 					if (resposta.equals("OK")) {
-	                	 finish();
+						Login.repositorio.salvarUsuario(usuario);	
+	                	finish();
 	                 }
 					 else {
 	                	 alert.showAlertDialog(Cadastro.this,
@@ -135,11 +136,12 @@ public class Cadastro extends Activity {
 
 			private String getRegistro() {
 				if (GCM.isAtivo(getApplicationContext())) {
-					GCM.desativa(getApplicationContext());
-				} 
+					return GCM.getRegistro(getApplicationContext());
+				} else {
 				
-				GCM.ativa(getApplicationContext());
-				return "";
+					GCM.ativa(getApplicationContext());
+					return GCM.getRegistro(getApplicationContext());
+				}
 						
 			}	
 		});
