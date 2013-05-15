@@ -44,6 +44,26 @@ public class UsuarioREST {
          throw new Exception(resposta[1]);
      }
     }
+
+    public List<Usuario> getListaUsuario(Usuario motorista) throws Exception {
+
+        String[] resposta = new WebServiceClient().get(URL_WS + "usuarios/buscarPassageiros/" + motorista.getId_usuario());
+        
+        if (resposta[0].equals("200")) {
+            Gson gson = new Gson();
+            ArrayList<Usuario> listaUsuario = new ArrayList<Usuario>();
+            JsonParser parser = new JsonParser();
+           JsonArray array = parser.parse(resposta[1]).getAsJsonArray();
+            
+           for (int i = 0; i < array.size(); i++) {
+                listaUsuario.add(gson.fromJson(array.get(i), Usuario.class));
+            }
+            return listaUsuario;
+        } else {
+            throw new Exception(resposta[1]);
+        }
+       }
+
     
     public String inserirUsuario(Usuario Usuario) throws Exception {
      
