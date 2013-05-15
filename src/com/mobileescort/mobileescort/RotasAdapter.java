@@ -2,6 +2,8 @@ package com.mobileescort.mobileescort;
 
 import java.util.List;
 
+import com.mobileescort.mobileescort.model.Rota;
+
 
 
 import android.content.Context;
@@ -14,9 +16,9 @@ import android.widget.TextView;
 public class RotasAdapter extends BaseAdapter {
 
 	private Context ctx;
-	private List<Rotas> rotas;
+	private List<Rota> rotas;
 	
-	public RotasAdapter(Context ctx, List<Rotas> rotas){
+	public RotasAdapter(Context ctx, List<Rota> rotas){
 		this.ctx = ctx;
 		this.rotas = rotas;
 	}
@@ -40,7 +42,7 @@ public class RotasAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// pegar o item
-		Rotas rot = rotas.get(position);
+		Rota rot = rotas.get(position);
 		
 		//pegar a interface
 		LayoutInflater inflater = 
@@ -54,7 +56,7 @@ public class RotasAdapter extends BaseAdapter {
 		tvDescricao.setText(rot.getDescricao());
 		
 		TextView tvCodigo = (TextView) v.findViewById(R.id.txCodigo);
-		tvCodigo.setText(rot.getCodigo());
+		tvCodigo.setText(rot.getMotorista().getNome());
 		
 		return v;
 	}

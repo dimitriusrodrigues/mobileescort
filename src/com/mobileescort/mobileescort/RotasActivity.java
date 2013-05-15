@@ -6,7 +6,6 @@ import java.util.List;
 import com.mobileescort.mobileescort.clientWS.RotaREST;
 import com.mobileescort.mobileescort.model.Rota;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
-import com.mobileescort.mobileescort.utils.SessionManager;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,19 +25,18 @@ public class RotasActivity extends Activity{
 	// Alert dialog manager
 	AlertDialogManager alert = new AlertDialogManager();
 	
-	// Session Manager Class
-	SessionManager session;	
-	
 	OnItemClickListener onItemClickListener = new OnItemClickListener(){
 	
 		@Override
 		public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
 
-			Rotas rotas = (Rotas) adapter.getItemAtPosition(position);
-		
-			Toast.makeText(getBaseContext(), rotas.getDescricao(), Toast.LENGTH_SHORT).show();
+			Rota rota = (Rota) adapter.getItemAtPosition(position);
+			Toast.makeText(getBaseContext(), rota.getDescricao(), Toast.LENGTH_SHORT).show();
 	
 			Intent it = new Intent(RotasActivity.this,UsuariosActivity.class);
+			Bundle params = new Bundle();
+            params.putInt("id_rota", rota.getId_rota());
+            it.putExtras(params);
 			startActivity(it);
 		}
 	};
@@ -66,29 +64,28 @@ public class RotasActivity extends Activity{
 	
 	private void adapterBase(){
 		
-		List<Rotas> listRotas = new ArrayList<Rotas>();
 		List<Rota> listRotasWS = new ArrayList<Rota>();
 		
 		RotaREST rotaRest = new RotaREST();
 		
 		try{
-
-			// Session class instance
-	        session = new SessionManager(getApplicationContext());
-	        if (!session.checkLogin()) {
+			
+	        if (!Login.session.checkLogin()) {
 	        	alert.showAlertDialog(RotasActivity.this,
 	      					"List Failed","Id do Motorista não encontrado..", false);
 	        	finish();
 	        }
 
-			listRotasWS = rotaRest.getListaRota(session.getIdMotorista());
+			listRotasWS = rotaRest.getListaRota(Login.session.getIdMotorista());
 			
 			for (int i = 0; i < listRotasWS.size(); i++) {
 				 			 
-				Rotas rot1 = new Rotas();
-				rot1.setDescricao(listRotasWS.get(i).getDescricao());
-				rot1.setCodigo(listRotasWS.get(i).getId_rota().toString());
-				listRotas.add(rot1);
+				Rota rota = new Rota();
+				rota.setId_rota(listRotasWS.get(i).getId_rota());
+				rota.setDescricao(listRotasWS.get(i).getDescricao());
+				rota.setMotorista(listRotasWS.get(i).getMotorista());
+				rota.setUsuarios(listRotasWS.get(i).getUsuarios());
+				Login.repositorio.salvarRota(rota);
 	         }
 			
 		 } catch (Exception e) {
@@ -97,8 +94,8 @@ public class RotasActivity extends Activity{
      					e.getMessage(), false);
 		}
 		
-		//adapter
-		RotasAdapter adapter = new RotasAdapter(getBaseContext(), listRotas);
+		
+		RotasAdapter adapter = new RotasAdapter(getBaseContext(), listRotasWS);
 		lvRotas.setAdapter(adapter);
 		
 		lvRotas.setOnItemClickListener(onItemClickListener);
