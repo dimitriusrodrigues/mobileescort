@@ -2,6 +2,8 @@ package com.mobileescort.mobileescort;
 
 import java.util.List;
 
+import com.mobileescort.mobileescort.model.Usuario;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +14,9 @@ import android.widget.TextView;
 public class UsuariosAdapter extends BaseAdapter{
 	
 	private Context ctx;
-	private List<Usuarios> usuarios;
+	private List<Usuario> usuarios;
 	
-	public UsuariosAdapter(Context ctx, List<Usuarios> usuarios){
+	public UsuariosAdapter(Context ctx, List<Usuario> usuarios){
 		this.ctx = ctx;
 		this.usuarios = usuarios;
 	}
@@ -38,7 +40,7 @@ public class UsuariosAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// pegar o item
-		Usuarios usu = usuarios.get(position);
+		Usuario usu = usuarios.get(position);
 		
 		//pegar a interface
 		LayoutInflater inflater = 
@@ -52,7 +54,7 @@ public class UsuariosAdapter extends BaseAdapter{
 		tvNome.setText(usu.getNome());
 		
 		TextView tvTelefone = (TextView) v.findViewById(R.id.txTelefone);
-		tvTelefone.setText(usu.getTelefone());
+		tvTelefone.setText(usu.getCelular());
 		
 		return v;
 	}

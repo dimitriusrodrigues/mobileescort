@@ -3,6 +3,9 @@ package com.mobileescort.mobileescort;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mobileescort.mobileescort.model.Rota;
+import com.mobileescort.mobileescort.model.Usuario;
+import com.mobileescort.mobileescort.utils.AlertDialogManager;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -20,10 +23,21 @@ public class UsuariosActivity extends Activity {
 	ListView lvUsuarios;
 	Button btCadUsuario;
 	Button btIniciarRota;
+	int id_rota;
+	
+	// Alert dialog manager
+	AlertDialogManager alert = new AlertDialogManager();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		Intent intent = getIntent();
+		Bundle params = intent.getExtras();  
+		if(params!=null) { 
+			id_rota = params.getInt("id_rota");
+		}
+		
 		setContentView(R.layout.activity_lista_usuarios);
 		
 		
@@ -40,6 +54,7 @@ public class UsuariosActivity extends Activity {
 				Intent it = new Intent(UsuariosActivity.this,CadastroUsuario.class);
 				Bundle params = new Bundle();
                 params.putString("origem", "UsuariosActivity");
+                params.putInt("id_rota", id_rota);
                 it.putExtras(params);
 				startActivity(it);
 			}
@@ -89,38 +104,24 @@ public class UsuariosActivity extends Activity {
 	
 	private void adapterBase(){
 		
-		List<Usuarios> listUsuarios = new ArrayList<Usuarios>();
+		List<Usuario> listUsuarios = new ArrayList<Usuario>();
 		
-		Usuarios usu1 = new Usuarios();
-		usu1.setNome("Ana Rocha");
-		usu1.setTelefone("99811234");
-		listUsuarios.add(usu1);
-		
-		Usuarios usu2 = new Usuarios();
-		usu2.setNome("Bia Falcão");
-		usu2.setTelefone("92343564");
-		listUsuarios.add(usu2);
-		
-		Usuarios usu3 = new Usuarios();
-		usu3.setNome("Carlos Novaes");
-		usu3.setTelefone("93358626");
-		listUsuarios.add(usu3);
-		
-		Usuarios usu4 = new Usuarios();
-		usu4.setNome("Dimitrius R.");
-		usu4.setTelefone("84489104");
-		listUsuarios.add(usu4);
-		
-		Usuarios usu5 = new Usuarios();
-		usu5.setNome("Maria Aparecida");
-		usu5.setTelefone("99654543");
-		listUsuarios.add(usu5);
-		
-		Usuarios usu6 = new Usuarios();
-		usu6.setNome("Willian Dufau");
-		usu6.setTelefone("93341995");
-		listUsuarios.add(usu6);
-		
+		try{
+
+	        if (!Login.session.checkLogin()) {
+	        	alert.showAlertDialog(UsuariosActivity.this,
+	      					"Session Failed","Id do Motorista não encontrado..", false);
+	        	finish();
+	        }
+	    
+	        Rota rota = Login.repositorio.buscarRota(id_rota);
+	        listUsuarios = rota.getUsuarios();
+			
+		 } catch (Exception e) {
+        	 alert.showAlertDialog(UsuariosActivity.this,
+     					"Tried List User Failed",
+     					e.getMessage(), false);
+		}
 		//adapter
 		UsuariosAdapter adapter = new UsuariosAdapter(getBaseContext(), listUsuarios);
 		lvUsuarios.setAdapter(adapter);
@@ -128,5 +129,9 @@ public class UsuariosActivity extends Activity {
 		//lvUsuarios.setOnItemClickListener(onItemClickListener);
 	}
 
+	protected void onStart() {
+		super.onStart();
+		adapterBase();
+	}	
 
 }
