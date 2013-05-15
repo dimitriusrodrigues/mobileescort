@@ -4,12 +4,10 @@ import com.mobileescort.mobileescort.clientWS.RotaREST;
 import com.mobileescort.mobileescort.model.Rota;
 import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
-import com.mobileescort.mobileescort.utils.DatabaseHandler;
 import com.mobileescort.mobileescort.utils.SessionManager;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -22,9 +20,6 @@ public class CriarRota extends Activity {
 	
 	// Alert dialog manager
 	AlertDialogManager alert = new AlertDialogManager();
-
-	// Session Manager Class
-	SessionManager session;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +30,8 @@ public class CriarRota extends Activity {
 		etDescricao = (EditText) findViewById(R.id.etDescricao);
 		etNome = (EditText) findViewById(R.id.etNome);
 		
-		session = new SessionManager(getApplicationContext());
-		if (session.checkLogin()) {
-			etNome.setText(session.getUserDetails().get(SessionManager.KEY_NAME));
+		if (Login.session.checkLogin()) {
+			etNome.setText(Login.session.getUserDetails().get(SessionManager.KEY_NAME));
 		}	
 		btCriarRota.setOnClickListener(new OnClickListener() {
 			
@@ -48,10 +42,15 @@ public class CriarRota extends Activity {
 					Rota rota = new Rota();			
 					rota.setDescricao(etDescricao.getText().toString());
 					
-			        if (session.checkLogin()) {
+			        if (Login.session.checkLogin()) {
+			        	// TODO Verificar esta inclusão
+			        	/*
 			        	DatabaseHandler dbh = new DatabaseHandler(CriarRota.this);
 			        	Usuario motorista = dbh.getUsuario(session.getIdMotorista());
+			        	*/
+			        	Usuario motorista = Login.repositorio.buscarUsuario(Login.session.getIdMotorista());
 			        	rota.setMotorista(motorista);
+			        	
 			        }else {
 			        	alert.showAlertDialog(CriarRota.this,
 	 	      					"Create Failed","Motorista não encontrado..", false);
@@ -63,7 +62,7 @@ public class CriarRota extends Activity {
 					String resposta = rotaREST.inserirRota(rota);
 					
 					if (resposta.equals("OK")) {
-	                	 finish();
+	                	finish();
 	                 }
 					 else {
 	                	 alert.showAlertDialog(CriarRota.this,
