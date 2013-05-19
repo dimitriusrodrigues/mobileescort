@@ -60,6 +60,15 @@ public class RotaREST {
      String[] resposta = new WebServiceClient().get(URL_WS + "rotas/" + id);
      return resposta[1];
     }
+    
+    public String enviarMenesagem(Integer id_motorista) throws Exception {
+        String[] resposta = new WebServiceClient().get(URL_WS + "rotas/enviarNotificacao/" + id_motorista);
+        if (resposta[0].equals("200")) {
+            return "OK";
+        } else {
+            throw new Exception(resposta[1]);
+        }
+    }
 }
  
 
