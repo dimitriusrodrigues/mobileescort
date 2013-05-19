@@ -15,6 +15,8 @@
  */
 package com.mobileescort.mobileescort.utils;
 
+import com.mobileescort.mobileescort.Login;
+
 import android.content.Context;
 import android.content.Intent;
 
@@ -27,23 +29,23 @@ public final class CommonUtilities {
     /**
      * Base URL of the Demo Server (such as http://my_host:8080/gcm-demo)
      */
-    static final String SERVER_URL = "http://10.0.0.101:8080/wsMobileEscort/api/";
+    static final String SERVER_URL = Login.session.URL_WS;
 
     /**
      * Google API project id registered to use GCM.
      */
-    static final String SENDER_ID = "960215357691";
+    static final String SENDER_ID = Login.session.SENDER_ID;
 
     /**
      * Tag used on log messages.
      */
-    static final String TAG = "GCMDemo";
+    static final String TAG = "CommonUtilities";
 
     /**
      * Intent used to display a message in the screen.
      */
     static final String DISPLAY_MESSAGE_ACTION =
-            "com.google.android.gcm.demo.app.DISPLAY_MESSAGE";
+            "com.mobileescort.mobileescort.utils.DISPLAY_MESSAGE";
 
     /**
      * Intent's extra that contains the message to be displayed.
