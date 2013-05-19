@@ -1,5 +1,8 @@
 package com.mobileescort.mobileescort;
 
+import com.mobileescort.mobileescort.clientWS.RotaREST;
+import com.mobileescort.mobileescort.utils.AlertDialogManager;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
@@ -8,6 +11,9 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class Notificar extends Activity {
+	
+	// Alert dialog manager
+	AlertDialogManager alert = new AlertDialogManager();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +28,18 @@ public class Notificar extends Activity {
 			public void onClick(View v) {
 				//Intent it = new Intent(Notificar.this,PresencaActivity.class);
 				//startActivity(it);
+				
 				Toast.makeText(getBaseContext(), "Trânsito", Toast.LENGTH_SHORT).show();
+				RotaREST rotaRest = new RotaREST();
+				try {
+					//TODO Arrumar Id Rota.
+					rotaRest.enviarMenesagem(11);
+				} catch (Exception e) {
+		        	 alert.showAlertDialog(Notificar.this,
+		     					"Send Notification Failed",
+		     					e.getMessage(), false);
+				}
+				
 			}
 		});
 		
