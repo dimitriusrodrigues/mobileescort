@@ -119,13 +119,8 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name="com.mobileescort.mobileescort.utils.RegisterActivity"
+            android:name="com.mobileescort.mobileescort.RegisterActivity"
             android:label="@string/title_activity_register" 
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name="com.mobileescort.mobileescort.utils.MainActivity"
-            android:label="@string/title_activity_main" 
             android:screenOrientation="portrait">
         </activity>
         <activity
