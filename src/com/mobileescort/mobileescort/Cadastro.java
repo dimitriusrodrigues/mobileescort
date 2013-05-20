@@ -10,7 +10,6 @@ import java.util.Locale;
 import com.mobileescort.mobileescort.clientWS.UsuarioREST;
 import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
-import com.mobileescort.mobileescort.GCM;
 import com.mobileescort.mobileescort.utils.SessionManager;
 
 import android.location.Address;
@@ -18,23 +17,30 @@ import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.CheckBox;
 
 public class Cadastro extends Activity {
 	
 	private Handler handler;
+	
 	Button btEnviar;
+	Button btRegistrar;
+	
 	EditText etNome;
 	EditText etCelular;
 	EditText etEmail;
 	EditText etPassword;
 	EditText etEndereco;
 	EditText etCidade;
+	CheckBox cbRegistrado;
 	
 	String registro, perfil;
 	Double latitude, longitude;
@@ -53,12 +59,45 @@ public class Cadastro extends Activity {
         setContentView(R.layout.activity_cadastro);
         
         btEnviar = (Button) findViewById(R.id.btEnviar);
+        btRegistrar = (Button) findViewById(R.id.btRegistrar);
         etNome = (EditText) findViewById(R.id.etNome);
         etCelular = (EditText) findViewById(R.id.etCelular);
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
         etEndereco = (EditText) findViewById(R.id.etEndereco);
         etCidade= (EditText) findViewById(R.id.etCidade);
+        cbRegistrado = (CheckBox) findViewById(R.id.cbRegistro);
+        
+        /*btRegistrar.setOnClickListener( new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				registro= getRegistro();
+			}
+
+			private String getRegistro() {
+				if (GCM.isAtivo(getApplicationContext())) {
+					return GCM.getRegistro(getApplicationContext());
+				} else {
+				
+					GCM.ativa(getApplicationContext());
+					return GCM.getRegistro(getApplicationContext());
+				}
+					
+			}	
+	
+		});*/
+        
+        btRegistrar.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent it = new Intent(Cadastro.this,RegisterActivity.class);
+				startActivityForResult(it, 1);
+				
+			}
+		});
+
         
 		// Session class instance
         session = new SessionManager(getApplicationContext());
@@ -81,6 +120,16 @@ public class Cadastro extends Activity {
 						etCidade.setText(usuario.getCidade());
 					}
 					perfil = usuario.getPerfil();
+					registro = usuario.getRegistro();
+							
+					if (registro != null && !registro.equals("")) {
+						cbRegistrado.setPressed(true);
+						btRegistrar.setClickable(false);
+					}else {
+						cbRegistrado.setPressed(false);
+						btRegistrar.setClickable(true);
+					}
+					
 					
 				}
 			} catch (Exception e) {
@@ -97,7 +146,7 @@ public class Cadastro extends Activity {
         	finish();
 		}
         
-        
+                
         btEnviar.setOnClickListener( new OnClickListener() {
 			
 			@Override
@@ -112,7 +161,6 @@ public class Cadastro extends Activity {
 				handler = new Handler();
 				buscarLatLong();
 				
-				registro= getRegistro();
 				usuario.setPerfil(perfil);
 				usuario.setRegistro(registro);
 				
@@ -133,18 +181,17 @@ public class Cadastro extends Activity {
 	            }
 			}
 
-
-			private String getRegistro() {
-				if (GCM.isAtivo(getApplicationContext())) {
-					return GCM.getRegistro(getApplicationContext());
-				} else {
-				
-					GCM.ativa(getApplicationContext());
-					return GCM.getRegistro(getApplicationContext());
-				}
-						
-			}	
 		});
+        
+	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		registro = data.getExtras().getString("registro");
+		if (registro != null && !registro.equals("")) {
+			cbRegistrado.setPressed(true);
+			btRegistrar.setClickable(false);
+		}
+		
 	}
 	
 	public void buscarLatLong() {
@@ -188,6 +235,11 @@ public class Cadastro extends Activity {
 	        }
 	        return null;
 		}
+	}
+	protected void onStart() {
+		
+		super.onStart();
+		
 	}
 	
 }
