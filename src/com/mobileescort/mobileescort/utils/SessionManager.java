@@ -36,8 +36,8 @@ public class SessionManager {
 	public static final String KEY_PASSWORD = "Celular";
 	
 	// URL 
-	public static final String URL_WS = "http://54.214.27.148:8080/wsMobileEscort/api/";
-	
+	public static final String URL_WS = "http://10.0.0.101:8080/wsMobileEscort/api/";
+		
 	// Sender Id
 	public static final String SENDER_ID = "960215357691";
 	
@@ -46,9 +46,6 @@ public class SessionManager {
 	
 	// Perfil do usuario
 	public static final String KEY_PERFIL = "Perfil";
-	
-	static final String DISPLAY_MESSAGE_ACTION =
-            "com.mobileescort.mobileescort.DISPLAY_MESSAGE";
 		
 	// Constructor
 	public SessionManager(Context context){
@@ -75,7 +72,7 @@ public class SessionManager {
 		
 		// Storing Perfil in pref
 		editor.putString(KEY_PERFIL, usuario.getPerfil());
-				
+		
 		// commit changes
 		editor.commit();
 		
@@ -110,7 +107,6 @@ public class SessionManager {
 		user.put(KEY_PASSWORD, pref.getString(KEY_PASSWORD, null));
 		
 		// user id
-		
 		user.put(KEY_IDMOTORISTA, Integer.toString(pref.getInt(KEY_IDMOTORISTA, 0)));
 		
 		// return user

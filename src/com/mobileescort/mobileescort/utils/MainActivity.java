@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.google.android.gcm.GCMRegistrar;
 import com.mobileescort.mobileescort.R;
 
@@ -93,7 +94,7 @@ public class MainActivity extends Activity {
 					protected Void doInBackground(Void... params) {
 						// Register on our server
 						// On server creates a new user
-						ServerUtilities.register(context, name, email, regId);
+						ServerUtilities.register(context,  regId);
 						return null;
 					}
 

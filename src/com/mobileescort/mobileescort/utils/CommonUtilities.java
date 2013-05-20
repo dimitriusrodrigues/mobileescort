@@ -29,12 +29,12 @@ public final class CommonUtilities {
     /**
      * Base URL of the Demo Server (such as http://my_host:8080/gcm-demo)
      */
-    static final String SERVER_URL = Login.session.URL_WS;
+	public static final String SERVER_URL = Login.session.URL_WS;
 
     /**
      * Google API project id registered to use GCM.
      */
-    static final String SENDER_ID = Login.session.SENDER_ID;
+	public static final String SENDER_ID = Login.session.SENDER_ID;
 
     /**
      * Tag used on log messages.
@@ -44,13 +44,13 @@ public final class CommonUtilities {
     /**
      * Intent used to display a message in the screen.
      */
-    static final String DISPLAY_MESSAGE_ACTION =
-            "com.mobileescort.mobileescort.utils.DISPLAY_MESSAGE";
+    public static final String DISPLAY_MESSAGE_ACTION =
+            "com.mobileescort.mobileescort.DISPLAY_MESSAGE";
 
     /**
      * Intent's extra that contains the message to be displayed.
      */
-    static final String EXTRA_MESSAGE = "message";
+    public static final String EXTRA_MESSAGE = "message";
 
     /**
      * Notifies UI to display a message.
@@ -61,7 +61,7 @@ public final class CommonUtilities {
      * @param context application's context.
      * @param message message to be displayed.
      */
-    static void displayMessage(Context context, String message) {
+    public static void displayMessage(Context context, String message) {
         Intent intent = new Intent(DISPLAY_MESSAGE_ACTION);
         intent.putExtra(EXTRA_MESSAGE, message);
         context.sendBroadcast(intent);
