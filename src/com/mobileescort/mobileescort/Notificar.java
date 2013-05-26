@@ -8,7 +8,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.Toast;
+
 
 public class Notificar extends Activity {
 	
@@ -29,11 +29,11 @@ public class Notificar extends Activity {
 				//Intent it = new Intent(Notificar.this,PresencaActivity.class);
 				//startActivity(it);
 				
-				Toast.makeText(getBaseContext(), "Trânsito", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getBaseContext(), "Trânsito", Toast.LENGTH_SHORT).show();
 				RotaREST rotaRest = new RotaREST();
 				try {
 					//TODO Arrumar Id Rota.
-					rotaRest.enviarMenesagem(11);
+					rotaRest.enviarMenesagem(11, getString(R.string.notificar_transito));
 				} catch (Exception e) {
 		        	 alert.showAlertDialog(Notificar.this,
 		     					"Send Notification Failed",
@@ -51,7 +51,17 @@ public class Notificar extends Activity {
 			public void onClick(View v) {
 				//Intent it = new Intent(Notificar.this,PresencaActivity.class);
 				//startActivity(it);
-				Toast.makeText(getBaseContext(), "Mecânico", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getBaseContext(), "Mecânico", Toast.LENGTH_SHORT).show();
+				RotaREST rotaRest = new RotaREST();
+				try {
+					//TODO Arrumar Id Rota.
+					rotaRest.enviarMenesagem(11, getString(R.string.notificar_mecanico));
+				} catch (Exception e) {
+		        	 alert.showAlertDialog(Notificar.this,
+		     					"Send Notification Failed",
+		     					e.getMessage(), false);
+				}
+				
 			}
 		});
 		
@@ -63,7 +73,17 @@ public class Notificar extends Activity {
 			public void onClick(View v) {
 				//Intent it = new Intent(Notificar.this,PresencaActivity.class);
 				//startActivity(it);
-				Toast.makeText(getBaseContext(), "Hospital", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getBaseContext(), "Hospital", Toast.LENGTH_SHORT).show();
+				RotaREST rotaRest = new RotaREST();
+				try {
+					//TODO Arrumar Id Rota.
+					rotaRest.enviarMenesagem(11, getString(R.string.notificar_hospital));
+				} catch (Exception e) {
+		        	 alert.showAlertDialog(Notificar.this,
+		     					"Send Notification Failed",
+		     					e.getMessage(), false);
+				}
+				
 			}
 		});
 		
@@ -75,7 +95,17 @@ public class Notificar extends Activity {
 			public void onClick(View v) {
 				//Intent it = new Intent(Notificar.this,PresencaActivity.class);
 				//startActivity(it);
-				Toast.makeText(getBaseContext(), "Acidente", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getBaseContext(), "Acidente", Toast.LENGTH_SHORT).show();
+				
+				RotaREST rotaRest = new RotaREST();
+				try {
+					//TODO Arrumar Id Rota.
+					rotaRest.enviarMenesagem(11, getString(R.string.notificar_acidente));
+				} catch (Exception e) {
+		        	 alert.showAlertDialog(Notificar.this,
+		     					"Send Notification Failed",
+		     					e.getMessage(), false);
+				}
 			}
 		});
 		
@@ -87,7 +117,17 @@ public class Notificar extends Activity {
 			public void onClick(View v) {
 				//Intent it = new Intent(Notificar.this,PresencaActivity.class);
 				//startActivity(it);
-				Toast.makeText(getBaseContext(), "Posto", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getBaseContext(), "Posto", Toast.LENGTH_SHORT).show();
+				
+				RotaREST rotaRest = new RotaREST();
+				try {
+					//TODO Arrumar Id Rota.
+					rotaRest.enviarMenesagem(11, getString(R.string.notificar_abastecimento));
+				} catch (Exception e) {
+		        	 alert.showAlertDialog(Notificar.this,
+		     					"Send Notification Failed",
+		     					e.getMessage(), false);
+				}
 			}
 		});
 		
@@ -99,7 +139,17 @@ public class Notificar extends Activity {
 			public void onClick(View v) {
 				//Intent it = new Intent(Notificar.this,PresencaActivity.class);
 				//startActivity(it);
-				Toast.makeText(getBaseContext(), "Mensagem", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getBaseContext(), "Mensagem", Toast.LENGTH_SHORT).show();
+				
+				RotaREST rotaRest = new RotaREST();
+				try {
+					//TODO Arrumar Id Rota.
+					rotaRest.enviarMenesagem(11, "");
+				} catch (Exception e) {
+		        	 alert.showAlertDialog(Notificar.this,
+		     					"Send Notification Failed",
+		     					e.getMessage(), false);
+				}
 			}
 		});
 	}

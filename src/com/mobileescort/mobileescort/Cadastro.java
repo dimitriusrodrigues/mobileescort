@@ -68,26 +68,6 @@ public class Cadastro extends Activity {
         etCidade= (EditText) findViewById(R.id.etCidade);
         cbRegistrado = (CheckBox) findViewById(R.id.cbRegistro);
         
-        /*btRegistrar.setOnClickListener( new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				registro= getRegistro();
-			}
-
-			private String getRegistro() {
-				if (GCM.isAtivo(getApplicationContext())) {
-					return GCM.getRegistro(getApplicationContext());
-				} else {
-				
-					GCM.ativa(getApplicationContext());
-					return GCM.getRegistro(getApplicationContext());
-				}
-					
-			}	
-	
-		});*/
-        
         btRegistrar.setOnClickListener(new OnClickListener() {
 			
 			@Override

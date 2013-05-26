@@ -78,7 +78,9 @@ public class RegisterActivity extends Activity {
 			// Registration is not present, register now with GCM			
 			GCMRegistrar.register(this, SENDER_ID);
 	        displayMessage(this, getString(R.string.gcm_registered));
+	        
 			retorno.putExtra("registro", GCMRegistrar.getRegistrationId(this));
+			
 		} else {
 			// Device is already registered on GCM
 			if (GCMRegistrar.isRegisteredOnServer(this)) {
@@ -119,12 +121,12 @@ public class RegisterActivity extends Activity {
 	
 	@Override
 	protected void onDestroy() {
-		try {
+		/*try {
 			unregisterReceiver(mHandleMessageReceiver);
 			GCMRegistrar.onDestroy(this);
 		} catch (Exception e) {
 			Log.e("UnRegister Receiver Error", "> " + e.getMessage());
-		}
+		}*/
 		super.onDestroy();
 	}
 

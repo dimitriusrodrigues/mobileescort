@@ -183,7 +183,31 @@ public class RepositorioMobileEscort {
 		String[] whereArgs = new String[] { _id };
 		//deletarRota(rota.getId_rota());
 		long count = atualizarRota(values, where, whereArgs);
+		
+		if (count > 0 ) {
+			int id_usuarioRota;
+			for (int i = 0; i < rota.getUsuarios().size(); i++) {
 
+				id_usuarioRota = rota.getUsuarios().get(i).getId_usuario();
+				
+				ContentValues valuesRotaUsuario = new ContentValues();
+				valuesRotaUsuario.put(Rota.KEY_ID , rota.getId_rota());
+				valuesRotaUsuario.put(Usuario.KEY_ID, id_usuarioRota);
+				
+				if (!buscarRotaUsuario(rota.getId_rota(), id_usuarioRota)) {
+					inserirRotaUsuario(valuesRotaUsuario);	
+				} else {
+					String _idRota = String.valueOf(rota.getId_rota());
+					String _idUsuario = String.valueOf(id_usuarioRota);
+					String whereRotaUsuario = Rota.KEY_ID + "=?" + " and " + Usuario.KEY_ID + "=?";
+					String[] whereArgsRotaUsuario = new String[] { _idRota, _idUsuario };
+					atualizarRotaUsuario(valuesRotaUsuario, whereRotaUsuario , whereArgsRotaUsuario);
+				}
+				
+			}
+		}
+
+		
 		return count;
 	}
 
@@ -194,6 +218,15 @@ public class RepositorioMobileEscort {
 		Log.i(TAG, "Atualizou [" + count + "] registros");
 		return count;
 	}
+
+	// Atualiza a rota com os valores abaixo
+	// A cláusula where é utilizada para identificar a rota a ser atualizado
+	private long atualizarRotaUsuario(ContentValues valores, String where, String[] whereArgs) {
+		long count = db.update(TABELA_ROTA_USUARIO, valores, where, whereArgs);
+		Log.i(TAG, "Atualizou [" + count + "] registros");
+		return count;
+	}
+	
 	
 	// Deleta o usuario com o id fornecido
 	public long deletarUsuario(int id) {
@@ -369,6 +402,22 @@ public class RepositorioMobileEscort {
 		try {
 			
 			Cursor mCursor = db.query(true, TABELA_ROTA, Rota.colunas, Rota.KEY_ID + "=" + id, null, null, null, null, null);
+		
+			if (mCursor.getCount() > 0) {
+				return true;
+			}	
+		} catch (SQLException e) {
+			Log.e(TAG, "Erro ao buscar o usuario pelo id: " + e.toString());
+			return false;
+		}
+		
+		return false;
+	}
+	
+	// Busca a rota pelo id da rota e pelo passageiro
+	public boolean buscarRotaUsuario(int id_rota, int id_usuario) {
+		try {
+			Cursor mCursor = db.query(true, TABELA_ROTA_USUARIO, Rota.colunasRotaUsuario, Rota.KEY_ID + "=" + id_rota + " and " + Usuario.KEY_ID + "=" + id_usuario , null, null, null, null, null);
 		
 			if (mCursor.getCount() > 0) {
 				return true;
