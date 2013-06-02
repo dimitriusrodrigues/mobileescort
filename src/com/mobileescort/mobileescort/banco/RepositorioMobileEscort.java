@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.mobileescort.mobileescort.model.Rota;
 import com.mobileescort.mobileescort.model.Usuario;
+import com.mobileescort.mobileescort.model.Viagem;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -30,7 +31,8 @@ public class RepositorioMobileEscort {
 	public static final String TABELA_USUARIO = "usuario";
 	public static final String TABELA_ROTA = "rota";
 	public static final String TABELA_ROTA_USUARIO = "rota_usuario";
-
+	public static final String TABELA_VIAGEM = "viagem";
+	
 	protected SQLiteDatabase db;
 
 	public RepositorioMobileEscort(Context ctx) {
@@ -69,6 +71,18 @@ public class RepositorioMobileEscort {
 		return id;
 	}
 
+	// Salva a rota, insere uma nova ou atualiza
+	public int salvarViagem(Viagem viagem) {
+		int idViagem = viagem.getId_viagem();
+		if (idViagem != 0) {
+			atualizarViagem(viagem);
+		} else {
+			// Insere novo
+			idViagem = inserirViagem(viagem);
+		}
+		return idViagem;
+	}
+	
 
 	// Insere um novo usuario
 	private long inserirUsuario(Usuario usuario) {
@@ -96,6 +110,25 @@ public class RepositorioMobileEscort {
 		return id;
 	}
 	
+	// Insere uma viagem
+	private int inserirViagem(Viagem viagem) {
+		ContentValues values = new ContentValues();
+
+		values.put(Viagem.KEY_ID_ROTA , viagem.getId_rota());
+		values.put(Viagem.KEY_STATUS, viagem.getId_status());
+		values.put(Viagem.KEY_LATITUDE, viagem.getLatitude());
+		values.put(Viagem.KEY_LONGITUDE, viagem.getLongitude());
+
+		int id = inserirViagem(values);
+		return id;
+	}
+	
+	// Insere uma viagem
+	private int inserirViagem(ContentValues valores) {
+		long id = db.insert(TABELA_VIAGEM , "", valores);
+		return (int) id;
+			
+	}
 	// Insere uma nova rota
 	private long inserirRota(Rota rota) {
 		ContentValues valuesRota = new ContentValues();
@@ -111,6 +144,7 @@ public class RepositorioMobileEscort {
 			for (int i = 0; i < rota.getUsuarios().size(); i++) {
 				Usuario usuario = new Usuario();
 				usuario = rota.getUsuarios().get(i);
+				salvarUsuario(usuario);
 				ContentValues valuesRotaUsuario = new ContentValues();
 				valuesRotaUsuario.put(Rota.KEY_ID , rota.getId_rota() );
 				valuesRotaUsuario.put(Usuario.KEY_ID, usuario.getId_usuario());
@@ -168,6 +202,35 @@ public class RepositorioMobileEscort {
 		return count;
 	}
 
+
+	// Atualiza viagem. 
+	private long atualizarViagem(Viagem viagem) {
+		ContentValues values = new ContentValues();
+
+		values.put(Viagem.KEY_ID , viagem.getId_viagem());
+		values.put(Viagem.KEY_ID_ROTA , viagem.getId_rota() );
+		values.put(Viagem.KEY_STATUS, viagem.getId_status());
+		values.put(Viagem.KEY_LATITUDE, viagem.getLatitude());
+		values.put(Viagem.KEY_LONGITUDE, viagem.getLongitude());
+
+
+		String _id = String.valueOf(viagem.getId_viagem());
+
+		String where = Viagem.KEY_ID + "=?";
+		String[] whereArgs = new String[] { _id };
+
+		long count = atualizarViagem(values, where, whereArgs);
+
+		return count;
+	}
+
+	// Atualiza a viagem
+	// A cláusula where é utilizada para identificar o usuario a ser atualizado
+	private long atualizarViagem(ContentValues valores, String where, String[] whereArgs) {
+		long count = db.update(TABELA_VIAGEM, valores, where, whereArgs);
+		Log.i(TAG, "Atualizou [" + count + "] registros");
+		return count;
+	}
 	
 	// Atualiza a rota no banco. O id da rota é utilizado.
 	private long atualizarRota(Rota rota) {
@@ -187,7 +250,7 @@ public class RepositorioMobileEscort {
 		if (count > 0 ) {
 			int id_usuarioRota;
 			for (int i = 0; i < rota.getUsuarios().size(); i++) {
-
+				salvarUsuario(rota.getUsuarios().get(i));
 				id_usuarioRota = rota.getUsuarios().get(i).getId_usuario();
 				
 				ContentValues valuesRotaUsuario = new ContentValues();
@@ -246,6 +309,25 @@ public class RepositorioMobileEscort {
 		Log.i(TAG, "Deletou [" + count + "] registros");
 		return count;
 	}
+
+	// Deleta a viagem com o id fornecido
+	public int deletarViagem(int id) {
+		String where = Viagem.KEY_ID + "=?";
+
+		String _id = String.valueOf(id);
+		String[] whereArgs = new String[] { _id };
+
+		int count = deletarViagem(where, whereArgs);
+
+		return count;
+	}
+
+	// Deleta a viagem com os argumentos fornecidos
+	private int deletarViagem(String where, String[] whereArgs) {
+		long count = db.delete(TABELA_VIAGEM, where, whereArgs);
+		Log.i(TAG, "Deletou [" + count + "] registros");
+		return (int)count;
+	}
 	
 	// Deleta a rota com o id fornecido
 	public long deletarRota(int id) {
@@ -298,7 +380,32 @@ public class RepositorioMobileEscort {
 
 		return null;
 	}
-	
+
+	// Busca Viagem pela rota
+	public Viagem buscarViagem(int id) {
+		// select * from usuario where _id=?
+		Cursor mCursor = db.query(true, TABELA_VIAGEM, Viagem.colunas, Viagem.KEY_ID_ROTA + "=" + id, null, null, null, null, null);
+
+		if (mCursor.getCount() > 0) {
+
+			// Posicinoa no primeiro elemento do cursor
+			mCursor.moveToFirst();
+
+			Viagem viagem = new Viagem();
+
+			// Lê os dados
+			viagem.setId_viagem(mCursor.getInt(mCursor.getColumnIndex(Viagem.KEY_ID)) );
+			viagem.setId_rota(mCursor.getInt(mCursor.getColumnIndex(Viagem.KEY_ID_ROTA)));
+			viagem.setId_status(mCursor.getString(mCursor.getColumnIndex(Viagem.KEY_STATUS)) );
+			viagem.setLatitude(mCursor.getDouble(mCursor.getColumnIndex(Viagem.KEY_LATITUDE)));
+			viagem.setLongitude(mCursor.getDouble(mCursor.getColumnIndex(Viagem.KEY_LONGITUDE)));
+
+			return viagem;
+		}
+
+		return null;
+	}
+
 	// Busca o usuario pelo id
 	public Rota buscarRota(int id) {
 		
@@ -335,7 +442,7 @@ public class RepositorioMobileEscort {
 		return null;
 	}
 
-	// Retorna um cursor com todos os carros
+	// Retorna um cursor com todos os usuario
 	public Cursor getCursorUsuario() {
 		try {
 			// select * from usuario
@@ -378,7 +485,7 @@ public class RepositorioMobileEscort {
 		return usuarios;
 	}
 
-	// Busca o usuario pelo celular "select * from usuario where id_usurio=?"
+	// Busca o usuario pelo id "select * from usuario where id_usurio=?"
 	public boolean buscarUsuarioPorId(int id) {
 		try {
 			// Idem a: SELECT _id,nome,placa,ano from CARRO where nome = ?
@@ -396,6 +503,27 @@ public class RepositorioMobileEscort {
 
 		return false;
 	}
+	
+	// Busca a viagem pelo id 
+	public boolean buscarViagemPorId(int id) {
+		try {
+			
+			Cursor mCursor = db.query(TABELA_VIAGEM, Viagem.colunas, Viagem.KEY_ID + "=" + id , null, null, null, null);
+
+			// Se encontrou...
+			if (mCursor.moveToNext()) {
+				return true;
+
+			}
+		} catch (SQLException e) {
+			Log.e(TAG, "Erro ao buscar a viagem pelo id: " + e.toString());
+			return false;
+		}
+
+		return false;
+	}
+
+
 
 	// Busca a rota pelo id
 	public boolean buscarRotaPorId(int id) {
