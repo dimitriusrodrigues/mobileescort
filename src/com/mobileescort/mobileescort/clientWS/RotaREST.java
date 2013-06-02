@@ -1,5 +1,6 @@
 package com.mobileescort.mobileescort.clientWS;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.Gson;
@@ -62,7 +63,10 @@ public class RotaREST {
     }
     
     public String enviarMenesagem(Integer id_rota, String msg) throws Exception {
-        String[] resposta = new WebServiceClient().get(URL_WS + "rotas/enviarNotificacao/" + id_rota + "/"+ msg);
+    	
+    	String url = URLEncoder.encode(msg, "UTF-8");
+    	
+        String[] resposta = new WebServiceClient().get(URL_WS + "rotas/enviarNotificacao/" + id_rota + "/"+ url);
         if (resposta[0].equals("200")) {
             return "OK";
         } else {

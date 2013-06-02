@@ -12,11 +12,11 @@ import android.os.Bundle;
 import android.support.v4.app.*;  
 import com.google.android.gms.maps.*;  
 import com.google.android.gms.maps.model.*;  
+import com.mobileescort.mobileescort.clientWS.RotaREST;
 import com.mobileescort.mobileescort.model.Rota;
 import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.model.Viagem;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
-import com.mobileescort.mobileescort.utils.DatabaseHandler;
 import com.mobileescort.mobileescort.utils.SessionManager;
   
 public class GoogleMapsActivity extends FragmentActivity {  
@@ -27,8 +27,9 @@ public class GoogleMapsActivity extends FragmentActivity {
 	int id_viagem;
 	Viagem viagem;
 	Rota rota;
+    RotaREST rotaRest = new RotaREST();
 	
-		// Session Manager Class
+	// Session Manager Class
 	SessionManager session;
 	
 	private LocationListener locationListener = new LocationListener() {
@@ -75,7 +76,13 @@ public class GoogleMapsActivity extends FragmentActivity {
 				    viagem.setLatitude(location.getLatitude());
 				    viagem.setLongitude(location.getLongitude());
 				    id_viagem = Login.repositorio.salvarViagem(viagem);
-				    
+					try {
+						rotaRest.enviarMenesagem(viagem.getId_rota(), "[Now("+viagem.getLatitude()+","+viagem.getLongitude()+")]");
+					} catch (Exception e) {
+			        	 alert.showAlertDialog(GoogleMapsActivity.this,
+			     					"Send Notification Failed",
+			     					e.getMessage(), false);
+					}
 				    LatLng latLng = new LatLng(viagem.getLatitude(),viagem.getLongitude());
 				    
 				    map.addMarker(new MarkerOptions()  
@@ -84,9 +91,10 @@ public class GoogleMapsActivity extends FragmentActivity {
 				        R.drawable.notificacao))  
 				      .title("BUS")  
 				      .snippet("Ponto móvel"));
-				    
 				 
 				    configuraPosicao(map, latLng);
+				    
+				    
 		}
 	};
 	
@@ -100,6 +108,8 @@ public class GoogleMapsActivity extends FragmentActivity {
 		id_viagem = params.getInt("id_viagem");
 		viagem = Login.repositorio.buscarViagem(id_rota);
 		rota = Login.repositorio.buscarRota(id_rota);
+	} else {
+		finish();
 	}
     
 	// Session class instance
@@ -128,13 +138,5 @@ public class GoogleMapsActivity extends FragmentActivity {
 		    CameraUpdateFactory.newCameraPosition(  
 		      cameraPosition));  
 		}
-  
-  private void configuraPosicao2(  
-		    GoogleMap map, LatLng latLng) {  
-		  
-		    map.setMapType(GoogleMap.MAP_TYPE_HYBRID);  
-		    map.animateCamera(  
-		     CameraUpdateFactory.newLatLngZoom(latLng, 17.0f));  
-		  }
   
 }

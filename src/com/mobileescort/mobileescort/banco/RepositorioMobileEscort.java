@@ -78,6 +78,7 @@ public class RepositorioMobileEscort {
 			atualizarViagem(viagem);
 		} else {
 			// Insere novo
+			deletarViagem();
 			idViagem = inserirViagem(viagem);
 		}
 		return idViagem;
@@ -329,6 +330,13 @@ public class RepositorioMobileEscort {
 		return (int)count;
 	}
 	
+	// Deleta a viagem com os argumentos fornecidos
+	private int deletarViagem() {
+		long count = db.delete(TABELA_VIAGEM, null, null);
+		Log.i(TAG, "Deletou [" + count + "] registros");
+		return (int)count;
+	}
+	
 	// Deleta a rota com o id fornecido
 	public long deletarRota(int id) {
 		String where = Rota.KEY_ID + "=?";
@@ -405,7 +413,31 @@ public class RepositorioMobileEscort {
 
 		return null;
 	}
+	
+	// Busca Viagem pela rota
+	public Viagem buscarViagem() {
+		// select * from usuario where _id=?
+		Cursor mCursor = db.query(true, TABELA_VIAGEM, Viagem.colunas,null, null, null, null, null, null);
 
+		if (mCursor.getCount() > 0) {
+
+			// Posicinoa no primeiro elemento do cursor
+			mCursor.moveToFirst();
+
+			Viagem viagem = new Viagem();
+
+			// Lê os dados
+			viagem.setId_viagem(mCursor.getInt(mCursor.getColumnIndex(Viagem.KEY_ID)) );
+			viagem.setId_rota(mCursor.getInt(mCursor.getColumnIndex(Viagem.KEY_ID_ROTA)));
+			viagem.setId_status(mCursor.getString(mCursor.getColumnIndex(Viagem.KEY_STATUS)) );
+			viagem.setLatitude(mCursor.getDouble(mCursor.getColumnIndex(Viagem.KEY_LATITUDE)));
+			viagem.setLongitude(mCursor.getDouble(mCursor.getColumnIndex(Viagem.KEY_LONGITUDE)));
+
+			return viagem;
+		}
+
+		return null;
+	}
 	// Busca o usuario pelo id
 	public Rota buscarRota(int id) {
 		

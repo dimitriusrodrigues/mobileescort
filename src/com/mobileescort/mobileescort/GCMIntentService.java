@@ -66,12 +66,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     @Override
     protected void onMessage(Context context, Intent intent) {
         Log.i(TAG, "Received message");
-        
         String message = intent.getExtras().getString("mensagem");
-        
-        //String message = getString(R.string.gcm_message);
-        displayMessage(context, "Recebido " + message);
-        // notifies user
         generateNotification(context, message);
     }
 
@@ -79,7 +74,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onDeletedMessages(Context context, int total) {
         Log.i(TAG, "Received deleted messages notification");
         String message = getString(R.string.gcm_deleted, total);
-        displayMessage(context, message);
+        //displayMessage(context, message);
         // notifies user
         generateNotification(context, message);
     }
@@ -105,28 +100,23 @@ public class GCMIntentService extends GCMBaseIntentService {
     private static void generateNotification(Context context, String message) {
         int icon = R.drawable.notificacao;
         long when = System.currentTimeMillis();
+        String title = context.getString(R.string.app_name);
         
-        displayMessage(context, "gerou uma notificação");
+        //displayMessage(context, "gerou uma notificação");
         
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
-        
-        
         Notification notification = new Notification(icon, message, when);
-        
-        
-        String title = context.getString(R.string.app_name);
-        
         Intent notificationIntent = new Intent(context, Notification.class);
-        
+        notificationIntent.putExtra("mensagem", message);
         // set intent so it does not start a new activity
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        //notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+        //        Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent intent =
-                PendingIntent.getActivity(context, 0, notificationIntent, 0);
+                PendingIntent.getActivity(context, 0, notificationIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
         notification.setLatestEventInfo(context, title, message, intent);
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notificationManager.notify(0, notification);
+        //notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        notificationManager.notify(R.string.app_name, notification);
     }
 
 }

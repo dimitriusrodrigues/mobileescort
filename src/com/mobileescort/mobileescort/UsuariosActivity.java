@@ -95,7 +95,6 @@ public class UsuariosActivity extends Activity {
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			
-			btIniciarRota = (Button) findViewById(R.id.btIniciarRota);
 			if (!viagemIniciada()){
 				viagem = Login.repositorio.buscarViagem(id_rota);
 				if (viagem == null) {
@@ -114,48 +113,30 @@ public class UsuariosActivity extends Activity {
 				startActivity(it);	
 				
 			} else {
-				// TODO Incluir o nome da rota iniciada
-				AlertDialog.Builder dialogFinalizar = new AlertDialog.Builder(getApplicationContext());
-				dialogFinalizar.setIcon(R.drawable.ic_launcher);
-				dialogFinalizar.setTitle("Já existe uma rota iniciada!");
-				dialogFinalizar.setMessage("Deseja finalizar a rota?");
-			            
-				dialogFinalizar.setNegativeButton("Não", new DialogInterface.OnClickListener(){
-			    	
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						
-						return;	
-					}
-			    });
-				
-				dialogFinalizar.setPositiveButton("Sim", new DialogInterface.OnClickListener(){
-			    	
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						
-						if (finalizaViagem()) {
-							Toast.makeText(getBaseContext(), "Rota finalizada!", Toast.LENGTH_SHORT).show();
-							viagem = Login.repositorio.buscarViagem(id_rota);
-							if (viagem == null) {
-								viagem = new Viagem();
-								viagem.setId_rota(id_rota);
-								viagem.setId_status("Iniciada");
-								setId_viagem(Login.repositorio.salvarViagem(viagem));
-								viagem.setId_viagem(getId_viagem());
-								Intent it = new Intent(UsuariosActivity.this,GoogleMapsActivity.class);
-								it.putExtra("id_viagem", viagem.getId_viagem());
-								it.putExtra("id_rota", viagem.getId_rota());
-								startActivity(it);	
-							}
-						}else				{
-							Toast.makeText(getBaseContext(), "Não foi possível finalizar a rota!", Toast.LENGTH_SHORT).show();
-						}	
-					}
-			    });
-				
-				dialogFinalizar.show();
-				
+				if (viagem.getId_rota() == id_rota){
+					Intent it = new Intent(UsuariosActivity.this,GoogleMapsActivity.class);
+					it.putExtra("id_viagem", viagem.getId_viagem());
+					it.putExtra("id_rota", viagem.getId_rota());
+					startActivity(it);
+				}else {
+					if (finalizaViagem()) {
+						Toast.makeText(getBaseContext(), "Rota finalizada!", Toast.LENGTH_SHORT).show();
+						viagem = Login.repositorio.buscarViagem(id_rota);
+						if (viagem == null) {
+							viagem = new Viagem();
+							viagem.setId_rota(id_rota);
+							viagem.setId_status("Iniciada");
+							setId_viagem(Login.repositorio.salvarViagem(viagem));
+							viagem.setId_viagem(getId_viagem());
+							Intent it = new Intent(UsuariosActivity.this,GoogleMapsActivity.class);
+							it.putExtra("id_viagem", viagem.getId_viagem());
+							it.putExtra("id_rota", viagem.getId_rota());
+							startActivity(it);	
+						}
+					}else				{
+						Toast.makeText(getBaseContext(), "Não foi possível finalizar a rota!", Toast.LENGTH_SHORT).show();
+					}	
+				}
 			}
 		}
     });
