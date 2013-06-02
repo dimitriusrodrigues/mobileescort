@@ -36,10 +36,11 @@ public class SessionManager {
 	public static final String KEY_PASSWORD = "Celular";
 	
 	// URL 
-	public static final String URL_WS = "http://10.51.6.30:8080/wsMobileEscort/api/";
+	public static final String URL_WS = "http://10.0.0.101:8080/wsMobileEscort/api/";
 		
 	// Sender Id
 	public static final String SENDER_ID = "960215357691";
+	//public static final String SENDER_ID = "427819336164";
 	
 	// ID 
 	public static final String KEY_IDMOTORISTA = "IdMotorista";
