@@ -54,7 +54,7 @@
     <string name="motorista">Motorista</string>
 	<string name="error_config">Please set the %1$s constant and recompile the app.</string>
 	<string name="registrado_gcm">Registrado no Google Cloud Message</string>
-	<string name="registrar">Registrar no GCM</string>
+	<string name="registrar">Registrar</string>
 	<string name="notificar_transito">Trânsito Intenso! Possível Atraso.</string>
 	<string name="notificar_mecanico">Problemas Mecânicos! Possível Atraso.</string>
 	<string name="notificar_hospital">Emergência! Destino hospital mais próximo.</string>
