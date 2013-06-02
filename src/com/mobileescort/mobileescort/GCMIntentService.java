@@ -27,7 +27,6 @@ import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
-import com.mobileescort.mobileescort.utils.ServerUtilities;
 
 /**
  * IntentService responsible for handling GCM messages.
@@ -45,20 +44,23 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onRegistered(Context context, String registrationId) {
         Log.i(TAG, "Device registered: regId = " + registrationId);
         displayMessage(context, getString(R.string.gcm_registered));
-        //ServerUtilities.register(context, registrationId);
+        RegisterActivity.registro = new String(registrationId);        
     }
 
     @Override
     protected void onUnregistered(Context context, String registrationId) {
         Log.i(TAG, "Device unregistered");
         displayMessage(context, getString(R.string.gcm_unregistered));
+        displayMessage(context, "executou o onUnregistered");
         if (GCMRegistrar.isRegisteredOnServer(context)) {
-            //ServerUtilities.unregister(context, registrationId);
+        	GCMRegistrar.setRegisteredOnServer(context, false);
+            displayMessage(context, getString(R.string.server_unregistered));
         } else {
             // This callback results from the call to unregister made on
             // ServerUtilities when the registration to the server failed.
             Log.i(TAG, "Ignoring unregister callback");
         }
+    	RegisterActivity.registro = new String("");
     }
 
     @Override
@@ -103,6 +105,8 @@ public class GCMIntentService extends GCMBaseIntentService {
     private static void generateNotification(Context context, String message) {
         int icon = R.drawable.notificacao;
         long when = System.currentTimeMillis();
+        
+        displayMessage(context, "gerou uma notificação");
         
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);

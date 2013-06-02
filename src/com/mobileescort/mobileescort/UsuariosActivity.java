@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.mobileescort.mobileescort.model.Rota;
 import com.mobileescort.mobileescort.model.Usuario;
+import com.mobileescort.mobileescort.model.Viagem;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
 
 import android.os.Bundle;
@@ -24,6 +25,8 @@ public class UsuariosActivity extends Activity {
 	Button btCadUsuario;
 	Button btIniciarRota;
 	int id_rota;
+	int id_viagem;
+	Viagem viagem;
 	
 	// Alert dialog manager
 	AlertDialogManager alert = new AlertDialogManager();
@@ -43,7 +46,7 @@ public class UsuariosActivity extends Activity {
 		
 		lvUsuarios = (ListView) findViewById(R.id.listView1);
 		
-		adapterBase();
+		//adapterBase();
 		
 		btCadUsuario = (Button) findViewById(R.id.btCadUsuario);
         
@@ -69,6 +72,7 @@ public class UsuariosActivity extends Activity {
 				iniciarRota();
 			}
 		});
+		
 	}
 	
 	public void iniciarRota(){
@@ -91,12 +95,68 @@ public class UsuariosActivity extends Activity {
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			
-			Toast.makeText(getBaseContext(), "Iniciando Rota", Toast.LENGTH_SHORT).show();
-		
 			btIniciarRota = (Button) findViewById(R.id.btIniciarRota);
-		    
-			Intent it = new Intent(UsuariosActivity.this,GoogleMapsActivity.class);
-			startActivity(it);
+			if (!viagemIniciada()){
+				viagem = Login.repositorio.buscarViagem(id_rota);
+				if (viagem == null) {
+					viagem = new Viagem();
+					viagem.setId_rota(id_rota);
+					viagem.setId_status("Iniciada");
+					setId_viagem(Login.repositorio.salvarViagem(viagem));
+					viagem.setId_viagem(getId_viagem());
+				} else {
+					setId_viagem(viagem.getId_viagem());
+				}
+				
+				Intent it = new Intent(UsuariosActivity.this,GoogleMapsActivity.class);
+				it.putExtra("id_viagem", viagem.getId_viagem());
+				it.putExtra("id_rota", viagem.getId_rota());
+				startActivity(it);	
+				
+			} else {
+				// TODO Incluir o nome da rota iniciada
+				AlertDialog.Builder dialogFinalizar = new AlertDialog.Builder(getApplicationContext());
+				dialogFinalizar.setIcon(R.drawable.ic_launcher);
+				dialogFinalizar.setTitle("Já existe uma rota iniciada!");
+				dialogFinalizar.setMessage("Deseja finalizar a rota?");
+			            
+				dialogFinalizar.setNegativeButton("Não", new DialogInterface.OnClickListener(){
+			    	
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						return;	
+					}
+			    });
+				
+				dialogFinalizar.setPositiveButton("Sim", new DialogInterface.OnClickListener(){
+			    	
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						if (finalizaViagem()) {
+							Toast.makeText(getBaseContext(), "Rota finalizada!", Toast.LENGTH_SHORT).show();
+							viagem = Login.repositorio.buscarViagem(id_rota);
+							if (viagem == null) {
+								viagem = new Viagem();
+								viagem.setId_rota(id_rota);
+								viagem.setId_status("Iniciada");
+								setId_viagem(Login.repositorio.salvarViagem(viagem));
+								viagem.setId_viagem(getId_viagem());
+								Intent it = new Intent(UsuariosActivity.this,GoogleMapsActivity.class);
+								it.putExtra("id_viagem", viagem.getId_viagem());
+								it.putExtra("id_rota", viagem.getId_rota());
+								startActivity(it);	
+							}
+						}else				{
+							Toast.makeText(getBaseContext(), "Não foi possível finalizar a rota!", Toast.LENGTH_SHORT).show();
+						}	
+					}
+			    });
+				
+				dialogFinalizar.show();
+				
+			}
 		}
     });
     dialog.show();
@@ -132,6 +192,53 @@ public class UsuariosActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 		adapterBase();
+		/*
+		if (viagemIniciada()){
+			viagem = Login.repositorio.buscarViagem(id_rota);
+			if (viagem != null)	{
+				Intent it = new Intent(UsuariosActivity.this,GoogleMapsActivity.class);
+				it.putExtra("id_rota", id_rota);
+				it.putExtra("id_viagem", id_viagem);
+				startActivity(it);
+			}
+		}*/				
+	}
+
+	/**
+	 * @return the id_viagem
+	 */
+	private int getId_viagem() {
+		return id_viagem;
+	}
+
+	/**
+	 * @param id_viagem the id_viagem to set
+	 */
+	private void setId_viagem(int id_viagem) {
+		this.id_viagem = id_viagem;
 	}	
+
+	/**
+	 * @param id_rota the id_rota to set
+	 */
+	public boolean finalizaViagem() {
+		int count;
+		count = Login.repositorio.deletarViagem(this.getId_viagem());
+		
+		if (count == 1) {
+			this.setId_viagem(0);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean viagemIniciada() {
+		if (getId_viagem() > 0) {
+			return true;
+		}
+		return false;
+	}
+
+
 
 }

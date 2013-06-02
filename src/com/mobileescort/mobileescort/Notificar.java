@@ -33,7 +33,7 @@ public class Notificar extends Activity {
 				RotaREST rotaRest = new RotaREST();
 				try {
 					//TODO Arrumar Id Rota.
-					rotaRest.enviarMenesagem(11, getString(R.string.notificar_transito));
+					rotaRest.enviarMenesagem(18, getString(R.string.notificar_transito));
 				} catch (Exception e) {
 		        	 alert.showAlertDialog(Notificar.this,
 		     					"Send Notification Failed",
@@ -144,7 +144,7 @@ public class Notificar extends Activity {
 				RotaREST rotaRest = new RotaREST();
 				try {
 					//TODO Arrumar Id Rota.
-					rotaRest.enviarMenesagem(11, "");
+					rotaRest.enviarMenesagem(18, "teste");
 				} catch (Exception e) {
 		        	 alert.showAlertDialog(Notificar.this,
 		     					"Send Notification Failed",

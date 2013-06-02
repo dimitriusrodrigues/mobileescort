@@ -31,7 +31,7 @@ public class RotasActivity extends Activity{
 		public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
 
 			Rota rota = (Rota) adapter.getItemAtPosition(position);
-			Toast.makeText(getBaseContext(), rota.getDescricao(), Toast.LENGTH_SHORT).show();
+			//Toast.makeText(getBaseContext(), rota.getDescricao(), Toast.LENGTH_SHORT).show();
 	
 			Intent it = new Intent(RotasActivity.this,UsuariosActivity.class);
 			Bundle params = new Bundle();
@@ -48,7 +48,7 @@ public class RotasActivity extends Activity{
 		
 		lvRotas = (ListView) findViewById(R.id.listView1);
 		
-		adapterBase();
+		//adapterBase();
 		
 		ImageButton btAddRotas = (ImageButton) findViewById(R.id.btAddRotas);
         
