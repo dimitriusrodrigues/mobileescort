@@ -29,8 +29,6 @@ import android.widget.CheckBox;
 
 public class Cadastro extends Activity {
 	
-	private Handler handler;
-	
 	Button btEnviar;
 	Button btRegistrar;
 	
@@ -73,8 +71,10 @@ public class Cadastro extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent it = new Intent(Cadastro.this,RegisterActivity.class);
-				startActivityForResult(it, 1);
-				
+				// Registering user on our server					
+				// Sending details to RegisterActivity
+				it.putExtra("localizacao", etEndereco.getText() + " " + etCidade.getText());
+				startActivityForResult(it, 2);
 			}
 		});
 
@@ -101,10 +101,12 @@ public class Cadastro extends Activity {
 					}
 					perfil = usuario.getPerfil();
 					registro = usuario.getRegistro();
-							
+					latitude = usuario.getLatitude();
+					longitude = usuario.getLongitude();
+					
 					if (registro != null && !registro.equals("")) {
 						cbRegistrado.setPressed(true);
-						btRegistrar.setClickable(false);
+						btRegistrar.setClickable(true);
 					}else {
 						cbRegistrado.setPressed(false);
 						btRegistrar.setClickable(true);
@@ -137,12 +139,10 @@ public class Cadastro extends Activity {
 				usuario.setCidade(etCidade.getText().toString());
 				usuario.setEndereco(etEndereco.getText().toString());
 				usuario.setEmail(etEmail.getText().toString());
-				
-				handler = new Handler();
-				buscarLatLong();
-				
 				usuario.setPerfil(perfil);
 				usuario.setRegistro(registro);
+				usuario.setLatitude(latitude);
+				usuario.setLongitude(longitude);
 				
 				try {
 					String resposta = usuarioREST.inserirUsuario(usuario);
@@ -167,58 +167,13 @@ public class Cadastro extends Activity {
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		registro = data.getExtras().getString("registro");
+		latitude = data.getExtras().getDouble("latitude");
+		longitude = data.getExtras().getDouble("longitude");
+		
 		if (registro != null && !registro.equals("")) {
 			cbRegistrado.setPressed(true);
 			btRegistrar.setClickable(false);
 		}
-		
-	}
-	
-	public void buscarLatLong() {
-
-        GeocodingTask processo = new GeocodingTask(this);
-
-        processo.execute();
-	}
-	
-	class GeocodingTask extends AsyncTask<String, Void, Void> {
-
-		   Context mContext;
-
-		   public GeocodingTask(Context context) {
-		        super();
-		        mContext = context;
-		   }
-
-		@Override
-		protected Void doInBackground(String... params) {
-			Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
-			 
-	        List<Address> addresses = null;
-
-	        try {
-	           addresses = geocoder.getFromLocationName(etEndereco.getText().toString() + " " + etCidade.getText().toString(), 10);
-
-	        } catch (final IOException e) {}
-	                       
-	        if (addresses != null) {
-
-	           final Address endereco = addresses.get(0);
-	           handler.post(new Runnable() {
-
-	                public void run() {
-	                	usuario.setLatitude(endereco.getLatitude());
-	    				usuario.setLongitude(endereco.getLongitude());
-	                }
-	           }); 
-
-	        }
-	        return null;
-		}
-	}
-	protected void onStart() {
-		
-		super.onStart();
 		
 	}
 	
