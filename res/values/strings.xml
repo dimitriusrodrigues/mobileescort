@@ -23,6 +23,7 @@
     <string name="title_activity_homecondutor">HomeCondutor</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_notificar">Notificar</string>
+    <string name="title_activity_notification">Notificação Recebida</string>
     <string name="title_activity_presenca">Presenca</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_criar_rota">CriarRota</string>
