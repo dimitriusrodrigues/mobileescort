@@ -27,20 +27,22 @@
         android:ems="10"
         android:inputType="phone"
         android:hint="@string/celular" />
-
+
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/senha" />
-
+        android:hint="@string/senha"
+        android:inputType="textPassword" />
+
     <EditText
         android:id="@+id/etEndereco"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/endereco" />
+        android:hint="@string/endereco"
+        android:inputType="textAutoComplete" />
 
     <EditText
         android:id="@+id/etCidade"
