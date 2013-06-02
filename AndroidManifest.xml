@@ -91,6 +91,11 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
+            android:name="com.mobileescort.mobileescort.Notification"
+            android:label="@string/title_activity_notification" 
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
             android:name="com.mobileescort.mobileescort.PresencaActivity"
             android:label="@string/title_activity_presenca" 
             android:screenOrientation="portrait">
