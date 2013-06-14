@@ -67,7 +67,7 @@ public class GoogleMapsActivity extends FragmentActivity {
 					    	map.addMarker(new MarkerOptions()  
 						      .position(new LatLng(usuario.getLatitude(),usuario.getLongitude()))  
 						      .icon(BitmapDescriptorFactory.fromResource(  
-						        R.drawable.ic_launcher))  
+						        R.drawable.casa))  
 						      .title(usuario.getNome())  
 						      .snippet(usuario.getCidade()));
 				    	}	
@@ -117,7 +117,7 @@ public class GoogleMapsActivity extends FragmentActivity {
    
     LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	//locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, locationListener);
-    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 100, locationListener);    
+    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 100, locationListener);    
   }  
   
   private void configuraPosicao(  
