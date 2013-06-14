@@ -28,7 +28,7 @@ public class RepositorioMobileEscortScript extends RepositorioMobileEscort {
 	private static final String NOME_BANCO = "mobileescort";
 
 	// Controle de versão
-	private static final int VERSAO_BANCO = 4;
+	private static final int VERSAO_BANCO = 6;
 
 	// Nome da tabela
 	public static final String TABELA_USUARIO = "usuario";
