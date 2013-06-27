@@ -11,82 +11,112 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Cadastro" >
 
-    <EditText
-        android:id="@+id/etNome"
+    <ScrollView
+        android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="@string/nome" />
+        android:layout_marginTop="45dp"
+        android:layout_weight="1.95" >
 
-    <EditText
-        android:id="@+id/etCelular"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="phone"
-        android:hint="@string/celular" />
-
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/senha"
-        android:inputType="textPassword" />
-
-    <EditText
-        android:id="@+id/etEndereco"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/endereco"
-        android:inputType="textAutoComplete" />
-
-    <EditText
-        android:id="@+id/etCidade"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/cidade" >
-
-        <requestFocus />
-    </EditText>
-
-    <EditText
-        android:id="@+id/etEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:hint="@string/email" />
-
-    <CheckBox
-        android:id="@+id/cbRegistro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="false"
-        android:focusable="false"
-        android:text="@string/registrado_gcm" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <Button
-            android:id="@+id/btRegistrar"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:text="@string/registrar" />
-
-        <Button
-            android:id="@+id/btEnviar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/enviar" />
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/etNome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:clickable="false"
+                android:ems="10"
+                android:enabled="false"
+                android:hint="@string/nome"
+                android:inputType="textPersonName" />
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/etCelular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="false"
+                android:ems="10"
+                android:enabled="false"
+                android:hint="@string/celular"
+                android:inputType="phone" />
+
+            <EditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/senha"
+                android:inputType="textPassword" />
+
+            <EditText
+                android:id="@+id/etEndereco"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/endereco"
+                android:inputType="textAutoComplete" />
+
+            <EditText
+                android:id="@+id/etCidade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/cidade" />
+
+            <EditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress" />
+
+            <Spinner
+        		android:id="@+id/spPerfil"
+        		android:layout_width="match_parent"
+        		android:layout_height="wrap_content"
+        		android:entries="@array/perfil_array"
+        		android:prompt="@string/perfil_prompt" />
+            
+            <CheckBox
+                android:id="@+id/cbRegistro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="false"
+                android:focusable="false"
+                android:text="@string/registrado_gcm" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+
+                <Button
+                    android:id="@+id/btRegistrar"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:text="@string/registrar" />
+
+                <Button
+                    android:id="@+id/btEnviar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enviar" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

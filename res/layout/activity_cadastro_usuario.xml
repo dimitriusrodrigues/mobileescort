@@ -5,15 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".CadastroUsuario" >
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/topocadastro"
         android:orientation="vertical" >
-
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,7 +26,6 @@
             android:layout_marginRight="20dp"
             android:ems="10"
             android:hint="@string/nome" >
-
             <requestFocus />
         </EditText>
 
@@ -41,15 +37,24 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:ems="10"
-            android:inputType="number"
-            android:hint="@string/celular" />
-
+            android:hint="@string/celular"
+            android:inputType="number" />
+        
+		<Spinner
+		    android:id="@+id/spPerfil"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_marginBottom="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+		    android:entries="@array/perfil_array"
+		    android:prompt="@string/perfil_prompt" />
+        
         <Button
             android:id="@+id/btSalvar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/salvar" />
-
     </LinearLayout>
 
 </LinearLayout>
