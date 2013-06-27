@@ -291,6 +291,23 @@ public class RepositorioMobileEscort {
 		return count;
 	}
 	
+	public long deletarRotaUsuario(int id_rota, int id_usuario) {
+		String _idRota = String.valueOf(id_rota);
+		String _idUsuario = String.valueOf(id_usuario);
+		String whereRotaUsuario = Rota.KEY_ID + "=?" + " and " + Usuario.KEY_ID + "=?";
+		String[] whereArgsRotaUsuario = new String[] { _idRota, _idUsuario };
+		long count = deletarRotaUsuario(whereRotaUsuario , whereArgsRotaUsuario);
+		return count;
+	}
+	
+	// Atualiza a rota com os valores abaixo
+	// A cláusula where é utilizada para identificar a rota a ser atualizado
+	private long deletarRotaUsuario(String whereClause, String[] whereArgs) {
+		long count = db.delete(TABELA_ROTA_USUARIO, whereClause, whereArgs);
+		Log.i(TAG, "Deletou [" + count + "] registros");
+		return count;
+	}
+
 	
 	// Deleta o usuario com o id fornecido
 	public long deletarUsuario(int id) {
@@ -357,6 +374,7 @@ public class RepositorioMobileEscort {
 		Log.i(TAG, "Deletou [" + count + "] registros");
 		return count;
 	}
+	
 
 	// Busca o usuario pelo id
 	public Usuario buscarUsuario(int id) {
