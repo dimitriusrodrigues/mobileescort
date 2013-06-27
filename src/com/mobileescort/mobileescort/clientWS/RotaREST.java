@@ -62,6 +62,11 @@ public class RotaREST {
      return resposta[1];
     }
     
+    public String deletarUsuarioRota(int id_rota, int id_usuario) {   
+        String[] resposta = new WebServiceClient().get(URL_WS + "rotas/delete/" + id_rota + "/" + id_usuario);
+        return resposta[1];
+    }
+    
     public String enviarMenesagem(Integer id_rota, String msg) throws Exception {
     	
     	String url = URLEncoder.encode(msg, "UTF-8");
