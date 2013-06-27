@@ -11,39 +11,32 @@
     <string name="login">Login</string>
     <string name="senha">Senha</string>
     <string name="enviar">Enviar</string>
-    <string name="title_activity_home">Home</string>
+    <string name="title_activity_home">Home do Usuário</string>
     <string name="title_activity_cadastro">Cadastro</string>
     <string name="title_activity_rotas">Rotas</string>
-    <string name="anchieta">Anchieta</string>
-    <string name="auxiliadora">Auxiliadora</string>
-    <string name="bomconselho">Bom Conselho</string>
-    <string name="champagnat">Champagnat</string>
-    <string name="domfeliciano">Dom Feliciano</string>
-    <string name="farroupilha">Farroupilha</string>
-    <string name="title_activity_homecondutor">HomeCondutor</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_homecondutor">Home do Condutor</string>
     <string name="title_activity_notificar">Notificar</string>
     <string name="title_activity_notification">Notificação Recebida</string>
     <string name="title_activity_presenca">Presenca</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_criar_rota">CriarRota</string>
-    <string name="title_activity_add_usuario">AddUsuario</string>
-    <string name="title_activity_lista_usuarios">ListaUsuarios</string>
+    <string name="title_activity_add_usuario">Adicionar Usuário</string>
+    <string name="title_activity_lista_usuarios">Lista Usuários</string>
     <string name="title_activity_google_maps">Mapas</string>
-    <string name="title_activity_cadastro_usuario">CadastroUsuario</string>
+    <string name="title_activity_cadastro_usuario">Cadastro Usuário</string>
     <string name="title_activity_register">Registro de Usuário</string>
     <string name="title_activity_main">Notificações</string>
-    <string name="gcm_registered">From GCM: device successfully registered!</string>
-    <string name="gcm_unregistered">From GCM: device successfully unregistered!</string>
-    <string name="gcm_message">From GCM: you got message!</string>
-    <string name="gcm_error">From GCM: error.</string>
-    <string name="gcm_recoverable_error">From GCM: recoverable error.</string>
-    <string name="gcm_deleted">From GCM: server deleted pending messages!</string>
-    <string name="server_registering">Trying to register device on Demo Server.</string>
-    <string name="server_registered">From Demo Server: successfully added device!</string>
-    <string name="server_unregistered">From Demo Server: successfully removed device!</string>
-    <string name="server_register_error">Could not register device on Demo Server after attempts.</string>
-    <string name="server_unregister_error">Could not unregister device on Demo Server.</string>
+    <string name="gcm_registered">De GCM: Aparellho registrado com sucesso!</string>
+    <string name="gcm_unregistered">De GCM: Aparelho desregistrado com sucesso!</string>
+    <string name="gcm_message">De GCM: Você tecebeu uma notificação!</string>
+    <string name="gcm_error">De GCM: Um erro desconhecido ocorreu. Tente novamente!</string>
+    <string name="gcm_recoverable_error">De GCM: Um erro desconhecido ocorreu.</string>
+    <string name="gcm_deleted">De GCM: Serveidor deletou mensagens pendentes!</string>
+    <string name="server_registering">De Servidor: Tentando registrar aparelho no servidor.</string>
+    <string name="server_registered">De Servidor: Aparelho adicionado com sucesso!</string>
+    <string name="server_unregistered">De Servidor: Aparelho removido com sucesso!</string>
+    <string name="server_register_error">De Servidor: Não foi possível registrar aparelho no servidor. Tente novamente!.</string>
+    <string name="server_unregister_error">De Servidor: Não foi possível remover registro do aparelho no servidor. Tente novamente!.</string>
     <string name="cidade">Cidade</string>
     <string name="salvar">Salvar</string>
     <string name="novo_motorista">Novo Motorista</string>
@@ -53,7 +46,7 @@
     <string name="nome_rota">Nome da Rota</string>
     <string name="criar">Criar</string>
     <string name="motorista">Motorista</string>
-	<string name="error_config">Please set the %1$s constant and recompile the app.</string>
+	<string name="error_config">Por favor, remova a aplicação e instale novamente.</string>
 	<string name="registrado_gcm">Registrado no Google Cloud Message</string>
 	<string name="registrar">Registrar</string>
 	<string name="notificar_transito">Trânsito Intenso! Possível Atraso.</string>
@@ -61,4 +54,40 @@
 	<string name="notificar_hospital">Emergência! Destino hospital mais próximo.</string>
 	<string name="notificar_acidente">Acidente sem danos! Possível Atraso.</string>
 	<string name="notificar_abastecimento">Abastecimento! Possível atraso.</string>
+	<string name="perfil_motorista">Motorista</string>
+	<string name="perfil_responsavel">Responsável</string>
+	<string name="perfil_usuario">Usuário</string>
+
+	<string name="title_msg_loginfailed">Buscar Usuário</string>
+	<string name="body_msg_loginnotfound">Usuário não encontrado!</string>
+	
+	<string name="title_msg_rotasfailed">Buscar Rotas</string>
+	<string name="body_msg_rotasnotfound">Rota não encontrada!</string>
+
+	<string name="title_msg_sessionfailed">Buscar Sessão</string>
+	<string name="body_msg_sessionnotfound">Usuário não encontrado. Efetue Login novamente.</string>
+	
+	<string name="title_msg_notificationfailed">Enviar Notificação.</string>
+	<string name="body_msg_notificationinvalid">Não existe uma rota iniciada para envio de notificações.</string>
+	<string name="title_msg_notificationsend">Enviar Notificação.</string>
+	<string name="body_msg_notificationfailed">Envio de notifiacação falhou. Tente novamente!</string>
+		
+	<string name="title_msg_cadastrofailed">Manter Usuário</string>
+	<string name="body_msg_cadastronotfound">Usuário não encontrado!</string>
+	<string name="body_msg_cadastroerror">Erro ao cadastrar usuário.</string>	
+	<string name="body_msg_cadastropasswordfailed">Senha Inválida! Digite uma nova senha.</string>
+	<string name="body_msg_cadastroupdatefailed">Falha ao atualizar usuário.</string>		
+	<string name="remove_user">Remover Usuário da rota ?</string>
+	
+	<string name="perfil_prompt">Selecione um perfil</string>
+	<string-array name="perfil_array">
+        <item>Responsável</item>
+        <item>Usuário</item>
+        <item>Motorista</item>
+    </string-array>
+	<string-array name="perfil_array_user">
+        <item>Responsável</item>
+        <item>Usuário</item>
+    </string-array>
+    
 </resources>
