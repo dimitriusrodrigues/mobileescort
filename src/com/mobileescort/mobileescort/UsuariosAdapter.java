@@ -51,7 +51,14 @@ public class UsuariosAdapter extends BaseAdapter{
 		
 		//preencher a interface com o item
 		TextView tvNome = (TextView) v.findViewById(R.id.txNome);
-		tvNome.setText(usu.getNome());
+		String perfil;
+		if (usu.getPerfil().equals("R")){ 
+			perfil = ctx.getString(R.string.perfil_responsavel);
+		} else {
+			perfil = ctx.getString(R.string.perfil_usuario);
+		}
+			
+		tvNome.setText(perfil + ":" +usu.getNome());
 		
 		TextView tvTelefone = (TextView) v.findViewById(R.id.txTelefone);
 		tvTelefone.setText(usu.getCelular());

@@ -30,9 +30,8 @@ public class Login extends Activity {
 	public static RepositorioMobileEscort repositorio;
 	
 	// Alert dialog manager
-	AlertDialogManager alert = new AlertDialogManager();
+	public static AlertDialogManager alert;
 	
-	// Session Manager Class
 	public static SessionManager session;
 		
 	@Override
@@ -41,9 +40,8 @@ public class Login extends Activity {
 		setContentView(R.layout.activity_login);
 		
 		repositorio = new RepositorioMobileEscortScript(this);
-		
-		// Session class instance
         session = new SessionManager(getApplicationContext());
+        alert = new AlertDialogManager();
         
 		etNome = (EditText) findViewById(R.id.etNome);
 		etPassword = (EditText) findViewById(R.id.etPassword);
@@ -107,23 +105,13 @@ public class Login extends Activity {
 	                 if (usuario == null) {
 	                	 
 	                	 alert.showAlertDialog(Login.this,
-	     					"Login Failed",
-	     					"Usuario not found", false);
+	     					getString(R.string.title_msg_loginfailed),
+	     					getString(R.string.body_msg_loginnotfound), false);
 	                 } else{
 	                	 
 	                	 session.createLoginSession(usuario);
 	                	 
-	                	 // TODO Apagar isto.
 	                	 repositorio.salvarUsuario(usuario);
-	                	 /*DatabaseHandler dbh = new DatabaseHandler(Login.this);
-	                	 Usuario usuarioTmp = dbh.getUsuario(session.getIdMotorista());
-	                	 if (usuarioTmp.getNome() == null){
-	                		 dbh.addUser(usuario); 
-	                	 } else {
-	                		 dbh.update(usuario);
-	                	 }*/
-	                	 
-	                	 // TODO Trocar por Enun
 	                	 if (session.getPerfil().equals("M")) {
 	                		 Intent it = new Intent(Login.this,HomeCondutor.class);
 		     				 startActivity(it);
@@ -137,7 +125,7 @@ public class Login extends Activity {
 	                 
 	             } catch (Exception e) {
 	            	 alert.showAlertDialog(Login.this,
-		     					"Login Failed",
+		     					getString(R.string.title_msg_loginfailed),
 		     					e.getMessage(), false);
 
 	             }

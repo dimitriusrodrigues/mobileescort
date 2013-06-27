@@ -31,7 +31,6 @@ public class RotasActivity extends Activity{
 		public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
 
 			Rota rota = (Rota) adapter.getItemAtPosition(position);
-			//Toast.makeText(getBaseContext(), rota.getDescricao(), Toast.LENGTH_SHORT).show();
 	
 			Intent it = new Intent(RotasActivity.this,UsuariosActivity.class);
 			Bundle params = new Bundle();
@@ -47,8 +46,6 @@ public class RotasActivity extends Activity{
 		setContentView(R.layout.activity_lista_rotas);
 		
 		lvRotas = (ListView) findViewById(R.id.listView1);
-		
-		//adapterBase();
 		
 		ImageButton btAddRotas = (ImageButton) findViewById(R.id.btAddRotas);
         
@@ -72,7 +69,7 @@ public class RotasActivity extends Activity{
 			
 	        if (!Login.session.checkLogin()) {
 	        	alert.showAlertDialog(RotasActivity.this,
-	      					"List Failed","Id do Motorista não encontrado..", false);
+	      					getString(R.string.title_msg_sessionfailed),getString(R.string.body_msg_sessionnotfound), false);
 	        	finish();
 	        }
 
@@ -90,8 +87,9 @@ public class RotasActivity extends Activity{
 			
 		 } catch (Exception e) {
         	 alert.showAlertDialog(RotasActivity.this,
-     					"List Rotas Failed",
+     					getString(R.string.title_msg_rotasfailed),
      					e.getMessage(), false);
+        	 finish();
 		}
 		
 		

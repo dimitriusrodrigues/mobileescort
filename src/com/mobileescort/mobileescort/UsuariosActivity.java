@@ -3,10 +3,10 @@ package com.mobileescort.mobileescort;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mobileescort.mobileescort.clientWS.RotaREST;
 import com.mobileescort.mobileescort.model.Rota;
 import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.model.Viagem;
-import com.mobileescort.mobileescort.utils.AlertDialogManager;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -15,9 +15,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class UsuariosActivity extends Activity {
 
@@ -29,7 +31,18 @@ public class UsuariosActivity extends Activity {
 	Viagem viagem;
 	
 	// Alert dialog manager
-	AlertDialogManager alert = new AlertDialogManager();
+	//AlertDialogManager alert = new AlertDialogManager();
+	
+	OnItemClickListener onItemClickListener = new OnItemClickListener(){
+		
+		@Override
+		public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
+
+			Usuario usuario = (Usuario) adapter.getItemAtPosition(position);
+			desvincularUsuariodaRota(usuario);
+		}
+	};
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,71 +89,71 @@ public class UsuariosActivity extends Activity {
 	}
 	
 	public void iniciarRota(){
-	AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-    dialog.setIcon(R.drawable.ic_launcher);
-    dialog.setTitle("Iniciar Rota");
-    dialog.setMessage("Deseja iniciar rota?");
-            
-    dialog.setNegativeButton("Não", new DialogInterface.OnClickListener(){
-    	
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			
-			Toast.makeText(getBaseContext(), "Rota não inicianda!", Toast.LENGTH_SHORT).show();	
-		}
-    });
-	
-    dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener(){
-    	
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			
-			if (!viagemIniciada()){
-				viagem = Login.repositorio.buscarViagem(id_rota);
-				if (viagem == null) {
-					viagem = new Viagem();
-					viagem.setId_rota(id_rota);
-					viagem.setId_status("Iniciada");
-					setId_viagem(Login.repositorio.salvarViagem(viagem));
-					viagem.setId_viagem(getId_viagem());
-				} else {
-					setId_viagem(viagem.getId_viagem());
-				}
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+	    dialog.setIcon(R.drawable.ic_launcher);
+	    dialog.setTitle("Iniciar Rota");
+	    dialog.setMessage("Deseja iniciar rota?");
+	            
+	    dialog.setNegativeButton("Não", new DialogInterface.OnClickListener(){
+	    	
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
 				
-				Intent it = new Intent(UsuariosActivity.this,GoogleMapsActivity.class);
-				it.putExtra("id_viagem", viagem.getId_viagem());
-				it.putExtra("id_rota", viagem.getId_rota());
-				startActivity(it);	
+				Toast.makeText(getBaseContext(), "Rota não inicianda!", Toast.LENGTH_SHORT).show();	
+			}
+	    });
+		
+	    dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener(){
+	    	
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
 				
-			} else {
-				if (viagem.getId_rota() == id_rota){
+				if (!viagemIniciada()){
+					viagem = Login.repositorio.buscarViagem(id_rota);
+					if (viagem == null) {
+						viagem = new Viagem();
+						viagem.setId_rota(id_rota);
+						viagem.setId_status("Iniciada");
+						setId_viagem(Login.repositorio.salvarViagem(viagem));
+						viagem.setId_viagem(getId_viagem());
+					} else {
+						setId_viagem(viagem.getId_viagem());
+					}
+					
 					Intent it = new Intent(UsuariosActivity.this,GoogleMapsActivity.class);
 					it.putExtra("id_viagem", viagem.getId_viagem());
 					it.putExtra("id_rota", viagem.getId_rota());
-					startActivity(it);
-				}else {
-					if (finalizaViagem()) {
-						Toast.makeText(getBaseContext(), "Rota finalizada!", Toast.LENGTH_SHORT).show();
-						viagem = Login.repositorio.buscarViagem(id_rota);
-						if (viagem == null) {
-							viagem = new Viagem();
-							viagem.setId_rota(id_rota);
-							viagem.setId_status("Iniciada");
-							setId_viagem(Login.repositorio.salvarViagem(viagem));
-							viagem.setId_viagem(getId_viagem());
-							Intent it = new Intent(UsuariosActivity.this,GoogleMapsActivity.class);
-							it.putExtra("id_viagem", viagem.getId_viagem());
-							it.putExtra("id_rota", viagem.getId_rota());
-							startActivity(it);	
-						}
-					}else				{
-						Toast.makeText(getBaseContext(), "Não foi possível finalizar a rota!", Toast.LENGTH_SHORT).show();
-					}	
+					startActivity(it);	
+					
+				} else {
+					if (viagem.getId_rota() == id_rota){
+						Intent it = new Intent(UsuariosActivity.this,GoogleMapsActivity.class);
+						it.putExtra("id_viagem", viagem.getId_viagem());
+						it.putExtra("id_rota", viagem.getId_rota());
+						startActivity(it);
+					}else {
+						if (finalizaViagem()) {
+							Toast.makeText(getBaseContext(), "Rota finalizada!", Toast.LENGTH_SHORT).show();
+							viagem = Login.repositorio.buscarViagem(id_rota);
+							if (viagem == null) {
+								viagem = new Viagem();
+								viagem.setId_rota(id_rota);
+								viagem.setId_status("Iniciada");
+								setId_viagem(Login.repositorio.salvarViagem(viagem));
+								viagem.setId_viagem(getId_viagem());
+								Intent it = new Intent(UsuariosActivity.this,GoogleMapsActivity.class);
+								it.putExtra("id_viagem", viagem.getId_viagem());
+								it.putExtra("id_rota", viagem.getId_rota());
+								startActivity(it);	
+							}
+						}else				{
+							Toast.makeText(getBaseContext(), "Não foi possível finalizar a rota!", Toast.LENGTH_SHORT).show();
+						}	
+					}
 				}
 			}
-		}
-    });
-    dialog.show();
+	    });
+	    dialog.show();
 	}
 	
 	private void adapterBase(){
@@ -150,7 +163,7 @@ public class UsuariosActivity extends Activity {
 		try{
 
 	        if (!Login.session.checkLogin()) {
-	        	alert.showAlertDialog(UsuariosActivity.this,
+	        	Login.alert.showAlertDialog(UsuariosActivity.this,
 	      					"Session Failed","Id do Motorista não encontrado..", false);
 	        	finish();
 	        }
@@ -159,7 +172,7 @@ public class UsuariosActivity extends Activity {
 	        listUsuarios = rota.getUsuarios();
 			
 		 } catch (Exception e) {
-        	 alert.showAlertDialog(UsuariosActivity.this,
+        	 Login.alert.showAlertDialog(UsuariosActivity.this,
      					"Tried List User Failed",
      					e.getMessage(), false);
 		}
@@ -167,7 +180,8 @@ public class UsuariosActivity extends Activity {
 		UsuariosAdapter adapter = new UsuariosAdapter(getBaseContext(), listUsuarios);
 		lvUsuarios.setAdapter(adapter);
 		
-		//lvUsuarios.setOnItemClickListener(onItemClickListener);
+		lvUsuarios.setOnItemClickListener(onItemClickListener);
+		
 	}
 
 	protected void onStart() {
@@ -219,7 +233,49 @@ public class UsuariosActivity extends Activity {
 		}
 		return false;
 	}
-
-
+	
+	public void desvincularUsuariodaRota(final Usuario removerUsuario){
+		
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+	    dialog.setIcon(R.drawable.ic_launcher);
+	    dialog.setTitle("Desvincular Usuário");
+	    dialog.setMessage(getString(R.string.remove_user));
+	            
+	    dialog.setNegativeButton("Não", new DialogInterface.OnClickListener(){
+	    	
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				return;
+					
+			}
+	    });
+		
+	    dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener(){
+	    	
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				long count;
+				
+				RotaREST rotaRest = new RotaREST();
+				
+				try{
+					String retorno = rotaRest.deletarUsuarioRota(getId_viagem(),removerUsuario.getId_usuario());
+					Login.alert.showAlertDialog(UsuariosActivity.this, "Removeu", "Retorno : " + retorno, true);
+				} catch (Exception e) {
+		        	 Login.alert.showAlertDialog(UsuariosActivity.this,
+		     					"List Rotas Failed",
+		     					e.getMessage(), false);
+				}
+				
+				count = Login.repositorio.deletarRotaUsuario(getId_viagem(),removerUsuario.getId_usuario());
+				if (count == 1) {
+					Login.alert.showAlertDialog(UsuariosActivity.this, "Remover", "Usuário removido da rota com sucesso.", true);
+				} else {
+					Login.alert.showAlertDialog(UsuariosActivity.this, "Removido", "Não foi possível remover usuário da rota.", false);
+				}
+			}
+	    });
+	    dialog.show();
+	}	
 
 }

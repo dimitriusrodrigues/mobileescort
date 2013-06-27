@@ -16,6 +16,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.CheckBox;
+import android.widget.Spinner;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 public class Cadastro extends Activity {
 	
@@ -29,6 +32,7 @@ public class Cadastro extends Activity {
 	EditText etEndereco;
 	EditText etCidade;
 	CheckBox cbRegistrado;
+	Spinner spPerfil;
 	
 	String registro, perfil;
 	Double latitude, longitude;
@@ -38,6 +42,7 @@ public class Cadastro extends Activity {
 	
     final UsuarioREST usuarioREST = new UsuarioREST();
     Usuario usuario = new Usuario();
+    
 	// Alert dialog manager
 	AlertDialogManager alert = new AlertDialogManager();
 	
@@ -55,25 +60,11 @@ public class Cadastro extends Activity {
         etEndereco = (EditText) findViewById(R.id.etEndereco);
         etCidade= (EditText) findViewById(R.id.etCidade);
         cbRegistrado = (CheckBox) findViewById(R.id.cbRegistro);
+        spPerfil = (Spinner) findViewById(R.id.spPerfil);
         
-        btRegistrar.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent it = new Intent(Cadastro.this,RegisterActivity.class);
-				// Registering user on our server					
-				// Sending details to RegisterActivity
-				it.putExtra("localizacao", etEndereco.getText() + " " + etCidade.getText());
-				startActivityForResult(it, 2);
-			}
-		});
-
-        
-		// Session class instance
         session = new SessionManager(getApplicationContext());
         if (session.checkLogin()) {
 	        try {
-		        // get user data from session
 		        HashMap<String, String> user = session.getUserDetails();
 				usuario = usuarioREST.getUsuario(user.get(SessionManager.KEY_NAME), user.get(SessionManager.KEY_PASSWORD));
 				if (usuario != null) {
@@ -90,6 +81,9 @@ public class Cadastro extends Activity {
 						etCidade.setText(usuario.getCidade());
 					}
 					perfil = usuario.getPerfil();
+					spPerfil.setSelection(getPerfil(perfil));
+					spPerfil.setClickable(false);
+					
 					registro = usuario.getRegistro();
 					latitude = usuario.getLatitude();
 					longitude = usuario.getLongitude();
@@ -107,17 +101,29 @@ public class Cadastro extends Activity {
 			} catch (Exception e) {
 				
 				alert.showAlertDialog(Cadastro.this,
-	 					"Search Failed",
-	 					e.getMessage(), false);
+	 					getString(R.string.title_msg_cadastrofailed),
+	 					getString(R.string.body_msg_cadastronotfound) + " " + e.getMessage(), false);
+				finish();
 			}
 			
 		} else {
         	alert.showAlertDialog(Cadastro.this,
-   					"Cadastro Failed","Sessão não localizada!", false);
+   					getString(R.string.title_msg_sessionfailed),getString(R.string.body_msg_sessionnotfound), false);
         	
         	finish();
 		}
         
+        addListenerOnSpinnerItemSelection();
+        
+        btRegistrar.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent it = new Intent(Cadastro.this,RegisterActivity.class);
+				it.putExtra("localizacao", etEndereco.getText() + " " + etCidade.getText());
+				startActivityForResult(it, 2);
+			}
+		});
                 
         btEnviar.setOnClickListener( new OnClickListener() {
 			
@@ -135,26 +141,31 @@ public class Cadastro extends Activity {
 				usuario.setLongitude(longitude);
 				
 				try {
-					String resposta = usuarioREST.inserirUsuario(usuario);
+					String resposta = usuarioREST.atualizarUsuario(usuario);
 					if (resposta.equals("OK")) {
 						Login.repositorio.salvarUsuario(usuario);	
 	                	finish();
+	                 } else {
+	                	 if (resposta.equals("NOK")) {
+	                		 alert.showAlertDialog(Cadastro.this,
+			 	      					getString(R.string.title_msg_cadastrofailed),getString(R.string.body_msg_cadastropasswordfailed), false);
+	                	 } else {
+		                	 alert.showAlertDialog(Cadastro.this,
+		                			 getString(R.string.title_msg_cadastrofailed),getString(R.string.body_msg_cadastroupdatefailed), false);
+		                 } 
 	                 }
-					 else {
-	                	 alert.showAlertDialog(Cadastro.this,
-	 	      					"Insert Failed","Falha ao inserir novo usuário", false);
-	                 }
+					 
 	            } catch (Exception e) {
 	            	alert.showAlertDialog(Cadastro.this,
-	     					"Insert Failed",
-	     					e.getMessage(), false);
+	     					getString(R.string.title_msg_cadastrofailed),
+	     					getString(R.string.body_msg_cadastroerror)+ " " + e.getMessage(), false);
 	            }
 			}
 
 		});
         
 	}
-	
+
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		registro = data.getExtras().getString("registro");
 		latitude = data.getExtras().getDouble("latitude");
@@ -165,6 +176,50 @@ public class Cadastro extends Activity {
 			btRegistrar.setClickable(false);
 		}
 		
+	}
+	
+	public void addListenerOnSpinnerItemSelection() {
+		spPerfil = (Spinner) findViewById(R.id.spPerfil);
+		spPerfil.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+	 }
+	
+	public class CustomOnItemSelectedListener implements OnItemSelectedListener {
+		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+			switch (pos) {
+				case 0:
+					perfil = "R";
+					break;
+				case 1:
+					perfil = "U";
+					break;
+				case 2:
+					perfil = "M";
+					break;
+			}
+			
+		}
+			 
+		@Override
+		public void onNothingSelected(AdapterView<?> arg0) {
+		
+		}
+	}
+	
+	private int getPerfil(String perfil) {
+		int pos = 0;
+		
+		if (perfil.equals("R")) {
+			pos = 0;
+		} 
+		else { 
+			if (perfil.equals("U")) {
+				pos = 1;
+			}
+			else {
+				pos = 2;
+			}
+		}	
+		return pos;
 	}
 	
 }
