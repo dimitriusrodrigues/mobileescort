@@ -14,6 +14,10 @@ public class Viagem implements Serializable{
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
 	public static final String KEY_ID = "id_viagem";
 	public static final String KEY_ID_ROTA = "id_rota";
 	public static final String KEY_STATUS = "id_status";
