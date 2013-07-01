@@ -23,6 +23,21 @@ public class SessionManager {
 	// Shared pref mode
 	int PRIVATE_MODE = 0;
 	
+	public static final String MSG_ATUALIZA_POSICAO = "[POSICAO_ATUAL]";
+	public static final String MSG_ATUALIZA_ROTAINICIADA = "[ROTA_INICIADA]";
+	public static final String MSG_ATUALIZA_ROTAFINALIZADA = "[ROTA_FINALIZADA]";
+	public static final String MSG_AUSENCIA_PROGRAMADA = "[AUSENCIA_PROGRAMADA]";
+	
+	public static final String MSG_AVISO_TRANSITO = "[TRANSITO]";
+	public static final String MSG_AVISO_HOSPITAL = "[HOSPITAL]";
+	public static final String MSG_AVISO_POSTO = "[POSTO]";
+	public static final String MSG_AVISO_ACIDENTE = "[ACIDENTE]";
+	public static final String MSG_AVISO_MECANICO = "[MECANICO]";
+	public static final String MSG_AVISO_OUTROS = "[OUTROS]";
+	
+	public static final String MSG_PRESENTE = "[PRESENTE]";
+	public static final String MSG_AUSENTE = "[AUSENTE]";
+	
 	// Sharedpref file name
 	private static final String PREF_NAME = "MobileEscortPref";
 	
