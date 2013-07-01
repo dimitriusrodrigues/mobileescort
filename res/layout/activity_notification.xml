@@ -3,13 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ffffff" >    
+    android:background="#ffffff"     
+    tools:context=".Notification" >
      
+    <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:background="@drawable/toponotificar"
+    	android:orientation="vertical">
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical" >
+        
      <TextView android:id="@+id/lblMessage" 
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:textSize="16dip"
          android:layout_margin="10dip"
          android:textColor="#000000"/>
+	</LinearLayout>
 
 </LinearLayout>
