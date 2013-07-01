@@ -54,6 +54,8 @@
 	<string name="notificar_hospital">Emergência! Destino hospital mais próximo.</string>
 	<string name="notificar_acidente">Acidente sem danos! Possível Atraso.</string>
 	<string name="notificar_abastecimento">Abastecimento! Possível atraso.</string>
+	<string name="notificar_ausencia">Rota iniciada e usuário está ausente.</string>
+	<string name="notificar_presenca">Rota iniciada e usuário está presente.</string>
 	<string name="perfil_motorista">Motorista</string>
 	<string name="perfil_responsavel">Responsável</string>
 	<string name="perfil_usuario">Usuário</string>
@@ -63,7 +65,8 @@
 	
 	<string name="title_msg_rotasfailed">Buscar Rotas</string>
 	<string name="body_msg_rotasnotfound">Rota não encontrada!</string>
-
+	<string name="body_msg_rotasinvalid">Não existe uma rota iniciada para visualização.</string>
+	
 	<string name="title_msg_sessionfailed">Buscar Sessão</string>
 	<string name="body_msg_sessionnotfound">Usuário não encontrado. Efetue Login novamente.</string>
 	
@@ -71,7 +74,10 @@
 	<string name="body_msg_notificationinvalid">Não existe uma rota iniciada para envio de notificações.</string>
 	<string name="title_msg_notificationsend">Enviar Notificação.</string>
 	<string name="body_msg_notificationfailed">Envio de notifiacação falhou. Tente novamente!</string>
-		
+	<string name="body_msg_notificationvalidate">Data hora menor que a data hora atual. Informe uma data futura.</string>
+	<string name="title_msg_notificarausencia">Ausência Programada</string>
+	<string name="body_msg_notificarausencia">Confirma Ausência na data e hora selecionada ?</string>
+			
 	<string name="title_msg_cadastrofailed">Manter Usuário</string>
 	<string name="body_msg_cadastronotfound">Usuário não encontrado!</string>
 	<string name="body_msg_cadastroerror">Erro ao cadastrar usuário.</string>	
@@ -79,6 +85,10 @@
 	<string name="body_msg_cadastroupdatefailed">Falha ao atualizar usuário.</string>		
 	<string name="remove_user">Remover Usuário da rota ?</string>
 	
+	<string name="title_msg_presencafailed">Marcar Presença</string>
+	<string name="body_msg_presencainvalid">Não existe uma rota iniciada para efetivar presenças.</string>
+	<string name="body_msg_presencalistfailed">Busca de usuários da rota falhou.</string>
+		
 	<string name="perfil_prompt">Selecione um perfil</string>
 	<string-array name="perfil_array">
         <item>Responsável</item>
@@ -89,5 +99,7 @@
         <item>Responsável</item>
         <item>Usuário</item>
     </string-array>
+        <string name="confirmar">Confirmar</string>
+        <string name="cancelar">Cancelar</string>
     
 </resources>
