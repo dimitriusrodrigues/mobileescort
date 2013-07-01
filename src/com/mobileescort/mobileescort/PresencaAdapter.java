@@ -2,6 +2,8 @@ package com.mobileescort.mobileescort;
 
 import java.util.List;
 
+import com.mobileescort.mobileescort.model.Usuario;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +14,13 @@ import android.widget.TextView;
 public class PresencaAdapter extends BaseAdapter{
 
 	private Context ctx;
-	private List<Presenca> presenca;
+	private List<Usuario> presenca;
+	private List<String> presente;
 	
-	public PresencaAdapter(Context ctx, List<Presenca> presenca){
+	public PresencaAdapter(Context ctx, List<Usuario> presenca, List<String> presente){
 		this.ctx = ctx;
 		this.presenca = presenca;
+		this.presente = presente;
 	}
 	
 	@Override
@@ -38,7 +42,8 @@ public class PresencaAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// pegar o item
-		Presenca pre = presenca.get(position);
+		Usuario usu = presenca.get(position);
+		String status = presente.get(position);
 		
 		//pegar a interface
 		LayoutInflater inflater = 
@@ -49,10 +54,17 @@ public class PresencaAdapter extends BaseAdapter{
 		
 		//preencher a interface com o item
 		TextView tvNome = (TextView) v.findViewById(R.id.txNome);
-		tvNome.setText(pre.getNome());
+		String perfil;
+		if (usu.getPerfil().equals("R") || usu.getPerfil().equals("P")){ 
+			perfil = ctx.getString(R.string.perfil_responsavel);
+		} else {
+			perfil = ctx.getString(R.string.perfil_usuario);
+		}
+			
+		tvNome.setText(perfil + ":" +usu.getNome());
 		
 		TextView tvTelefone = (TextView) v.findViewById(R.id.txTelefone);
-		tvTelefone.setText(pre.getTelefone());
+		tvTelefone.setText(status);
 		
 		return v;
 	}

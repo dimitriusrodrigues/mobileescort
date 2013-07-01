@@ -1,5 +1,8 @@
 package com.mobileescort.mobileescort;
 
+import com.mobileescort.mobileescort.model.Viagem;
+import com.mobileescort.mobileescort.utils.AlertDialogManager;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -13,6 +16,11 @@ public class HomeCondutor extends Activity {
 	ImageButton btRota;
 	ImageButton btNotificar;
 	ImageButton btPresenca;
+	int id_rota;
+	int id_viagem;
+	Viagem viagem;
+	// Alert dialog manager
+	AlertDialogManager alert = new AlertDialogManager();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +44,18 @@ public class HomeCondutor extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				Intent it = new Intent(HomeCondutor.this,RotasActivity.class);
-				startActivity(it);
+				
+				viagem = Login.repositorio.buscarViagem();
+				if (viagem == null) {
+					Intent it = new Intent(HomeCondutor.this,RotasActivity.class);
+					startActivity(it);
+				} else {
+					id_rota = viagem.getId_rota();
+					Intent it = new Intent(HomeCondutor.this,GoogleMapsActivity.class);
+					it.putExtra("id_viagem", viagem.getId_viagem());
+					it.putExtra("id_rota", viagem.getId_rota());
+					startActivity(it);
+				}
 			}
 		});
         
@@ -47,8 +65,15 @@ public class HomeCondutor extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				Intent it = new Intent(HomeCondutor.this,Notificar.class);
-				startActivity(it);
+				viagem = Login.repositorio.buscarViagem();
+				if (viagem == null) {
+					alert.showAlertDialog(HomeCondutor.this, getString(R.string.title_msg_notificationfailed), getString(R.string.body_msg_notificationinvalid), false);
+				} else {
+					Intent it = new Intent(HomeCondutor.this,Notificar.class);
+					it.putExtra("id_viagem", viagem.getId_viagem());
+					it.putExtra("id_rota", viagem.getId_rota());
+					startActivity(it);
+				}	
 			}
 		});
         
@@ -58,8 +83,15 @@ public class HomeCondutor extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				Intent it = new Intent(HomeCondutor.this,PresencaActivity.class);
-				startActivity(it);
+				
+				viagem = Login.repositorio.buscarViagem();
+				if (viagem == null) {
+					alert.showAlertDialog(HomeCondutor.this, getString(R.string.title_msg_presencafailed), getString(R.string.body_msg_presencainvalid), false);
+				} else {
+					id_rota = viagem.getId_rota();
+					Intent it = new Intent(HomeCondutor.this,PresencaActivity.class);
+					startActivity(it);
+				}
 			}
 		});
         

@@ -1,8 +1,5 @@
 package com.mobileescort.mobileescort;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -12,22 +9,17 @@ import android.os.Bundle;
 import android.support.v4.app.*;  
 import com.google.android.gms.maps.*;  
 import com.google.android.gms.maps.model.*;  
-import com.mobileescort.mobileescort.clientWS.RotaREST;
-import com.mobileescort.mobileescort.model.Rota;
-import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.model.Viagem;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
 import com.mobileescort.mobileescort.utils.SessionManager;
   
-public class GoogleMapsActivity extends FragmentActivity {  
+public class GoogleMapsActivityUsuario extends FragmentActivity {  
 	
 	// Alert dialog manager
 	AlertDialogManager alert = new AlertDialogManager();
 	int id_rota;
 	int id_viagem;
 	Viagem viagem;
-	Rota rota;
-    RotaREST rotaRest = new RotaREST();
 	
 	// Session Manager Class
 	SessionManager session;
@@ -57,35 +49,9 @@ public class GoogleMapsActivity extends FragmentActivity {
 				    GoogleMap map = fragment.getMap();  
 				  
 		    //map.clear();
-		    List<Usuario> listUsuarios = new ArrayList<Usuario>();
-		    listUsuarios = rota.getUsuarios();
-		    Usuario usuario;
 		    
-		    for (int i = 0; i < listUsuarios.size(); i++) {
-		    	usuario = listUsuarios.get(i);
-		    	if ( (usuario.getLatitude() != 0.0 ) && (usuario.getLongitude() != 0.0 ) ) { 
-			    	map.addMarker(new MarkerOptions()  
-				      .position(new LatLng(usuario.getLatitude(),usuario.getLongitude()))  
-				      .icon(BitmapDescriptorFactory.fromResource(  
-				        R.drawable.casa))  
-				      .title(usuario.getNome())  
-				      .snippet(usuario.getCidade()));
-		    	}	
-		    }
-		    if (viagem.getLatitude() != location.getLatitude() ||
-		    	viagem.getLatitude() != location.getLatitude()	) {
-		    	
-		    	viagem.setLatitude(location.getLatitude());
-			    viagem.setLongitude(location.getLongitude());
-		    	id_viagem = Login.repositorio.salvarViagem(viagem);
-				try {
-					rotaRest.enviarMensagem(viagem.getId_rota(), SessionManager.MSG_ATUALIZA_POSICAO+viagem.getLatitude()+","+viagem.getLongitude());
-				} catch (Exception e) {
-		        	 alert.showAlertDialog(GoogleMapsActivity.this,
-		     					"Send Notification Failed",
-		     					e.getMessage(), false);
-				}
-		    }
+	    	//viagem.setLatitude(location.getLatitude());
+		    //viagem.setLongitude(location.getLongitude());
 		    
 		    LatLng latLng = new LatLng(viagem.getLatitude(),viagem.getLongitude());
 		    
@@ -111,7 +77,6 @@ public class GoogleMapsActivity extends FragmentActivity {
 		id_rota = params.getInt("id_rota");
 		id_viagem = params.getInt("id_viagem");
 		viagem = Login.repositorio.buscarViagem(id_rota);
-		rota = Login.repositorio.buscarRota(id_rota);
 	} else {
 		finish();
 	}

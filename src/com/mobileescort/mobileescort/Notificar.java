@@ -4,18 +4,19 @@ import com.mobileescort.mobileescort.clientWS.RotaREST;
 import com.mobileescort.mobileescort.model.Rota;
 import com.mobileescort.mobileescort.model.Viagem;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
+import com.mobileescort.mobileescort.utils.SessionManager;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+import android.app.AlertDialog;
+
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-
+import android.widget.EditText;
 
 public class Notificar extends Activity {
 	
@@ -30,10 +31,14 @@ public class Notificar extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_notificar);
-		
-		viagem = Login.repositorio.buscarViagem();
-		if (viagem == null) {
-			alert.showAlertDialog(getApplicationContext(), getString(R.string.title_msg_notificationfailed), getString(R.string.body_msg_notificationinvalid), false);
+		Intent intent = getIntent();
+		Bundle params = intent.getExtras();  
+		if(params!=null) { 
+			id_rota = params.getInt("id_rota");
+			id_viagem = params.getInt("id_viagem");
+			viagem = Login.repositorio.buscarViagem(id_rota);
+			rota = Login.repositorio.buscarRota(id_rota);
+		} else {
 			finish();
 		}
 		
@@ -46,7 +51,7 @@ public class Notificar extends Activity {
 				
 				RotaREST rotaRest = new RotaREST();
 				try {
-					rotaRest.enviarMenesagem(viagem.getId_rota(), getString(R.string.notificar_transito));
+					rotaRest.enviarMensagem(viagem.getId_rota(), SessionManager.MSG_AVISO_TRANSITO);
 				} catch (Exception e) {
 		        	 alert.showAlertDialog(Notificar.this,
 		     					getString(R.string.title_msg_notificationsend),
@@ -64,7 +69,7 @@ public class Notificar extends Activity {
 			public void onClick(View v) {
 				RotaREST rotaRest = new RotaREST();
 				try {
-					rotaRest.enviarMenesagem(viagem.getId_rota(), getString(R.string.notificar_mecanico));
+					rotaRest.enviarMensagem(viagem.getId_rota(), SessionManager.MSG_AVISO_MECANICO);
 				} catch (Exception e) {
 					alert.showAlertDialog(Notificar.this,
 	     					getString(R.string.title_msg_notificationsend),
@@ -82,7 +87,7 @@ public class Notificar extends Activity {
 			public void onClick(View v) {
 				RotaREST rotaRest = new RotaREST();
 				try {
-					rotaRest.enviarMenesagem(viagem.getId_rota(), getString(R.string.notificar_hospital));
+					rotaRest.enviarMensagem(viagem.getId_rota(), SessionManager.MSG_AVISO_HOSPITAL);
 				} catch (Exception e) {
 					alert.showAlertDialog(Notificar.this,
 	     					getString(R.string.title_msg_notificationsend),
@@ -100,7 +105,7 @@ public class Notificar extends Activity {
 			public void onClick(View v) {
 				RotaREST rotaRest = new RotaREST();
 				try {
-					rotaRest.enviarMenesagem(viagem.getId_rota(), getString(R.string.notificar_acidente));
+					rotaRest.enviarMensagem(viagem.getId_rota(), SessionManager.MSG_AVISO_ACIDENTE);
 				} catch (Exception e) {
 					alert.showAlertDialog(Notificar.this,
 	     					getString(R.string.title_msg_notificationsend),
@@ -117,7 +122,7 @@ public class Notificar extends Activity {
 			public void onClick(View v) {
 				RotaREST rotaRest = new RotaREST();
 				try {
-					rotaRest.enviarMenesagem(viagem.getId_rota(), getString(R.string.notificar_abastecimento));
+					rotaRest.enviarMensagem(viagem.getId_rota(), SessionManager.MSG_AVISO_POSTO);
 				} catch (Exception e) {
 					alert.showAlertDialog(Notificar.this,
 	     					getString(R.string.title_msg_notificationsend),
@@ -132,36 +137,59 @@ public class Notificar extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				/*RotaREST rotaRest = new RotaREST();
-				try {
-					rotaRest.enviarMenesagem(viagem.getId_rota(), "Digitar a mensagem");
-				} catch (Exception e) {
-		        	 alert.showAlertDialog(Notificar.this,
-		     					"Send Notification Failed",
-		     					e.getMessage(), false);
-				}*/
-				sendNotification(getBaseContext(), "Digitar a mensagem");
+				novaMensagem(Notificar.this);
+				
 			}
 		});
+		
 	}
 	
-	private static void sendNotification(Context context, String message) {
-        int icon = R.drawable.notificacao;
-        long when = System.currentTimeMillis();
-        String title = context.getString(R.string.app_name);
-       
-        NotificationManager notificationManager = (NotificationManager)
-                context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = new Notification(icon, message, when);
-        Intent notificationIntent = new Intent(context, Notification.class);
-        notificationIntent.putExtra("mensagem", message);
-        // set intent so it does not start a new activity
-        //notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-        //        Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent intent =
-                PendingIntent.getActivity(context, 0, notificationIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
-        notification.setLatestEventInfo(context, title, message, intent);
-        //notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notificationManager.notify(R.string.app_name, notification);
-    }
+	private void novaMensagem(Context context) {
+		
+		AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+	    dialog.setIcon(R.drawable.ic_launcher);
+	    dialog.setTitle("Mensagem");
+	    dialog.setMessage("Digite a Mensagem:");
+	    
+	    final EditText txMensagem = new EditText(context);
+        dialog.setView(txMensagem);
+	    dialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener(){
+	    	
+			public void onClick(DialogInterface dialog, int which) {
+				
+			}
+	    });
+		
+	    dialog.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+				setNewMessage(txMensagem.getText().toString());
+				
+			}
+	    	
+	    });
+	    dialog.show();
+	}
+	
+	 /**
+	 * @param newMessage the newMessage to set
+	 */
+	private void setNewMessage(String newMessage) {
+		if (!newMessage.equals("")) {
+			RotaREST rotaRest = new RotaREST();
+			try {
+				rotaRest.enviarMensagem(viagem.getId_rota(), SessionManager.MSG_AVISO_OUTROS+newMessage);
+			} catch (Exception e) {
+				alert.showAlertDialog(Notificar.this,
+     					getString(R.string.title_msg_notificationsend),
+     					getString(R.string.body_msg_notificationfailed) + " " + e.getMessage(), false);
+			}
+		}
+	}
+	
+	protected void onStart() {
+		super.onStart();
+	}
+		
 }

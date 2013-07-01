@@ -8,7 +8,7 @@ import android.util.Log;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 
-public class TesteOverlay extends ItemizedOverlay {
+public class TesteOverlay extends ItemizedOverlay<OverlayItem> {
 private ArrayList<OverlayItem> overlays = new ArrayList<OverlayItem>();
 	
 	public TesteOverlay(Drawable defaultMarker) {

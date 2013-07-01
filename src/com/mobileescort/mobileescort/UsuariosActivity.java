@@ -7,6 +7,8 @@ import com.mobileescort.mobileescort.clientWS.RotaREST;
 import com.mobileescort.mobileescort.model.Rota;
 import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.model.Viagem;
+import com.mobileescort.mobileescort.utils.AlertDialogManager;
+import com.mobileescort.mobileescort.utils.SessionManager;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -18,7 +20,6 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class UsuariosActivity extends Activity {
@@ -29,9 +30,10 @@ public class UsuariosActivity extends Activity {
 	int id_rota;
 	int id_viagem;
 	Viagem viagem;
+	RotaREST rotaRest = new RotaREST();
 	
 	// Alert dialog manager
-	//AlertDialogManager alert = new AlertDialogManager();
+	AlertDialogManager alert = new AlertDialogManager();
 	
 	OnItemClickListener onItemClickListener = new OnItemClickListener(){
 		
@@ -98,8 +100,6 @@ public class UsuariosActivity extends Activity {
 	    	
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				
-				Toast.makeText(getBaseContext(), "Rota não inicianda!", Toast.LENGTH_SHORT).show();	
 			}
 	    });
 		
@@ -108,19 +108,28 @@ public class UsuariosActivity extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				
-				if (!viagemIniciada()){
+				//if (!viagemIniciada()){
 					viagem = Login.repositorio.buscarViagem(id_rota);
 					if (viagem == null) {
 						viagem = new Viagem();
 						viagem.setId_rota(id_rota);
 						viagem.setId_status("Iniciada");
+						viagem.setLatitude(0.0);
+						viagem.setLongitude(0.0);
 						setId_viagem(Login.repositorio.salvarViagem(viagem));
 						viagem.setId_viagem(getId_viagem());
 					} else {
 						setId_viagem(viagem.getId_viagem());
 					}
 					
-					Intent it = new Intent(UsuariosActivity.this,GoogleMapsActivity.class);
+					try {
+						rotaRest.enviarMensagem(viagem.getId_rota(), SessionManager.MSG_ATUALIZA_ROTAINICIADA+viagem.getId_rota());
+					} catch (Exception e) {
+			        	 finish();
+					}
+					
+					finish();
+					/*Intent it = new Intent(UsuariosActivity.this,GoogleMapsActivity.class);
 					it.putExtra("id_viagem", viagem.getId_viagem());
 					it.putExtra("id_rota", viagem.getId_rota());
 					startActivity(it);	
@@ -133,7 +142,7 @@ public class UsuariosActivity extends Activity {
 						startActivity(it);
 					}else {
 						if (finalizaViagem()) {
-							Toast.makeText(getBaseContext(), "Rota finalizada!", Toast.LENGTH_SHORT).show();
+							
 							viagem = Login.repositorio.buscarViagem(id_rota);
 							if (viagem == null) {
 								viagem = new Viagem();
@@ -150,7 +159,7 @@ public class UsuariosActivity extends Activity {
 							Toast.makeText(getBaseContext(), "Não foi possível finalizar a rota!", Toast.LENGTH_SHORT).show();
 						}	
 					}
-				}
+				}*/
 			}
 	    });
 	    dialog.show();
@@ -163,7 +172,7 @@ public class UsuariosActivity extends Activity {
 		try{
 
 	        if (!Login.session.checkLogin()) {
-	        	Login.alert.showAlertDialog(UsuariosActivity.this,
+	        	alert.showAlertDialog(UsuariosActivity.this,
 	      					"Session Failed","Id do Motorista não encontrado..", false);
 	        	finish();
 	        }
@@ -172,7 +181,7 @@ public class UsuariosActivity extends Activity {
 	        listUsuarios = rota.getUsuarios();
 			
 		 } catch (Exception e) {
-        	 Login.alert.showAlertDialog(UsuariosActivity.this,
+        	 alert.showAlertDialog(UsuariosActivity.this,
      					"Tried List User Failed",
      					e.getMessage(), false);
 		}
@@ -187,16 +196,6 @@ public class UsuariosActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 		adapterBase();
-		/*
-		if (viagemIniciada()){
-			viagem = Login.repositorio.buscarViagem(id_rota);
-			if (viagem != null)	{
-				Intent it = new Intent(UsuariosActivity.this,GoogleMapsActivity.class);
-				it.putExtra("id_rota", id_rota);
-				it.putExtra("id_viagem", id_viagem);
-				startActivity(it);
-			}
-		}*/				
 	}
 
 	/**
@@ -254,28 +253,37 @@ public class UsuariosActivity extends Activity {
 	    	
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				long count;
-				
-				RotaREST rotaRest = new RotaREST();
-				
-				try{
-					String retorno = rotaRest.deletarUsuarioRota(getId_viagem(),removerUsuario.getId_usuario());
-					Login.alert.showAlertDialog(UsuariosActivity.this, "Removeu", "Retorno : " + retorno, true);
-				} catch (Exception e) {
-		        	 Login.alert.showAlertDialog(UsuariosActivity.this,
-		     					"List Rotas Failed",
-		     					e.getMessage(), false);
-				}
-				
-				count = Login.repositorio.deletarRotaUsuario(getId_viagem(),removerUsuario.getId_usuario());
-				if (count == 1) {
-					Login.alert.showAlertDialog(UsuariosActivity.this, "Remover", "Usuário removido da rota com sucesso.", true);
-				} else {
-					Login.alert.showAlertDialog(UsuariosActivity.this, "Removido", "Não foi possível remover usuário da rota.", false);
-				}
+				excluirUsuario(removerUsuario);
 			}
+			
 	    });
 	    dialog.show();
-	}	
+	}
+
+	protected void excluirUsuario(final Usuario removerUsuario) {
+		long count;
+		
+		RotaREST rotaRest = new RotaREST();
+		
+		try{
+			String retorno = rotaRest.deletarUsuarioRota(id_rota,removerUsuario.getId_usuario());
+			alert.showAlertDialog(UsuariosActivity.this, "Removeu", "Retorno : " + retorno, true);
+		} catch (Exception e) {
+        	alert.showAlertDialog(UsuariosActivity.this,
+     					"List Rotas Failed",
+     					e.getMessage(), false);
+		}
+		
+		count = Login.repositorio.deletarRotaUsuario(id_rota,removerUsuario.getId_usuario());
+		if (count == 1) {
+			alert.showAlertDialog(UsuariosActivity.this, "Remover", "Usuário removido da rota com sucesso.", true);
+		} else {
+			alert.showAlertDialog(UsuariosActivity.this, "Removido", "Não foi possível remover usuário da rota.", false);
+		}
+
+		
+	}
+	
+	
 
 }

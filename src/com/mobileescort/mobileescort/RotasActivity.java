@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.mobileescort.mobileescort.clientWS.RotaREST;
 import com.mobileescort.mobileescort.model.Rota;
+import com.mobileescort.mobileescort.model.Viagem;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
 
 import android.app.Activity;
@@ -21,6 +22,8 @@ import android.widget.AdapterView.OnItemClickListener;
 public class RotasActivity extends Activity{
 	
 	ListView lvRotas; 
+	int id_viagem;
+	Viagem viagem;
 	
 	// Alert dialog manager
 	AlertDialogManager alert = new AlertDialogManager();
@@ -102,5 +105,9 @@ public class RotasActivity extends Activity{
 	protected void onStart() {
 		super.onStart();
 		adapterBase();
+		viagem = Login.repositorio.buscarViagem();
+		if (viagem != null) {
+			finish();
+		}
 	}
 }

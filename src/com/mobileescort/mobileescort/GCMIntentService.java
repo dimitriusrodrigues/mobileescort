@@ -17,6 +17,9 @@ package com.mobileescort.mobileescort;
 
 import static com.mobileescort.mobileescort.utils.CommonUtilities.SENDER_ID;
 import static com.mobileescort.mobileescort.utils.CommonUtilities.displayMessage;
+import static com.mobileescort.mobileescort.utils.CommonUtilities.formataMensagem;
+import static com.mobileescort.mobileescort.utils.CommonUtilities.classificaMensagem;
+import static com.mobileescort.mobileescort.utils.CommonUtilities.formataMensagemPosicao;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -27,13 +30,14 @@ import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
+import com.mobileescort.mobileescort.model.Viagem;
+import com.mobileescort.mobileescort.utils.SessionManager;
 
 /**
  * IntentService responsible for handling GCM messages.
  */
 public class GCMIntentService extends GCMBaseIntentService {
 
-    @SuppressWarnings("hiding")
     private static final String TAG = "GCMIntentService";
 
     public GCMIntentService() {
@@ -102,21 +106,46 @@ public class GCMIntentService extends GCMBaseIntentService {
         long when = System.currentTimeMillis();
         String title = context.getString(R.string.app_name);
         
-        //displayMessage(context, "gerou uma notificação");
+        String mensagemFormatada  = formataMensagem(context, message);
+        
+        if (classificaMensagem(message) == SessionManager.MSG_ATUALIZA_ROTAINICIADA) {
+        	int id_rota = Integer.parseInt(mensagemFormatada);
+        	Viagem viagem = Login.repositorio.buscarViagem(id_rota);
+			if (viagem == null) {
+				viagem = new Viagem();
+				viagem.setId_rota(id_rota);
+				viagem.setId_status("Iniciada");
+				viagem.setLatitude(0.0);
+				viagem.setLongitude(0.0);
+				Login.repositorio.salvarViagem(viagem);
+			} 
+        } else {
+        	if (classificaMensagem(message) == SessionManager.MSG_ATUALIZA_POSICAO) {
+            	Double[] posicao = formataMensagemPosicao(message);
+            	Viagem viagem = Login.repositorio.buscarViagem();
+    			if (viagem != null) {
+    				viagem.setLatitude(posicao[0]);
+    				viagem.setLongitude(posicao[1]);
+    				Login.repositorio.salvarViagem(viagem);
+    			} 
+            }
+        }
         
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = new Notification(icon, message, when);
-        Intent notificationIntent = new Intent(context, Notification.class);
-        notificationIntent.putExtra("mensagem", message);
-        // set intent so it does not start a new activity
-        //notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-        //        Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent intent =
-                PendingIntent.getActivity(context, 0, notificationIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
-        notification.setLatestEventInfo(context, title, message, intent);
-        //notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        Notification notification = new Notification(icon, mensagemFormatada, when);
+        
+        Intent intent = new Intent(context, ExibirNotificacao.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("mensagem", message);
+
+        PendingIntent pendingintent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        
+        notification.setLatestEventInfo(context, title, mensagemFormatada, pendingintent);
+        notification.defaults = Notification.DEFAULT_ALL;
         notificationManager.notify(R.string.app_name, notification);
+        
+        
     }
 
 }
