@@ -63,15 +63,27 @@ public class RotaREST {
     }
     
     public String deletarUsuarioRota(int id_rota, int id_usuario) {   
-        String[] resposta = new WebServiceClient().get(URL_WS + "rotas/delete/" + id_rota + "/" + id_usuario);
+        String[] resposta = new WebServiceClient().delete(URL_WS + "rotas/delete/" + id_rota + "/" + id_usuario);
         return resposta[1];
     }
     
-    public String enviarMenesagem(Integer id_rota, String msg) throws Exception {
+    public String enviarMensagem(Integer id_rota, String msg) throws Exception {
     	
     	String url = URLEncoder.encode(msg, "UTF-8");
     	
         String[] resposta = new WebServiceClient().get(URL_WS + "rotas/enviarNotificacao/" + id_rota + "/"+ url);
+        if (resposta[0].equals("200")) {
+            return "OK";
+        } else {
+            throw new Exception(resposta[1]);
+        }
+    }
+    
+    public String enviarMensagemUsuario(Integer id_rota, Integer id_usuario, String msg) throws Exception {
+    	
+    	String url = URLEncoder.encode(msg, "UTF-8");
+    	
+        String[] resposta = new WebServiceClient().get(URL_WS + "rotas/enviarNotificacaoUsuario/" + id_rota + "/" + id_usuario + "/" + url);
         if (resposta[0].equals("200")) {
             return "OK";
         } else {
