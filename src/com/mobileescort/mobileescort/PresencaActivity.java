@@ -69,7 +69,7 @@ public class PresencaActivity extends Activity {
 				listStatus.set(position, "Presente");
 				if (presenca.getPerfil().equals("R")) {
 					perfil = "P";
-					rotaRest.enviarMensagemUsuario(viagem.getId_rota(), presenca.getId_usuario(), SessionManager.MSG_PRESENTE);
+					rotaRest.enviarMensagemUsuario(viagem.getId_rota(), presenca.getId_usuario(), SessionManager.MSG_PRESENTE+presenca.getId_usuario());
 				} else {
 					perfil = "S";
 				}
@@ -81,7 +81,7 @@ public class PresencaActivity extends Activity {
 				} else {
 					perfil = "U";
 				}
-				rotaRest.enviarMensagemUsuario(viagem.getId_rota(), presenca.getId_usuario(), SessionManager.MSG_AUSENTE);
+				rotaRest.enviarMensagemUsuario(viagem.getId_rota(), presenca.getId_usuario(), SessionManager.MSG_AUSENTE+presenca.getId_usuario());
 
 			}
 			presenca.setPerfil(perfil);
@@ -105,7 +105,7 @@ public class PresencaActivity extends Activity {
 
 	        if (!Login.session.checkLogin()) {
 	        	alert.showAlertDialog(PresencaActivity.this,
-	      					"Session Failed","Id do Motorista não encontrado..", false);
+	      					getString(R.string.title_msg_sessionfailed),getString(R.string.body_msg_sessionnotfound), false);
 	        	finish();
 	        }
 	    

@@ -10,6 +10,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;  
 import android.support.v4.app.*;  
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
+
 import com.google.android.gms.maps.*;  
 import com.google.android.gms.maps.model.*;  
 import com.mobileescort.mobileescort.clientWS.RotaREST;
@@ -28,9 +32,7 @@ public class GoogleMapsActivity extends FragmentActivity {
 	Viagem viagem;
 	Rota rota;
     RotaREST rotaRest = new RotaREST();
-	
-	// Session Manager Class
-	SessionManager session;
+    ImageButton btFinalizar;
 	
 	private LocationListener locationListener = new LocationListener() {
 		
@@ -82,8 +84,8 @@ public class GoogleMapsActivity extends FragmentActivity {
 					rotaRest.enviarMensagem(viagem.getId_rota(), SessionManager.MSG_ATUALIZA_POSICAO+viagem.getLatitude()+","+viagem.getLongitude());
 				} catch (Exception e) {
 		        	 alert.showAlertDialog(GoogleMapsActivity.this,
-		     					"Send Notification Failed",
-		     					e.getMessage(), false);
+		     					getString(R.string.title_msg_notificationsend),
+		     					getString(R.string.body_msg_notificationfailed)+ " " + e.getMessage(), false);
 				}
 		    }
 		    
@@ -115,32 +117,43 @@ public class GoogleMapsActivity extends FragmentActivity {
 	} else {
 		finish();
 	}
+	
+	btFinalizar = (ImageButton) findViewById(R.id.ibFinalizar);
     
-	// Session class instance
-    session = new SessionManager(getApplicationContext());
+	btFinalizar.setOnClickListener(new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			finalizarRota(id_viagem);
+		}
+	});
    
     LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-	//locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, locationListener);
+	//locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
     locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 100, locationListener);    
   }  
   
-  private void configuraPosicao(  
-		  GoogleMap map, LatLng latLng) {  
-		  map.moveCamera(  
-		   CameraUpdateFactory.newLatLngZoom(latLng, 15));  
-		  map.animateCamera(  
-		   CameraUpdateFactory.zoomTo(10), 2000, null);  
-		  
-		  CameraPosition cameraPosition =   
-		    new CameraPosition.Builder()  
-		      .target(latLng)     
+  private void configuraPosicao( GoogleMap map, LatLng latLng) {  
+	  map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 15));  
+	  map.animateCamera( CameraUpdateFactory.zoomTo(10), 2000, null);  
+	  CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng)     
 		      .zoom(15)       
 		      .bearing(90)  
 		      .tilt(45)  
 		      .build();  
-		  map.animateCamera(  
-		    CameraUpdateFactory.newCameraPosition(  
-		      cameraPosition));  
+	  
+	  map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));  
+  }
+  
+  private void finalizarRota(int id_viagem) {
+	  try {
+			rotaRest.enviarMensagem(viagem.getId_rota(), SessionManager.MSG_ATUALIZA_ROTAFINALIZADA+viagem.getId_viagem());
+			Login.repositorio.deletarViagem(id_viagem);
+			finish();
+		} catch (Exception e) {
+      	 alert.showAlertDialog(GoogleMapsActivity.this,
+   					getString(R.string.title_msg_notificationsend),
+   					getString(R.string.body_msg_notificationfailed)+" "+e.getMessage(), false);
 		}
+  }
   
 }

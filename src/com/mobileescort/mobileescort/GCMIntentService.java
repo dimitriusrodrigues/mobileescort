@@ -30,6 +30,7 @@ import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
+import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.model.Viagem;
 import com.mobileescort.mobileescort.utils.SessionManager;
 
@@ -109,25 +110,26 @@ public class GCMIntentService extends GCMBaseIntentService {
         String mensagemFormatada  = formataMensagem(context, message);
         
         if (classificaMensagem(message) == SessionManager.MSG_ATUALIZA_ROTAINICIADA) {
-        	int id_rota = Integer.parseInt(mensagemFormatada);
-        	Viagem viagem = Login.repositorio.buscarViagem(id_rota);
-			if (viagem == null) {
-				viagem = new Viagem();
-				viagem.setId_rota(id_rota);
-				viagem.setId_status("Iniciada");
-				viagem.setLatitude(0.0);
-				viagem.setLongitude(0.0);
-				Login.repositorio.salvarViagem(viagem);
-			} 
+        	iniciaRota(mensagemFormatada);
         } else {
         	if (classificaMensagem(message) == SessionManager.MSG_ATUALIZA_POSICAO) {
-            	Double[] posicao = formataMensagemPosicao(message);
-            	Viagem viagem = Login.repositorio.buscarViagem();
-    			if (viagem != null) {
-    				viagem.setLatitude(posicao[0]);
-    				viagem.setLongitude(posicao[1]);
-    				Login.repositorio.salvarViagem(viagem);
-    			} 
+            	atualizaPosicaoRota(message);
+            } else {
+            	if (classificaMensagem(message) == SessionManager.MSG_ATUALIZA_ROTAFINALIZADA) {
+                	finalizaRota(mensagemFormatada);
+                } else {
+                	if (classificaMensagem(message) == SessionManager.MSG_AUSENTE) {
+                    	notificaAusencia(mensagemFormatada);
+                    } else {
+                    	if (classificaMensagem(message) == SessionManager.MSG_PRESENTE) {
+                        	notificaPresenca(mensagemFormatada);
+                        } else {
+                        	if (classificaMensagem(message) == SessionManager.MSG_AUSENCIA_PROGRAMADA) {
+                            	when = notificaAusenciaProgramada(mensagemFormatada);
+                            }
+                        }
+                    }
+                }
             }
         }
         
@@ -144,8 +146,67 @@ public class GCMIntentService extends GCMBaseIntentService {
         notification.setLatestEventInfo(context, title, mensagemFormatada, pendingintent);
         notification.defaults = Notification.DEFAULT_ALL;
         notificationManager.notify(R.string.app_name, notification);
-        
-        
     }
+
+	private static long notificaAusenciaProgramada(String mensagemFormatada) {
+		long when = System.currentTimeMillis();
+		return when;
+		
+	}
+
+	private static void notificaPresenca(String mensagemFormatada) {
+		int id_usuario = Integer.parseInt(mensagemFormatada);
+		Usuario usuario = Login.repositorio.buscarUsuario(id_usuario);
+		if (usuario.getPerfil() == "U") {
+			usuario.setPerfil("S");
+		} else {
+			if (usuario.getPerfil() == "R") {
+				usuario.setPerfil("P");
+			}
+		}
+    	Login.repositorio.salvarUsuario(usuario);
+	}
+
+	private static void notificaAusencia(String mensagemFormatada) {
+		int id_usuario = Integer.parseInt(mensagemFormatada);
+		Usuario usuario = Login.repositorio.buscarUsuario(id_usuario);
+		if (usuario.getPerfil() == "S") {
+			usuario.setPerfil("U");
+		} else {
+			if (usuario.getPerfil() == "P") {
+				usuario.setPerfil("R");
+			}
+		}
+    	Login.repositorio.salvarUsuario(usuario);
+	}
+
+	private static void finalizaRota(String mensagemFormatada) {
+		int id_viagem = Integer.parseInt(mensagemFormatada);
+    	Login.repositorio.deletarViagem(id_viagem);
+	}
+
+	private static void atualizaPosicaoRota(String message) {
+		Double[] posicao = formataMensagemPosicao(message);
+    	Viagem viagem = Login.repositorio.buscarViagem();
+		if (viagem != null) {
+			viagem.setLatitude(posicao[0]);
+			viagem.setLongitude(posicao[1]);
+			Login.repositorio.salvarViagem(viagem);
+		}
+		
+	}
+
+	private static void iniciaRota(String mensagemFormatada) {
+		int id_rota = Integer.parseInt(mensagemFormatada);
+    	Viagem viagem = Login.repositorio.buscarViagem(id_rota);
+		if (viagem == null) {
+			viagem = new Viagem();
+			viagem.setId_rota(id_rota);
+			viagem.setId_status("Iniciada");
+			viagem.setLatitude(0.0);
+			viagem.setLongitude(0.0);
+			Login.repositorio.salvarViagem(viagem);
+		}
+	}
 
 }
