@@ -114,7 +114,10 @@ public final class CommonUtilities {
     	if (typemsg.equals(SessionManager.MSG_ATUALIZA_POSICAO) ||
     		typemsg.equals(SessionManager.MSG_AVISO_OUTROS) ||
     		typemsg.equals(SessionManager.MSG_ATUALIZA_ROTAINICIADA) ||	
-    		typemsg.equals(SessionManager.MSG_ATUALIZA_ROTAFINALIZADA)	) { 
+    		typemsg.equals(SessionManager.MSG_ATUALIZA_ROTAFINALIZADA) ||
+    		typemsg.equals(SessionManager.MSG_AUSENTE) ||
+    		typemsg.equals(SessionManager.MSG_PRESENTE)||
+    		typemsg.equals(SessionManager.MSG_AUSENCIA_PROGRAMADA) ) { 
     		buffer.delete(0, typemsg.length());
     		msg = new String(buffer);
     	} else {
@@ -133,11 +136,7 @@ public final class CommonUtilities {
                 			if ( typemsg.equals(SessionManager.MSG_AVISO_POSTO) ) {
                 				msg = context.getString(R.string.notificar_abastecimento);
                     		} else {
-                    			if ( typemsg.equals(SessionManager.MSG_AUSENTE) ) {
-                    				msg = context.getString(R.string.notificar_ausencia);
-                        		} else {
-                        			msg = context.getString(R.string.notificar_presenca);
-                        		}
+                       			msg = context.getString(R.string.notificar_undefined);
                     		}
 
                 		}
@@ -161,7 +160,19 @@ public final class CommonUtilities {
         			if (mensagem.contains(SessionManager.MSG_ATUALIZA_ROTAFINALIZADA)) {
             			return SessionManager.MSG_ATUALIZA_ROTAFINALIZADA;
             		} else {
-            			return mensagem;
+            			if (mensagem.contains(SessionManager.MSG_AUSENTE)) {
+                			return SessionManager.MSG_AUSENTE;
+                		} else {
+                			if (mensagem.contains(SessionManager.MSG_PRESENTE)) {
+                    			return SessionManager.MSG_PRESENTE;
+                    		} else {
+                    			if (mensagem.contains(SessionManager.MSG_AUSENCIA_PROGRAMADA)) {
+                        			return SessionManager.MSG_AUSENCIA_PROGRAMADA;
+                        		} else {
+                        			return mensagem;
+                        		}
+                    		}
+                		}
             		}
         		}
     		}	
