@@ -167,10 +167,10 @@ public class GoogleMapsActivityUsuario extends FragmentActivity implements Runna
 	    fragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);  
 	    GoogleMap map = fragment.getMap();  
    
-	    //LatLng latLng = new LatLng(viagem.getLatitude(),viagem.getLongitude());
-	    double latitude = coordenadas[indice][0];
-		double longitude = coordenadas[indice][1];
-		LatLng latLng = new LatLng(latitude, longitude);
+	    LatLng latLng = new LatLng(viagem.getLatitude(),viagem.getLongitude());
+	    //double latitude = coordenadas[indice][0];
+		//double longitude = coordenadas[indice][1];
+		//LatLng latLng = new LatLng(latitude, longitude);
 	       
 	    map.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.notificacao)).title("BUS").snippet("Ponto móvel"));
 
@@ -191,22 +191,25 @@ public class GoogleMapsActivityUsuario extends FragmentActivity implements Runna
 	@Override
 	public void run() {
 		
-		
 		viagem = Login.repositorio.buscarViagem();
 		if (viagem == null) {
 			finish();
+		}else {
+			if (viagem.getLatitude() == 0.0 || viagem.getLongitude() == 0.0) {
+				finish();
+			}
 		}
 		map = fragment.getMap();
 		map.clear();
-		//LatLng latLng = new LatLng(viagem.getLatitude(),viagem.getLongitude());
-		double latitude = coordenadas[indice][0];
-		double longitude = coordenadas[indice][1];
-		LatLng latLng = new LatLng(latitude, longitude);
+		LatLng latLng = new LatLng(viagem.getLatitude(),viagem.getLongitude());
+		//double latitude = coordenadas[indice][0];
+		//double longitude = coordenadas[indice][1];
+		//LatLng latLng = new LatLng(latitude, longitude);
 		map.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.notificacao)).title("BUS").snippet("Ponto móvel"));
 		map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 15));
 		CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15).bearing(90).tilt(45).build();  
 		map.animateCamera( CameraUpdateFactory.newCameraPosition(cameraPosition));
-		indice++;
+		//indice++;
 		if (indice == coordenadas.length) {
 			finish(); 
 		} else {
@@ -214,5 +217,15 @@ public class GoogleMapsActivityUsuario extends FragmentActivity implements Runna
 		}
 		
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}
   
+	@Override
+	protected void onStop() {
+		handler.removeCallbacks(this);
+		super.onStop();
+	}
 }

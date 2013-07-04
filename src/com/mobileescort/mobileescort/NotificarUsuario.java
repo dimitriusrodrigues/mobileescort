@@ -1,10 +1,13 @@
 package com.mobileescort.mobileescort;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
-import com.mobileescort.mobileescort.model.Rota;
-import com.mobileescort.mobileescort.model.Viagem;
+import com.mobileescort.mobileescort.clientWS.RotaREST;
+import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
+import com.mobileescort.mobileescort.utils.SessionManager;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -22,15 +25,12 @@ public class NotificarUsuario extends Activity {
 	
 	// Alert dialog manager
 	AlertDialogManager alert = new AlertDialogManager();
-	int id_rota;
-	int id_viagem;
-	Viagem viagem;
-	Rota rota;
 	int year;
 	int month;
 	int day;
 	int hh;
 	int mm;
+	int id_usuario;
 	DatePicker dpResult;
 	TimePicker tpResult;
 	Calendar informada;
@@ -39,6 +39,13 @@ public class NotificarUsuario extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_notification_usuario);
+		
+		if (!Login.session.checkLogin()) {
+        	alert.showAlertDialog(NotificarUsuario.this,
+      					getString(R.string.title_msg_sessionfailed),getString(R.string.body_msg_sessionnotfound), false);
+        	finish();
+        }
+		id_usuario = Login.session.getIdMotorista();
 		
 		Button btConfirmar = (Button) findViewById(R.id.btConfirmar);
 		
@@ -58,7 +65,7 @@ public class NotificarUsuario extends Activity {
 				mm = tpResult.getCurrentMinute();
 				
 				
-				informada = Calendar.getInstance( );  
+				informada = Calendar.getInstance( );
 				informada.set( Calendar.DAY_OF_MONTH, day );  
 				informada.set( Calendar.MONTH, month );  
 				informada.set( Calendar.YEAR, year );  
@@ -72,9 +79,10 @@ public class NotificarUsuario extends Activity {
 					alert.showAlertDialog(NotificarUsuario.this,
 	     					getString(R.string.title_msg_notificationsend),
 	     					getString(R.string.body_msg_notificationvalidate), false);
-				}  
+				} else {
+					novaMensagem(NotificarUsuario.this);
+				}
 				
-				novaMensagem(NotificarUsuario.this);
 				
 			}
 		});
@@ -99,9 +107,13 @@ public class NotificarUsuario extends Activity {
 
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
-				int id_motorista = 0 ;
-				int id_usuario = 0 ;
-				setNewMessage(id_motorista, id_usuario, informada);
+				int id_rota = 3 ;
+				Date data = new Date();
+				data.setTime(informada.getTimeInMillis());
+				Usuario usuario = Login.repositorio.buscarUsuario(id_usuario);
+				String msg = new String( data.toGMTString() + usuario.getNome());
+				setNewMessage(id_rota, id_usuario, msg);
+				
 			}
 	    	
 	    });
@@ -111,11 +123,11 @@ public class NotificarUsuario extends Activity {
 	 /**
 	 * @param newMessage the newMessage to set
 	 */
-	private void setNewMessage(int id_motorista, int id_usuario, Calendar informada) {
+	private void setNewMessage(int id_rota, int id_usuario, String informada) {
 		
-		
+		RotaREST rotaRest = new RotaREST();
 		try {
-			
+			rotaRest.enviarMensagemparaCondutor(id_rota, id_usuario, SessionManager.MSG_AUSENCIA_PROGRAMADA+informada);
 		} catch (Exception e) {
 			alert.showAlertDialog(NotificarUsuario.this,
  					getString(R.string.title_msg_notificationsend),

@@ -21,6 +21,10 @@ import static com.mobileescort.mobileescort.utils.CommonUtilities.formataMensage
 import static com.mobileescort.mobileescort.utils.CommonUtilities.classificaMensagem;
 import static com.mobileescort.mobileescort.utils.CommonUtilities.formataMensagemPosicao;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -105,27 +109,51 @@ public class GCMIntentService extends GCMBaseIntentService {
     private static void generateNotification(Context context, String message) {
         int icon = R.drawable.notificacao;
         long when = System.currentTimeMillis();
+        boolean notificar = false;
+        boolean autocancel = false;
         String title = context.getString(R.string.app_name);
         
         String mensagemFormatada  = formataMensagem(context, message);
+        String bodymensagem = mensagemFormatada;
         
         if (classificaMensagem(message) == SessionManager.MSG_ATUALIZA_ROTAINICIADA) {
         	iniciaRota(mensagemFormatada);
+        	notificar = true;
+        	autocancel = false;
+        	bodymensagem = context.getString(R.string.notificar_rotainiciada);
         } else {
         	if (classificaMensagem(message) == SessionManager.MSG_ATUALIZA_POSICAO) {
             	atualizaPosicaoRota(message);
+            	notificar = false;
+            	autocancel = true;
             } else {
             	if (classificaMensagem(message) == SessionManager.MSG_ATUALIZA_ROTAFINALIZADA) {
-                	finalizaRota(mensagemFormatada);
+                	finalizaRota();
+                	notificar = true;
+                	autocancel = false;
+                	bodymensagem = context.getString(R.string.notificar_rotafinalizada);
                 } else {
                 	if (classificaMensagem(message) == SessionManager.MSG_AUSENTE) {
                     	notificaAusencia(mensagemFormatada);
+                    	notificar = true;
+                    	autocancel = false;
+                    	bodymensagem = context.getString(R.string.notificar_ausencia);
                     } else {
                     	if (classificaMensagem(message) == SessionManager.MSG_PRESENTE) {
                         	notificaPresenca(mensagemFormatada);
+                        	notificar = true;
+                        	autocancel = false;
+                        	bodymensagem = context.getString(R.string.notificar_presenca);
                         } else {
                         	if (classificaMensagem(message) == SessionManager.MSG_AUSENCIA_PROGRAMADA) {
-                            	when = notificaAusenciaProgramada(mensagemFormatada);
+                            	String quando = notificaAusenciaProgramada(mensagemFormatada);
+                            	bodymensagem = context.getString(R.string.notificar_ausencia_programada) + quando;
+                            	notificar = true;
+                            	autocancel = false;
+                            } else {
+                            	notificar = true;
+                            	autocancel = false;
+                            	bodymensagem = mensagemFormatada;
                             }
                         }
                     }
@@ -133,34 +161,40 @@ public class GCMIntentService extends GCMBaseIntentService {
             }
         }
         
-        NotificationManager notificationManager = (NotificationManager)
-                context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = new Notification(icon, mensagemFormatada, when);
-        
-        Intent intent = new Intent(context, ExibirNotificacao.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("mensagem", message);
-
-        PendingIntent pendingintent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        
-        notification.setLatestEventInfo(context, title, mensagemFormatada, pendingintent);
-        notification.defaults = Notification.DEFAULT_ALL;
-        notificationManager.notify(R.string.app_name, notification);
+        if (notificar) {
+        	NotificationManager notificationManager = (NotificationManager)
+                    context.getSystemService(Context.NOTIFICATION_SERVICE);
+            Notification notification = new Notification(icon, bodymensagem, when);
+            Intent intent = new Intent(context, ExibirNotificacao.class);
+        	if (autocancel) {
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                PendingIntent pendingintent = PendingIntent.getActivity(context, 0, intent, 0);
+                notification.setLatestEventInfo(context, title, bodymensagem, pendingintent);
+                notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        	} else {
+	            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	            intent.putExtra("mensagem", mensagemFormatada);
+	            PendingIntent pendingintent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+	            notification.setLatestEventInfo(context, title, bodymensagem, pendingintent);
+	            notification.defaults = Notification.DEFAULT_ALL;
+        	}     
+        	notificationManager.notify(R.string.app_name, notification);	
+        } 
     }
 
-	private static long notificaAusenciaProgramada(String mensagemFormatada) {
-		long when = System.currentTimeMillis();
-		return when;
+	private static String notificaAusenciaProgramada(String mensagemFormatada) {
+		return mensagemFormatada;
 		
 	}
 
 	private static void notificaPresenca(String mensagemFormatada) {
 		int id_usuario = Integer.parseInt(mensagemFormatada);
 		Usuario usuario = Login.repositorio.buscarUsuario(id_usuario);
-		if (usuario.getPerfil() == "U") {
+		if (usuario.getPerfil().equals("U") ) {
 			usuario.setPerfil("S");
 		} else {
-			if (usuario.getPerfil() == "R") {
+			if (usuario.getPerfil().equals("R") ) {
 				usuario.setPerfil("P");
 			}
 		}
@@ -170,19 +204,23 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private static void notificaAusencia(String mensagemFormatada) {
 		int id_usuario = Integer.parseInt(mensagemFormatada);
 		Usuario usuario = Login.repositorio.buscarUsuario(id_usuario);
-		if (usuario.getPerfil() == "S") {
+		if (usuario.getPerfil().equals("S")) {
 			usuario.setPerfil("U");
 		} else {
-			if (usuario.getPerfil() == "P") {
+			if (usuario.getPerfil().equals("P")) {
 				usuario.setPerfil("R");
 			}
 		}
     	Login.repositorio.salvarUsuario(usuario);
 	}
 
-	private static void finalizaRota(String mensagemFormatada) {
-		int id_viagem = Integer.parseInt(mensagemFormatada);
-    	Login.repositorio.deletarViagem(id_viagem);
+	private static void finalizaRota() {
+		Viagem viagem = Login.repositorio.buscarViagem();
+		if (viagem != null) {
+			viagem.setLatitude(0.0);
+			viagem.setLongitude(0.0);
+			Login.repositorio.salvarViagem(viagem);
+		}	
 	}
 
 	private static void atualizaPosicaoRota(String message) {

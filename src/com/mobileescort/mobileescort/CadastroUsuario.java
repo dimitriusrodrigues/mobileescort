@@ -81,6 +81,7 @@ public class CadastroUsuario extends Activity {
 				usuario.setNome(etNome.getText().toString());
 				usuario.setCelular(etCelular.getText().toString());
 				usuario.setPassword(etCelular.getText().toString());
+				usuario.setRegistro("");
 				usuario.setPerfil(perfil);
 				
 				UsuarioREST usuarioREST = new UsuarioREST();

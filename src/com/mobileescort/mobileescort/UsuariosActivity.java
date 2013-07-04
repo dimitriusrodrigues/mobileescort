@@ -31,6 +31,7 @@ public class UsuariosActivity extends Activity {
 	int id_viagem;
 	Viagem viagem;
 	RotaREST rotaRest = new RotaREST();
+	boolean iniciarrota = false;
 	
 	// Alert dialog manager
 	AlertDialogManager alert = new AlertDialogManager();
@@ -173,7 +174,7 @@ public class UsuariosActivity extends Activity {
 
 	        if (!Login.session.checkLogin()) {
 	        	alert.showAlertDialog(UsuariosActivity.this,
-	      					"Session Failed","Id do Motorista não encontrado..", false);
+	      					getString(R.string.title_msg_sessionfailed),getString(R.string.body_msg_sessionnotfound), false);
 	        	finish();
 	        }
 	    
@@ -267,20 +268,22 @@ public class UsuariosActivity extends Activity {
 		
 		try{
 			String retorno = rotaRest.deletarUsuarioRota(id_rota,removerUsuario.getId_usuario());
-			alert.showAlertDialog(UsuariosActivity.this, "Removeu", "Retorno : " + retorno, true);
+			count = Login.repositorio.deletarRotaUsuario(id_rota,removerUsuario.getId_usuario());
+			alert.showAlertDialog(UsuariosActivity.this, getString(R.string.title_msg_cadastrodesvincular), getString(R.string.body_msg_cadastrodesvincular), true);
 		} catch (Exception e) {
         	alert.showAlertDialog(UsuariosActivity.this,
-     					"List Rotas Failed",
-     					e.getMessage(), false);
+        			getString(R.string.title_msg_cadastrodesvincular),
+     					getString(R.string.body_msg_cadastrodesvincularfalhou) + " " + e.getMessage(), false);
 		}
 		
-		count = Login.repositorio.deletarRotaUsuario(id_rota,removerUsuario.getId_usuario());
-		if (count == 1) {
+		
+		/*if (count == 1) {
 			alert.showAlertDialog(UsuariosActivity.this, "Remover", "Usuário removido da rota com sucesso.", true);
 		} else {
 			alert.showAlertDialog(UsuariosActivity.this, "Removido", "Não foi possível remover usuário da rota.", false);
-		}
-
+		}*/
+		
+		adapterBase();
 		
 	}
 	

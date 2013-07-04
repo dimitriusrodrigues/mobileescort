@@ -57,35 +57,28 @@ public class RegisterActivity extends Activity {
 		
 		cd = new ConnectionDetector(getApplicationContext());
 
-		// Check if Internet present
 		if (!cd.isConnectingToInternet()) {
 			// Internet Connection is not present
 			alert.showAlertDialog(RegisterActivity.this,
-					"Internet Connection Error",
-					"Please connect to working Internet connection", false);
-			// stop executing code by return
+					getString(R.string.title_msg_registerfailed),
+					getString(R.string.body_msg_registerinternetfailed), false);
 			finish();
 		}
 
-		// Getting name, email from intent
 		Intent i = getIntent();
 		
 		localizacao = i.getStringExtra("localizacao");
 		handler = new Handler();
 		buscarLatitudeLongitude();
 		
-		// Make sure the device has the proper dependencies.
 		GCMRegistrar.checkDevice(this);
-
-		// Make sure the manifest was properly set - comment out this line
-		// while developing the app, then uncomment it when it's ready.
 		GCMRegistrar.checkManifest(this);
 
 		lblMessage = (TextView) findViewById(R.id.lblMessage);
 		
 		registerReceiver(mHandleMessageReceiver, new IntentFilter(
 				DISPLAY_MESSAGE_ACTION));
-		displayMessage(this, "executou o registerreceiver!!!!!");
+		//displayMessage(this, "executou o registerreceiver!!!!!");
 		
 		// Get GCM registration id
 		final String regId = GCMRegistrar.getRegistrationId(this);
@@ -97,19 +90,18 @@ public class RegisterActivity extends Activity {
 		} else {
 			// Device is already registered on GCM
 			if (GCMRegistrar.isRegisteredOnServer(this)) {
-		        displayMessage(this, "Device is already registered on server!");
+		        displayMessage(this, getString(R.string.gcm_alreadyregistered));
 		        GCMRegistrar.unregister(this);
-		        displayMessage(this, "Register Again!");
+		        displayMessage(this, getString(R.string.gcm_unregistered));
 		        GCMRegistrar.register(this, SENDER_ID);
 			}else {
-				displayMessage(this, "Device is not registered on server");
+				displayMessage(this, getString(R.string.gcm_notregistered));
 				GCMRegistrar.setRegisteredOnServer(this, true);
                 displayMessage(this, getString(R.string.server_registered));
                 RegisterActivity.registro = regId;
 			}
 		}
 		
-		retorno.putExtra("registro", registro);
 		setResult(2, retorno);
 
 	}		
@@ -189,6 +181,7 @@ public class RegisterActivity extends Activity {
 	    				displayMessage(mContext, "Localization Find: (" + latitude + "," + longitude  + ")" );
 	    				retorno.putExtra("latitude", latitude);
 	    				retorno.putExtra("longitude", longitude);
+	    				retorno.putExtra("registro", registro);
 
 	                }
 	           }); 
