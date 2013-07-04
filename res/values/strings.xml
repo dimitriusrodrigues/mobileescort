@@ -28,6 +28,9 @@
     <string name="title_activity_main">Notificações</string>
     <string name="gcm_registered">De GCM: Aparellho registrado com sucesso!</string>
     <string name="gcm_unregistered">De GCM: Aparelho desregistrado com sucesso!</string>
+    <string name="gcm_notregistered">De GCM: Aparelho não registrado!</string>
+    <string name="gcm_alreadyregistered">De GCM: Aparelho já registrado!</string>
+    
     <string name="gcm_message">De GCM: Você tecebeu uma notificação!</string>
     <string name="gcm_error">De GCM: Um erro desconhecido ocorreu. Tente novamente!</string>
     <string name="gcm_recoverable_error">De GCM: Um erro desconhecido ocorreu.</string>
@@ -49,18 +52,28 @@
 	<string name="error_config">Por favor, remova a aplicação e instale novamente.</string>
 	<string name="registrado_gcm">Registrado no Google Cloud Message</string>
 	<string name="registrar">Registrar</string>
+	
 	<string name="notificar_transito">Trânsito Intenso! Possível Atraso.</string>
 	<string name="notificar_mecanico">Problemas Mecânicos! Possível Atraso.</string>
 	<string name="notificar_hospital">Emergência! Destino hospital mais próximo.</string>
 	<string name="notificar_acidente">Acidente sem danos! Possível Atraso.</string>
 	<string name="notificar_abastecimento">Abastecimento! Possível atraso.</string>
+	
 	<string name="notificar_ausencia">Rota iniciada e usuário está ausente.</string>
 	<string name="notificar_presenca">Rota iniciada e usuário está presente.</string>
+	<string name="notificar_ausencia_programada">Ausência programada. </string>
+	
+	<string name="notificar_rotainiciada">Uma nova rota foi iniciada.</string>
+	<string name="notificar_rotafinalizada">Uma nova rota foi finalizada.</string>
+	
 	<string name="notificar_undefined">Notificação não identificada.</string>
 	<string name="perfil_motorista">Motorista</string>
 	<string name="perfil_responsavel">Responsável</string>
 	<string name="perfil_usuario">Usuário</string>
 
+	<string name="title_msg_registerfailed">Registrar Aparelho</string>
+	<string name="body_msg_registerinternetfailed">Verifique a conexão com a internet.</string>
+	
 	<string name="title_msg_loginfailed">Buscar Usuário</string>
 	<string name="body_msg_loginnotfound">Usuário não encontrado!</string>
 	
@@ -81,11 +94,16 @@
 	<string name="body_msg_notificarausencia">Confirma Ausência na data e hora selecionada ?</string>
 			
 	<string name="title_msg_cadastrofailed">Manter Usuário</string>
+	<string name="title_msg_cadastrodesvincular">Desvincular usuário</string>
+	<string name="body_msg_cadastrodesvincular">Usuário desvinculado da rota com sucesso!</string>
+	<string name="body_msg_cadastrodesvincularfalhou">Não foi possível desvincular usuário da rota. Tente novamente!</string>
 	<string name="body_msg_cadastronotfound">Usuário não encontrado!</string>
 	<string name="body_msg_cadastroerror">Erro ao cadastrar usuário.</string>	
 	<string name="body_msg_cadastropasswordfailed">Senha Inválida! Digite uma nova senha.</string>
 	<string name="body_msg_cadastroupdatefailed">Falha ao atualizar usuário.</string>		
 	<string name="remove_user">Remover Usuário da rota ?</string>
+	
+	
 	
 	<string name="title_msg_presencafailed">Marcar Presença</string>
 	<string name="body_msg_presencainvalid">Não existe uma rota iniciada para efetivar presenças.</string>
