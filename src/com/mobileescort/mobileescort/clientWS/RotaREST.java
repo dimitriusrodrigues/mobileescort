@@ -90,6 +90,18 @@ public class RotaREST {
             throw new Exception(resposta[1]);
         }
     }
+    
+    public String enviarMensagemparaCondutor(Integer id_rota, Integer id_usuario, String msg) throws Exception {
+    	
+    	String url = URLEncoder.encode(msg, "UTF-8");
+    	
+        String[] resposta = new WebServiceClient().get(URL_WS + "rotas/enviarNotificacaoDeUsuarioParaMotorista/" + id_usuario + "/" + id_rota + "/" + url);
+        if (resposta[0].equals("200")) {
+            return "OK";
+        } else {
+            throw new Exception(resposta[1]);
+        }
+    }
 }
  
 
