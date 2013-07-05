@@ -46,9 +46,11 @@ public class CadastroUsuario extends Activity {
 			activityOrigem = params.getString("origem");
 			id_rota = params.getInt("id_rota");
 		}
-		
-		setContentView(R.layout.activity_cadastro_usuario);
-
+		if (activityOrigem.equals("Login")) {
+			setContentView(R.layout.activity_cadastro_motorista);
+		}else {
+			setContentView(R.layout.activity_cadastro_usuario);
+		}
 
 		btSalvar = (Button) findViewById(R.id.btSalvar);
 		
@@ -61,10 +63,10 @@ public class CadastroUsuario extends Activity {
 			spPerfil.setClickable(false);
 			spPerfil.setSelection(2);
 		} else {
-			Resources res = getResources();
-			String[] opcoes = res.getStringArray(R.array.perfil_array_user);
-			ArrayAdapter<String> aPerfil = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, opcoes);
-			spPerfil.setAdapter(aPerfil);
+			//Resources res = getResources();
+			//String[] opcoes = res.getStringArray(R.array.perfil_array_user);
+			//ArrayAdapter<String> aPerfil = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, opcoes);
+			//spPerfil.setAdapter(aPerfil);
 			perfil = "U";
 			spPerfil.setSelection(1);
 			spPerfil.setClickable(true);

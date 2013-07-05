@@ -21,10 +21,6 @@ import static com.mobileescort.mobileescort.utils.CommonUtilities.formataMensage
 import static com.mobileescort.mobileescort.utils.CommonUtilities.classificaMensagem;
 import static com.mobileescort.mobileescort.utils.CommonUtilities.formataMensagemPosicao;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -34,6 +30,8 @@ import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
+import com.mobileescort.mobileescort.banco.RepositorioMobileEscort;
+import com.mobileescort.mobileescort.banco.RepositorioMobileEscortScript;
 import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.model.Viagem;
 import com.mobileescort.mobileescort.utils.SessionManager;
@@ -44,7 +42,9 @@ import com.mobileescort.mobileescort.utils.SessionManager;
 public class GCMIntentService extends GCMBaseIntentService {
 
     private static final String TAG = "GCMIntentService";
-
+    
+    public static RepositorioMobileEscort repositorio ;
+    
     public GCMIntentService() {
         super(SENDER_ID);
     }
@@ -76,6 +76,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onMessage(Context context, Intent intent) {
         Log.i(TAG, "Received message");
         String message = intent.getExtras().getString("mensagem");
+        repositorio = new RepositorioMobileEscortScript(this);
         generateNotification(context, message);
     }
 
@@ -110,7 +111,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         int icon = R.drawable.notificacao;
         long when = System.currentTimeMillis();
         boolean notificar = false;
-        boolean autocancel = false;
+        
         String title = context.getString(R.string.app_name);
         
         String mensagemFormatada  = formataMensagem(context, message);
@@ -119,40 +120,33 @@ public class GCMIntentService extends GCMBaseIntentService {
         if (classificaMensagem(message) == SessionManager.MSG_ATUALIZA_ROTAINICIADA) {
         	iniciaRota(mensagemFormatada);
         	notificar = true;
-        	autocancel = false;
         	bodymensagem = context.getString(R.string.notificar_rotainiciada);
         } else {
         	if (classificaMensagem(message) == SessionManager.MSG_ATUALIZA_POSICAO) {
             	atualizaPosicaoRota(message);
-            	notificar = false;
-            	autocancel = true;
+            	notificar = true;
             } else {
             	if (classificaMensagem(message) == SessionManager.MSG_ATUALIZA_ROTAFINALIZADA) {
                 	finalizaRota();
                 	notificar = true;
-                	autocancel = false;
                 	bodymensagem = context.getString(R.string.notificar_rotafinalizada);
                 } else {
                 	if (classificaMensagem(message) == SessionManager.MSG_AUSENTE) {
                     	notificaAusencia(mensagemFormatada);
                     	notificar = true;
-                    	autocancel = false;
                     	bodymensagem = context.getString(R.string.notificar_ausencia);
                     } else {
                     	if (classificaMensagem(message) == SessionManager.MSG_PRESENTE) {
                         	notificaPresenca(mensagemFormatada);
                         	notificar = true;
-                        	autocancel = false;
                         	bodymensagem = context.getString(R.string.notificar_presenca);
                         } else {
                         	if (classificaMensagem(message) == SessionManager.MSG_AUSENCIA_PROGRAMADA) {
-                            	String quando = notificaAusenciaProgramada(mensagemFormatada);
-                            	bodymensagem = context.getString(R.string.notificar_ausencia_programada) + quando;
+                            	String retornoMensagem = notificaAusenciaProgramada(mensagemFormatada);
+                            	bodymensagem = context.getString(R.string.notificar_ausencia_programada) + retornoMensagem;
                             	notificar = true;
-                            	autocancel = false;
                             } else {
                             	notificar = true;
-                            	autocancel = false;
                             	bodymensagem = mensagemFormatada;
                             }
                         }
@@ -166,31 +160,24 @@ public class GCMIntentService extends GCMBaseIntentService {
                     context.getSystemService(Context.NOTIFICATION_SERVICE);
             Notification notification = new Notification(icon, bodymensagem, when);
             Intent intent = new Intent(context, ExibirNotificacao.class);
-        	if (autocancel) {
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                        Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                PendingIntent pendingintent = PendingIntent.getActivity(context, 0, intent, 0);
-                notification.setLatestEventInfo(context, title, bodymensagem, pendingintent);
-                notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        	} else {
-	            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-	            intent.putExtra("mensagem", mensagemFormatada);
-	            PendingIntent pendingintent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-	            notification.setLatestEventInfo(context, title, bodymensagem, pendingintent);
-	            notification.defaults = Notification.DEFAULT_ALL;
-        	}     
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("mensagem", bodymensagem);
+            PendingIntent pendingintent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            notification.setLatestEventInfo(context, title, bodymensagem, pendingintent);
+            notification.defaults = Notification.DEFAULT_ALL;
         	notificationManager.notify(R.string.app_name, notification);	
         } 
     }
 
 	private static String notificaAusenciaProgramada(String mensagemFormatada) {
+		// 
 		return mensagemFormatada;
 		
 	}
 
 	private static void notificaPresenca(String mensagemFormatada) {
 		int id_usuario = Integer.parseInt(mensagemFormatada);
-		Usuario usuario = Login.repositorio.buscarUsuario(id_usuario);
+		Usuario usuario = repositorio.buscarUsuario(id_usuario);
 		if (usuario.getPerfil().equals("U") ) {
 			usuario.setPerfil("S");
 		} else {
@@ -198,12 +185,12 @@ public class GCMIntentService extends GCMBaseIntentService {
 				usuario.setPerfil("P");
 			}
 		}
-    	Login.repositorio.salvarUsuario(usuario);
+    	repositorio.salvarUsuario(usuario);
 	}
 
 	private static void notificaAusencia(String mensagemFormatada) {
 		int id_usuario = Integer.parseInt(mensagemFormatada);
-		Usuario usuario = Login.repositorio.buscarUsuario(id_usuario);
+		Usuario usuario = repositorio.buscarUsuario(id_usuario);
 		if (usuario.getPerfil().equals("S")) {
 			usuario.setPerfil("U");
 		} else {
@@ -211,39 +198,53 @@ public class GCMIntentService extends GCMBaseIntentService {
 				usuario.setPerfil("R");
 			}
 		}
-    	Login.repositorio.salvarUsuario(usuario);
+    	repositorio.salvarUsuario(usuario);
 	}
 
 	private static void finalizaRota() {
-		Viagem viagem = Login.repositorio.buscarViagem();
+		 Viagem viagem = repositorio.buscarViagem();
 		if (viagem != null) {
 			viagem.setLatitude(0.0);
 			viagem.setLongitude(0.0);
-			Login.repositorio.salvarViagem(viagem);
+			viagem.setId_status("finalizada");
+			repositorio.salvarViagem(viagem);
 		}	
 	}
 
 	private static void atualizaPosicaoRota(String message) {
+		
 		Double[] posicao = formataMensagemPosicao(message);
-    	Viagem viagem = Login.repositorio.buscarViagem();
+    	Viagem viagem = repositorio.buscarViagem();
 		if (viagem != null) {
 			viagem.setLatitude(posicao[0]);
 			viagem.setLongitude(posicao[1]);
-			Login.repositorio.salvarViagem(viagem);
+			repositorio.salvarViagem(viagem);
+		} else {
+			double d = posicao[3];
+			int id_rota = (int) d;
+	    	viagem = repositorio.buscarViagem(id_rota);
+			if (viagem == null) {
+				viagem = new Viagem();
+				viagem.setId_rota(id_rota);
+				viagem.setId_status("Iniciada");
+				viagem.setLatitude(0.0);
+				viagem.setLongitude(0.0);
+				repositorio.salvarViagem(viagem);
+			}
 		}
 		
 	}
 
 	private static void iniciaRota(String mensagemFormatada) {
 		int id_rota = Integer.parseInt(mensagemFormatada);
-    	Viagem viagem = Login.repositorio.buscarViagem(id_rota);
+    	Viagem viagem = repositorio.buscarViagem(id_rota);
 		if (viagem == null) {
 			viagem = new Viagem();
 			viagem.setId_rota(id_rota);
 			viagem.setId_status("Iniciada");
 			viagem.setLatitude(0.0);
 			viagem.setLongitude(0.0);
-			Login.repositorio.salvarViagem(viagem);
+			repositorio.salvarViagem(viagem);
 		}
 	}
 

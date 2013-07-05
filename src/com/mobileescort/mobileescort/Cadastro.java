@@ -208,11 +208,11 @@ public class Cadastro extends Activity {
 	private int getPerfil(String perfil) {
 		int pos = 0;
 		
-		if (perfil.equals("R")) {
+		if (perfil.equals("R") || perfil.equals("P")) {
 			pos = 0;
 		} 
 		else { 
-			if (perfil.equals("U")) {
+			if (perfil.equals("U") || perfil.equals("S")) {
 				pos = 1;
 			}
 			else {

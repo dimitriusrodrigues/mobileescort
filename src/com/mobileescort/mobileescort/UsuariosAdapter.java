@@ -58,10 +58,10 @@ public class UsuariosAdapter extends BaseAdapter{
 			perfil = ctx.getString(R.string.perfil_usuario);
 		}
 			
-		tvNome.setText(perfil + ":" +usu.getNome());
+		tvNome.setText(usu.getNome());
 		
 		TextView tvTelefone = (TextView) v.findViewById(R.id.txTelefone);
-		tvTelefone.setText(usu.getCelular());
+		tvTelefone.setText(perfil + ":" + usu.getCelular());
 		
 		return v;
 	}

@@ -33,6 +33,7 @@ public class ExibirNotificacao extends Activity {
 			Double[] valores = CommonUtilities.formataMensagemPosicao(message);
 			lblMessage.append("Latitude : " + valores[0].toString() + "\n");
 			lblMessage.append("Longitude: " + valores[1].toString() + "\n");
+			lblMessage.append("Rota     : " + valores[2].toString() + "\n");
 		} else {
 			lblMessage.append(message + "\n");
 		}

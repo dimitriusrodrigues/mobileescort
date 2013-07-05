@@ -61,10 +61,10 @@ public class PresencaAdapter extends BaseAdapter{
 			perfil = ctx.getString(R.string.perfil_usuario);
 		}
 			
-		tvNome.setText(perfil + ":" +usu.getNome());
+		tvNome.setText(usu.getNome());
 		
 		TextView tvTelefone = (TextView) v.findViewById(R.id.txTelefone);
-		tvTelefone.setText(status);
+		tvTelefone.setText(perfil + ": " + status);
 		
 		return v;
 	}

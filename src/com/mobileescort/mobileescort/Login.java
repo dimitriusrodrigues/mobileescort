@@ -27,7 +27,7 @@ public class Login extends Activity {
 	TextView tvNovoCad;
 	TextView tvLogout;
 	
-	public static RepositorioMobileEscort repositorio;
+	public static RepositorioMobileEscort repositorio ;
 	
 	// Alert dialog manager
 	public static AlertDialogManager alert;

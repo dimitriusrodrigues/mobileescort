@@ -1,10 +1,12 @@
 package com.mobileescort.mobileescort;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import com.mobileescort.mobileescort.clientWS.RotaREST;
+import com.mobileescort.mobileescort.model.Rota;
 import com.mobileescort.mobileescort.model.Usuario;
 import com.mobileescort.mobileescort.utils.AlertDialogManager;
 import com.mobileescort.mobileescort.utils.SessionManager;
@@ -18,6 +20,7 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -34,6 +37,11 @@ public class NotificarUsuario extends Activity {
 	DatePicker dpResult;
 	TimePicker tpResult;
 	Calendar informada;
+	int id_rota;
+	List<Rota> listRotasWS = new ArrayList<Rota>();
+	ArrayList<String> itens = new ArrayList<String>();
+    ArrayList<Integer> idRotas = new ArrayList<Integer>();	        
+	RotaREST rotaRest = new RotaREST();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +88,7 @@ public class NotificarUsuario extends Activity {
 	     					getString(R.string.title_msg_notificationsend),
 	     					getString(R.string.body_msg_notificationvalidate), false);
 				} else {
-					novaMensagem(NotificarUsuario.this);
+					confirmarEnvioNotificao(NotificarUsuario.this);
 				}
 				
 				
@@ -89,38 +97,7 @@ public class NotificarUsuario extends Activity {
 		
 	}
 	
-	private void novaMensagem(Context context) {
-		
-		AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-	    dialog.setIcon(R.drawable.ic_launcher);
-	    dialog.setTitle(context.getString(R.string.title_msg_notificarausencia));
-	    dialog.setMessage(context.getString(R.string.body_msg_notificarausencia));
-        
-	    dialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener(){
-	    	
-			public void onClick(DialogInterface dialog, int which) {
-				
-			}
-	    });
-		
-	    dialog.setPositiveButton("OK", new DialogInterface.OnClickListener(){
-
-			@Override
-			public void onClick(DialogInterface arg0, int arg1) {
-				int id_rota = 3 ;
-				Date data = new Date();
-				data.setTime(informada.getTimeInMillis());
-				Usuario usuario = Login.repositorio.buscarUsuario(id_usuario);
-				String msg = new String( data.toGMTString() + usuario.getNome());
-				setNewMessage(id_rota, id_usuario, msg);
-				
-			}
-	    	
-	    });
-	    dialog.show();
-	}
-	
-	 /**
+	/**
 	 * @param newMessage the newMessage to set
 	 */
 	private void setNewMessage(int id_rota, int id_usuario, String informada) {
@@ -128,6 +105,7 @@ public class NotificarUsuario extends Activity {
 		RotaREST rotaRest = new RotaREST();
 		try {
 			rotaRest.enviarMensagemparaCondutor(id_rota, id_usuario, SessionManager.MSG_AUSENCIA_PROGRAMADA+informada);
+			finish();
 		} catch (Exception e) {
 			alert.showAlertDialog(NotificarUsuario.this,
  					getString(R.string.title_msg_notificationsend),
@@ -138,5 +116,55 @@ public class NotificarUsuario extends Activity {
 	protected void onStart() {
 		super.onStart();
 	}
+	
+	private void confirmarEnvioNotificao(Context context) {
+		itens = new ArrayList<String>();
+	    idRotas = new ArrayList<Integer>();	        
+	    try {
+	    	
+	    	listRotasWS = rotaRest.getListaRotaUsuario(Login.session.getIdMotorista());
+	    	
+	    	if (listRotasWS.size() == 0 ) {
+            	alert.showAlertDialog(NotificarUsuario.this,
+	          					getString(R.string.title_msg_rotasfailed),getString(R.string.body_msg_rotasnotfound), false);
+	    	}
+			for (int i = 0; i < listRotasWS.size(); i++) {
+				Rota rota = new Rota();
+				rota.setId_rota(listRotasWS.get(i).getId_rota());
+				rota.setDescricao(listRotasWS.get(i).getDescricao());
+				rota.setMotorista(listRotasWS.get(i).getMotorista());
+				rota.setUsuarios(listRotasWS.get(i).getUsuarios());
+				itens.add(rota.getDescricao() + " : " + rota.getMotorista().getNome() );
+				idRotas.add(rota.getId_rota());
+	        }
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,itens);
+		    
+		    AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+		    dialog.setIcon(R.drawable.ic_launcher);
+		    dialog.setTitle(context.getString(R.string.title_msg_notificarausencia));
+		    //dialog.setMessage(context.getString(R.string.body_msg_notificarausencia));
+		    dialog.setSingleChoiceItems(adapter, 0, new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface arg0, int arg1) {
+		            int id_rota = idRotas.get(arg1) ;
+					Date data = new Date();
+					data.setTime(informada.getTimeInMillis());
+					Usuario usuario = Login.repositorio.buscarUsuario(id_usuario);
+					String msg = new String( data.toGMTString()+"["+usuario.getNome()+"]");
+					setNewMessage(id_rota, id_usuario, msg);
+		        }
+		    });
+		    dialog.show();
 		
+		 } catch (Exception e) {
+	    	 alert.showAlertDialog(NotificarUsuario.this,
+	 					getString(R.string.title_msg_rotasfailed),
+	 					e.getMessage(), false);
+		}
+	    
+	}
+	
+	@Override
+	public void finish() {
+	    super.finish();
+	}
 }

@@ -81,7 +81,7 @@ public class GoogleMapsActivity extends FragmentActivity {
 			    viagem.setLongitude(location.getLongitude());
 		    	id_viagem = Login.repositorio.salvarViagem(viagem);
 				try {
-					rotaRest.enviarMensagem(viagem.getId_rota(), SessionManager.MSG_ATUALIZA_POSICAO+viagem.getLatitude()+","+viagem.getLongitude());
+					rotaRest.enviarMensagem(viagem.getId_rota(), SessionManager.MSG_ATUALIZA_POSICAO+viagem.getId_rota()+":"+viagem.getLatitude()+","+viagem.getLongitude());
 				} catch (Exception e) {
 		        	 alert.showAlertDialog(GoogleMapsActivity.this,
 		     					getString(R.string.title_msg_notificationsend),
@@ -129,7 +129,7 @@ public class GoogleMapsActivity extends FragmentActivity {
    
     LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	//locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
-    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 100, locationListener);    
+    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 500, locationListener);    
   }  
   
   private void configuraPosicao( GoogleMap map, LatLng latLng) {  

@@ -78,8 +78,6 @@ public class RegisterActivity extends Activity {
 		
 		registerReceiver(mHandleMessageReceiver, new IntentFilter(
 				DISPLAY_MESSAGE_ACTION));
-		//displayMessage(this, "executou o registerreceiver!!!!!");
-		
 		// Get GCM registration id
 		final String regId = GCMRegistrar.getRegistrationId(this);
 
@@ -101,8 +99,6 @@ public class RegisterActivity extends Activity {
                 RegisterActivity.registro = regId;
 			}
 		}
-		
-		setResult(2, retorno);
 
 	}		
 
@@ -179,10 +175,6 @@ public class RegisterActivity extends Activity {
 	    				longitude = endereco.getLongitude();
 	    				Log.i("Localizacao", "Localization Find: (" + latitude + "," + longitude  + ")" );
 	    				displayMessage(mContext, "Localization Find: (" + latitude + "," + longitude  + ")" );
-	    				retorno.putExtra("latitude", latitude);
-	    				retorno.putExtra("longitude", longitude);
-	    				retorno.putExtra("registro", registro);
-
 	                }
 	           }); 
 
@@ -190,12 +182,24 @@ public class RegisterActivity extends Activity {
 	        return null;
 		}
 	}
-	protected void onStart() {
-		
-		super.onStart();
-		
+	
+	@Override
+	public void finish() {
+		retorno.putExtra("latitude", latitude);
+		retorno.putExtra("longitude", longitude);
+		retorno.putExtra("registro", registro);
+		setResult(2, retorno);
+	    super.finish();
 	}
-
+	@Override
+	protected void onStart() {
+		super.onStart();
+	}
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+	}
 
 }
 

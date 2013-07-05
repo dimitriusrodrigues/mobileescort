@@ -49,14 +49,19 @@ public class Home extends Activity {
 					alert.showAlertDialog(Home.this, getString(R.string.title_msg_rotasfailed), getString(R.string.body_msg_rotasinvalid), false);
 				} else {
 					id_rota = viagem.getId_rota();
-					if (viagem.getLatitude() == 0.0 || viagem.getLongitude() == 0.0) {
-						alert.showAlertDialog(Home.this, getString(R.string.title_msg_rotasfailed), getString(R.string.body_msg_rotasnotstarted), false);
+					if (viagem.getId_status().equals("finalizada")) {
+						Login.repositorio.deletarViagem(viagem.getId_viagem());
+						alert.showAlertDialog(Home.this, getString(R.string.title_msg_rotasfailed), getString(R.string.body_msg_rotasinvalid), false);
 					} else {
-						Intent it = new Intent(Home.this,GoogleMapsActivityUsuario.class);
-						it.putExtra("id_viagem", viagem.getId_viagem());
-						it.putExtra("id_rota", viagem.getId_rota());
-						startActivity(it);
-					}
+						if (viagem.getLatitude() == 0.0 || viagem.getLongitude() == 0.0) {
+							alert.showAlertDialog(Home.this, getString(R.string.title_msg_rotasfailed), getString(R.string.body_msg_rotasnotstarted), false);
+						} else {
+							Intent it = new Intent(Home.this,GoogleMapsActivityUsuario.class);
+							it.putExtra("id_viagem", viagem.getId_viagem());
+							it.putExtra("id_rota", viagem.getId_rota());
+							startActivity(it);
+						}
+					}	
 				}
 
 			}
@@ -85,9 +90,15 @@ public class Home extends Activity {
 				if (viagem == null) {
 					alert.showAlertDialog(Home.this, getString(R.string.title_msg_presencafailed), getString(R.string.body_msg_presencainvalid), false);
 				} else {
-					id_rota = viagem.getId_rota();
-					Intent it = new Intent(Home.this,PresencaActivityUsuario.class);
-					startActivity(it);
+					if (viagem.getId_status().equals("finalizada")) {
+						Login.repositorio.deletarViagem(viagem.getId_viagem());
+						alert.showAlertDialog(Home.this, getString(R.string.title_msg_presencafailed), getString(R.string.body_msg_presencainvalid), false);
+					} else {
+						id_rota = viagem.getId_rota();
+						Intent it = new Intent(Home.this,PresencaActivityUsuario.class);
+						startActivity(it);
+					}
+					
 				}				
 			}
 		});
