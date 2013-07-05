@@ -71,18 +71,26 @@ public final class CommonUtilities {
     public static Double[] formataMensagemPosicao(String mensagem) {
     	
     	StringBuilder buffer = new StringBuilder(mensagem);
-        Double[] valores = new Double[2];
+        Double[] valores = new Double[3];
         char[] latitude = new char[buffer.length()];
         char[] longitude = new char[buffer.length()];
+        char[] id_rota = new char[buffer.length()];
+        
         buffer.delete(0, SessionManager.MSG_ATUALIZA_POSICAO.length());
-        int pos = buffer.indexOf(",");
-        buffer.getChars(0, pos - 1, latitude, 0);
-        buffer.getChars(pos + 1, buffer.length(), longitude, 0);
+        
+        int pos = buffer.indexOf(":");
+        buffer.getChars(0, pos , id_rota, 0);
+        
+        int pos2 = buffer.indexOf(",");
+        buffer.getChars(pos+1, pos2 - 1, latitude, 0);
+        buffer.getChars(pos2 + 1, buffer.length(), longitude, 0);
         String slatitude = new String(latitude);
         String slongitude = new String(longitude);
+        String srota = new String(id_rota);
         
     	valores[0] = Double.parseDouble(slatitude);
     	valores[1] = Double.parseDouble(slongitude);
+    	valores[2] = Double.parseDouble(srota);
 		return valores;
     	
     }
