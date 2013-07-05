@@ -28,22 +28,42 @@ public class RotaREST {
     
     public List<Rota> getListaRota(Integer id_motorista) throws Exception {
 
-     String[] resposta = new WebServiceClient().get(URL_WS + "rotas/buscarRotas/" + id_motorista);
+    	String[] resposta = new WebServiceClient().get(URL_WS + "rotas/buscarRotas/" + id_motorista);
      
-     if (resposta[0].equals("200")) {
-         Gson gson = new Gson();
-         ArrayList<Rota> listaRota = new ArrayList<Rota>();
-         JsonParser parser = new JsonParser();
-        JsonArray array = parser.parse(resposta[1]).getAsJsonArray();
-         
-        for (int i = 0; i < array.size(); i++) {
-             listaRota.add(gson.fromJson(array.get(i), Rota.class));
-         }
-         return listaRota;
-     } else {
-         throw new Exception(resposta[1]);
-     }
+	    if (resposta[0].equals("200")) {
+	        Gson gson = new Gson();
+	        ArrayList<Rota> listaRota = new ArrayList<Rota>();
+	        JsonParser parser = new JsonParser();
+	        JsonArray array = parser.parse(resposta[1]).getAsJsonArray();
+	         
+	        for (int i = 0; i < array.size(); i++) {
+	        	listaRota.add(gson.fromJson(array.get(i), Rota.class));
+	        }
+	        return listaRota;
+	     } else {
+	    	 throw new Exception(resposta[1]);
+	     }
     }
+    
+    public List<Rota> getListaRotaUsuario(Integer id_usuario) throws Exception {
+
+        String[] resposta = new WebServiceClient().get(URL_WS + "rotas/buscarRotasdoUsuario/" + id_usuario);
+        
+        if (resposta[0].equals("200")) {
+            Gson gson = new Gson();
+            ArrayList<Rota> listaRota = new ArrayList<Rota>();
+            JsonParser parser = new JsonParser();
+           JsonArray array = parser.parse(resposta[1]).getAsJsonArray();
+            
+           for (int i = 0; i < array.size(); i++) {
+                listaRota.add(gson.fromJson(array.get(i), Rota.class));
+            }
+            return listaRota;
+        } else {
+            throw new Exception(resposta[1]);
+        }
+    }
+
     
     public String inserirRota(Rota Rota) throws Exception {
      
