@@ -38,27 +38,19 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
-
+
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="center_horizontal"
         android:orientation="horizontal" >
 
         <Button
             android:id="@+id/btConfirmar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
             android:text="@string/confirmar" />
-
-        <Button
-            android:id="@+id/btCancelar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/cancelar" />
 
     </LinearLayout>
 

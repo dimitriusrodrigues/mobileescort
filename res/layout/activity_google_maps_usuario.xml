@@ -6,7 +6,15 @@
 	<LinearLayout android:layout_height="wrap_content" 
 	    android:layout_width="match_parent" 
 	    android:orientation="vertical" 
-	    android:background="@drawable/topomapa"> 
+	    android:background="@drawable/topomapa">
+
+		<Button
+		    android:id="@+id/btTest"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_gravity="right"
+		    android:text="@string/test" />
+ 
 	</LinearLayout>
 
 <fragment  

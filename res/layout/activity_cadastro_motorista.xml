@@ -39,15 +39,15 @@
             android:ems="10"
             android:hint="@string/celular"
             android:inputType="number" />
-        
+        
 		<Spinner
 		    android:id="@+id/spPerfil"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_marginBottom="30dp"
-		    android:layout_marginLeft="20dp"
-		    android:layout_marginRight="20dp"
-		    android:entries="@array/perfil_array_user"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+		    android:entries="@array/perfil_array"
 		    android:prompt="@string/perfil_prompt" />
         
         <Button
