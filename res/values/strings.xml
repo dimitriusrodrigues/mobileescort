@@ -63,8 +63,8 @@
 	<string name="notificar_presenca">Rota iniciada e usuário está presente.</string>
 	<string name="notificar_ausencia_programada">Ausência programada. </string>
 	
-	<string name="notificar_rotainiciada">Uma nova rota foi iniciada.</string>
-	<string name="notificar_rotafinalizada">Uma nova rota foi finalizada.</string>
+	<string name="notificar_rotainiciada">Uma nova rota foi iniciada. Vizualise o mapa no botão rota.</string>
+	<string name="notificar_rotafinalizada">A rota foi finalizada.</string>
 	
 	<string name="notificar_undefined">Notificação não identificada.</string>
 	<string name="perfil_motorista">Motorista</string>
@@ -89,6 +89,7 @@
 	<string name="body_msg_notificationinvalid">Não existe uma rota iniciada para envio de notificações.</string>
 	<string name="title_msg_notificationsend">Enviar Notificação.</string>
 	<string name="body_msg_notificationfailed">Envio de notifiacação falhou. Tente novamente!</string>
+	<string name="body_msg_notificationsuccess">Notificação enviada com sucesso.</string>
 	<string name="body_msg_notificationvalidate">Data hora menor que a data hora atual. Informe uma data futura.</string>
 	<string name="title_msg_notificarausencia">Ausência Programada</string>
 	<string name="body_msg_notificarausencia">Confirma Ausência na data e hora selecionada ?</string>
@@ -121,5 +122,5 @@
     </string-array>
         <string name="confirmar">Confirmar</string>
         <string name="cancelar">Cancelar</string>
-    
+        <string name="test">Simular Rota</string>
 </resources>
